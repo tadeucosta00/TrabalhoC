@@ -1,2 +1,13 @@
-grupo3
-cona
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+#define TAMANHO 50
+
+
+int main(int argc, char *argv[])
+{
+	
+	return 0;
+}
+
