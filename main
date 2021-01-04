@@ -1,16 +1,112 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h>
 
-#define TAMANHO 50
+/* run this program using the console pauser or add your own getch, system("pause") or input loop */
+void MaisMenosCasos (int *casos, int contador);
+void MelhorPiorAvaliacao(int *avaliacoes, int contadoravaliacao);
+void Percentagem(int *casos, int *utentes, int contador);
 
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[]) 
 {
-	int tadeu[10000], bixa, louca;
-	return 0;
-	Nersinho Gaymer bixa muda
-	nelson o paneleiro ambulante
-	viterbo enrabador de curiosos
+	int casos[250], contador = 0, avaliacoes[250], contadoravaliacao = 0, percentagemCovid, utentes[250], contadorUtente = 0;
+	char opcao = 's';
+	do
+	{
+		puts("Insira o números de utentes do lar");
+		scanf("%d", &utentes[contadorUtente]);
+		contadorUtente++;
+		puts("Insira os números de casos de Covid pretencentes ao lares");
+		scanf("%d", &casos[contador]);
+		contador++;
+		puts("Insira a avaliação a este lare");
+		scanf("%d", &avaliacoes[contadoravaliacao]);
+		contadoravaliacao++;
+		
+		puts("S(s) para continuar o Programa."); 
+		puts("Insira qualquer letra para parar o ciclo.");
+		scanf(" %c", &opcao);
+		
+		if(opcao == 'S' || opcao == 's')
+			system("CLS");
+			
+		system("CLS");
+	}while(opcao == 's' || opcao == 'S');
+	MaisMenosCasos (casos, contador);
+	MelhorPiorAvaliacao(avaliacoes, contadoravaliacao);
+	Percentagem(casos, utentes, contador);
+	
+}
+void MaisMenosCasos (int *casos, int contador)
+{
+	int maior = -500, menor = 500, i;
+		
+	for( i = 0; i < contador; i++)
+	{
+		if (casos[i] > maior) 	
+		{
+			maior = casos[i]; 
+		}
+	}
+
+	
+	for( i = 0; i < contador; i++)
+	{
+		if (casos[i] < menor)
+		{
+			menor = casos[i];
+		}
+	}
+	if(menor != 500)
+	{
+		printf("O lar com mais casos têm %d sendo ele FALTA OS DADOS DE ENTRADA\n", maior);
+		printf("\nO lar com menos casos têm %d sendo ele FALTA OS DADOS DE ENTRADA\n", menor); 	
+	}
+	else 
+	{
+		puts("\nNos lares inseridos não houve nenhum caso de Covid");	
+	}
 }
 
+void MelhorPiorAvaliacao(int *avaliacoes, int contadoravaliacao)
+{
+		int maior = -500, menor = 500, i;
+		
+	for( i = 0; i < contadoravaliacao; i++)
+	{
+		if (avaliacoes[i] > maior) 	
+		{
+			maior = avaliacoes[i]; 
+		}
+	}
+
+	
+	for( i = 0; i < contadoravaliacao; i++)
+	{
+		if (avaliacoes[i] < menor)
+		{
+			menor = avaliacoes[i];
+		}
+	}
+	if(menor != 500)
+	{
+		printf("\nA melhor avaliação dos lares é %d sendo ele FALTA OS DADOS DE ENTRADA\n", maior);
+		printf("\nO A pior avaliação dos lares é %d sendo ele FALTA OS DADOS DE ENTRADA\n", menor); 	
+	}
+	else 
+	{
+		puts("\nNos lares inseridos não houve nenhum caso de Covid");	
+	}	
+}
+
+void Percentagem(int *casos, int *utentes, int contador)
+{
+	int i, calculo, percentagem;
+	for( i = 0; i < contador; i++)
+	{
+		calculo = casos[i] * 100;
+		percentagem = calculo / utentes[i];
+		printf("\nA percentagem por este lar é de %d\n", percentagem);
+	}
+	
+}
