@@ -7,7 +7,7 @@
 
 int main(int argc, char *argv[])
 {
-	int tadeu, bixa, louca;
+	int tadeu[10000], bixa, louca;
 	return 0;
 	Nersinho Gaymer bixa muda
 	nelson o paneleiro ambulante
