@@ -28,27 +28,18 @@ int main(int argc, char *argv[]) {
 	if(verificador == 'G' || verificador == 'g')
 	{
 		printf("Password:");
-    		
-		do{ 
-        
-			password[i]=getch(); 
-        
-			if(password[i]!='\r')
-			{ 
-            			printf("*");
-        		} 
-        
-			i++;
-		
-    		}while(password[i-1]!='\r');
-    	
-	}
-	password[i-1] = '\0';
+    	do{ 
+        password[i]=getch(); 
+        if(password[i]!='\r'){ 
+            printf("*");
+        } 
+        i++; 
+    	}while(password[i-1]!='\r');
+    	password[i-1] = '\0';
 	   
-	printf("\n");
-	
-	if(strcmp(password,passwordgestor) == 0)
-	{
+		printf("\n");
+		if(strcmp(password,passwordgestor) == 0)
+		{
 		system("cls");
 		puts("---------Bem vindo..........\n");
 		printf("1-Inserir dados\n");
@@ -62,91 +53,82 @@ int main(int argc, char *argv[]) {
 		
 		switch (opcao)
   		{
-    			case 1 :
+    	case 1 :
     	
-				do
-				{
-					printf("Insira o numeros de utentes do lar:");
-					scanf("%d", &utentes[contadorUtente]);
-					contadorUtente++;
-					printf("Insira os numeros de casos de Covid pretencentes ao lares:");
-					scanf("%d", &casos[contador]);
-					contador++;
-					printf("Insira a avaliacao a este lar:");
-					scanf("%d", &avaliacoes[contadoravaliacao]);
-					contadoravaliacao++;
-		
-					puts("S(s) para continuar o Programa."); 
-					puts("Insira qualquer letra para parar o ciclo.");
-					scanf(" %c", &opcao);
-		
-					if(opcao == 'S' || opcao == 's')
-						system("CLS");
-			
-					system("CLS");
-				}while(opcao == 's' || opcao == 'S');
-   	 	
-				break;
-    
-    
-   			case 5 :
-    			
-				MaisMenosCasos (casos, contador);
-				MelhorPiorAvaliacao(avaliacoes, contadoravaliacao);
-				Percentagem(casos, utentes, contador);
-    				break;
-    
-    			default :
-    	
-				printf ("Valor invalido!\n");
- 				}
-	
-		
-				}
-				else
-				{
-					printf("Password Incorreta!!\n");				
-				}
-		}
-    	}
-	else if(verificador == 'E' || verificador == 'e')
-	{
-		printf("Password:");
-    	do
-	{ 
-        	password[i]=getch(); 
-        	
-		if(password[i]!='\r') 
-           		printf("*");
-         
-        
-		i++; 
-    	}while(password[i-1]!='\r');
-    	
-	password[i-1] = '\0';
-	   
-		printf("\n");
-		
-		if(strcmp(password,passwordequipa) == 0)
+		do
 		{
+		printf("Insira o numeros de utentes do lar:");
+		scanf("%d", &utentes[contadorUtente]);
+		contadorUtente++;
+		printf("Insira os numeros de casos de Covid pretencentes ao lares:");
+		scanf("%d", &casos[contador]);
+		contador++;
+		printf("Insira a avaliacao a este lar:");
+		scanf("%d", &avaliacoes[contadoravaliacao]);
+		contadoravaliacao++;
 		
-			system("cls");
-			puts("---------Bem vindo..........\n");
-			printf("1-Inserir dados\n");
-			printf("2-Editar dados existentes\n");
-			printf("3-Eliminar dados existentes\n");	
-			printf("Opçao: ");	
-			scanf("%d",&opcao);
+		puts("S(s) para continuar o Programa."); 
+		puts("Insira qualquer letra para parar o ciclo.");
+		scanf(" %c", &opcao);
+		
+		if(opcao == 'S' || opcao == 's')
+			system("CLS");
+			
+		system("CLS");
+		}while(opcao == 's' || opcao == 'S');
+   	 	
+		break;
+    
+    
+   		case 5 :
+    	MaisMenosCasos (casos, contador);
+		MelhorPiorAvaliacao(avaliacoes, contadoravaliacao);
+		Percentagem(casos, utentes, contador);
+    	break;
+    
+    	default :
+    	printf ("Valor invalido!\n");
+ 		}
+	
 		
 		}
 		else
 		{
-			printf("Password Incorreta!!\n");				
+		printf("Password Incorreta!!\n");				
 		}
-    
-    	MaisMenosCasos (casos, contador);
-	MelhorPiorAvaliacao(avaliacoes, contadoravaliacao);
-	Percentagem(casos, utentes, contador);
+    }
+	else if(verificador == 'E' || verificador == 'e')
+	{
+		printf("Password:");
+    	do{ 
+        password[i]=getch(); 
+        if(password[i]!='\r'){ 
+            printf("*");
+        } 
+        i++; 
+    	}while(password[i-1]!='\r');
+    	password[i-1] = '\0';
+	   
+		printf("\n");
+		if(strcmp(password,passwordequipa) == 0)
+		{
+		system("cls");
+		puts("---------Bem vindo..........\n");
+		printf("1-Inserir dados\n");
+		printf("2-Editar dados existentes\n");
+		printf("3-Eliminar dados existentes\n");	
+		printf("Opçao: ");	
+		scanf("%d",&opcao);
+		
+		}
+		else
+		{
+		printf("Password Incorreta!!\n");				
+		}
+    }
+	    MaisMenosCasos (casos, contador);
+		MelhorPiorAvaliacao(avaliacoes, contadoravaliacao);
+		Percentagem(casos, utentes, contador);
 	
 	getchar();
 	return 0;
@@ -161,14 +143,18 @@ void MaisMenosCasos (int *casos, int contador)
 	for( i = 0; i < contador; i++)
 	{
 		if (casos[i] > maior) 	
+		{
 			maior = casos[i]; 
+		}
 	}
 
 	
 	for( i = 0; i < contador; i++)
 	{
 		if (casos[i] < menor)
+		{
 			menor = casos[i];
+		}
 	}
 	if(menor != 500)
 	{
@@ -183,19 +169,23 @@ void MaisMenosCasos (int *casos, int contador)
 
 void MelhorPiorAvaliacao(int *avaliacoes, int contadoravaliacao)
 {
-	int maior = -500, menor = 500, i;
+		int maior = -500, menor = 500, i;
 		
 	for( i = 0; i < contadoravaliacao; i++)
 	{
 		if (avaliacoes[i] > maior) 	
-			maior = avaliacoes[i];
+		{
+			maior = avaliacoes[i]; 
+		}
 	}
 
 	
 	for( i = 0; i < contadoravaliacao; i++)
 	{
 		if (avaliacoes[i] < menor)
+		{
 			menor = avaliacoes[i];
+		}
 	}
 	if(menor != 500)
 	{
@@ -211,7 +201,6 @@ void MelhorPiorAvaliacao(int *avaliacoes, int contadoravaliacao)
 void Percentagem(int *casos, int *utentes, int contador)
 {
 	int i, calculo, percentagem;
-	
 	for( i = 0; i < contador; i++)
 	{
 		calculo = casos[i] * 100;
