@@ -28,19 +28,21 @@ int main(int argc, char *argv[]) {
 	if(verificador == 'G' || verificador == 'g')
 	{
 		printf("Password:");
-    	do{ 
+    		
+		do{ 
         
-		password[i]=getch(); 
+			password[i]=getch(); 
         
-		if(password[i]!='\r')
-		{ 
-            	printf("*");
-        	} 
+			if(password[i]!='\r')
+			{ 
+            			printf("*");
+        		} 
         
-		i++;
+			i++;
 		
-    	}while(password[i-1]!='\r');
+    		}while(password[i-1]!='\r');
     	
+	}
 	password[i-1] = '\0';
 	   
 	printf("\n");
