@@ -1,1 +1,222 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+#include <conio.h>
 
+void MaisMenosCasos (int *casos, int contador);
+void MelhorPiorAvaliacao(int *avaliacoes, int contadoravaliacao);
+void Percentagem(int *casos, int *utentes, int contador);
+
+
+int main(int argc, char *argv[]) {
+	
+	int i,opcao;
+	char verificador;
+	char passwordgestor[50] = "Gestor123456";	
+	char passwordequipa[50] = "Equipa123456";
+	char password[50];
+	char ch;
+	int casos[250], contador = 0, avaliacoes[250], contadoravaliacao = 0, percentagemCovid, utentes[250], contadorUtente = 0;
+	char opcao1 = 's';
+	
+	puts("---------Sistema de Lares---------");
+	printf("Gestor --- G \n");
+	printf("Equipa --- E \n");
+	printf("Opcao: ");	
+	scanf(" %c", &verificador);
+		
+	if(verificador == 'G' || verificador == 'g')
+	{
+		printf("Password:");
+    	do{ 
+        	password[i]=getch();
+			 
+        	if(password[i]!='\r')
+			{ 
+            	printf("*");
+      		} 
+      		
+    	    i++; 
+    	    
+    	}while(password[i-1]!='\r');
+    
+		password[i-1] = '\0';
+	   
+		printf("\n");
+		
+		if(strcmp(password,passwordgestor) == 0)
+		{
+			system("cls");
+			puts("---------Bem vindo..........\n");
+			printf("1-Inserir dados\n");
+			printf("2-Editar dados existentes\n");
+			printf("3-Eliminar dados existentes\n");
+			printf("4-Imprimir relatorio\n");
+			printf("5-Imprimir Estatiscas\n");		
+			printf("Opçao: ");	
+			scanf("%d",&opcao);
+			system("CLS");
+		
+			switch (opcao)
+  			{
+    			case 1 :
+    	
+					do
+					{
+						printf("Insira o numeros de utentes do lar:");
+						scanf("%d", &utentes[contadorUtente]);
+						contadorUtente++;
+						printf("Insira os numeros de casos de Covid pretencentes ao lares:");
+						scanf("%d", &casos[contador]);
+						contador++;
+						printf("Insira a avaliacao a este lar:");
+						scanf("%d", &avaliacoes[contadoravaliacao]);
+						contadoravaliacao++;
+		
+						puts("S(s) para continuar o Programa."); 
+						puts("Insira qualquer letra para parar o ciclo.");
+						scanf(" %c", &opcao);
+		
+						if(opcao == 'S' || opcao == 's')
+							system("CLS");
+			
+						system("CLS");
+				
+					}while(opcao == 's' || opcao == 'S');
+   	 	
+					break;
+    
+    
+   				case 5 :
+   			
+    				MaisMenosCasos (casos, contador);
+					MelhorPiorAvaliacao(avaliacoes, contadoravaliacao);
+					Percentagem(casos, utentes, contador);
+			
+    			break;
+    
+    			default :
+    	
+				printf ("Valor invalido!\n");
+ 				}
+		
+			
+				}	
+				else
+				{
+					printf("Password Incorreta!!\n");				
+				}
+			}
+		}
+    }
+	else if(verificador == 'E' || verificador == 'e')
+	{
+		printf("Password:");
+    	do{ 
+        	password[i]=getch(); 
+        		if(password[i]!='\r')
+            		printf("*");
+        
+			i++; 
+		
+    	}while(password[i-1]!='\r');
+    	
+    	password[i-1] = '\0';
+	   
+		printf("\n");
+		
+		if(strcmp(password,passwordequipa) == 0)
+		{
+			system("cls");
+			puts("---------Bem vindo..........\n");
+			printf("1-Inserir dados\n");
+			printf("2-Editar dados existentes\n");
+			printf("3-Eliminar dados existentes\n");	
+			printf("Opçao: ");	
+			scanf("%d",&opcao);
+		
+		}
+		else
+		{
+			printf("Password Incorreta!!\n");				
+		}
+    }
+	    
+	MaisMenosCasos (casos, contador);
+	MelhorPiorAvaliacao(avaliacoes, contadoravaliacao);
+	Percentagem(casos, utentes, contador);
+	
+	getchar();
+	return 0;
+}
+
+//funcoes
+
+void MaisMenosCasos (int *casos, int contador)
+{
+	int maior = -500, menor = 500, i;
+		
+	for( i = 0; i < contador; i++)
+	{
+		if (casos[i] > maior) 	
+			maior = casos[i]; 
+		
+	}
+
+	
+	for( i = 0; i < contador; i++)
+	{
+		if (casos[i] < menor)
+			menor = casos[i];
+		
+	}
+	if(menor != 500)
+	{
+		printf("O lar com mais casos têm %d \n", maior);
+		printf("\nO lar com menos casos têm %d \n", menor); 	
+	}
+	else 
+	{
+		puts("\nNos lares inseridos não houve nenhum caso de Covid");	
+	}
+}
+
+void MelhorPiorAvaliacao(int *avaliacoes, int contadoravaliacao)
+{
+	int maior = -500, menor = 500, i;
+		
+	for( i = 0; i < contadoravaliacao; i++)
+	{
+		if (avaliacoes[i] > maior) 	
+			maior = avaliacoes[i];
+	}
+
+	
+	for( i = 0; i < contadoravaliacao; i++)
+	{
+		if (avaliacoes[i] < menor)
+			menor = avaliacoes[i];
+	}
+	if(menor != 500)
+	{
+		printf("\nA melhor avaliação dos lares é %d \n", maior);
+		printf("\nO A pior avaliação dos lares é %d \n", menor); 	
+	}
+	else 
+	{
+		puts("\nNos lares inseridos não houve nenhum caso de Covid");	
+	}	
+}
+
+void Percentagem(int *casos, int *utentes, int contador)
+{
+	int i, calculo, percentagem;
+	
+	for( i = 0; i < contador; i++)
+	{
+		calculo = casos[i] * 100;
+		percentagem = calculo / utentes[i];
+		printf("\nA percentagem por este lar é de %d\n", percentagem);
+	}
+	
+}
