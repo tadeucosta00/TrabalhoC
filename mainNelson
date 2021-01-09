@@ -24,13 +24,13 @@ int Verificapasequipa(char *password, char *passwordequipa);
 //int MenuSubmenuEquipas(void);
 
 //
-void MenuSubmenuEquipas(RegistoMembro *membros);
+void MenuSubmenuEquipas();
 
 //
 int MenuSubmenuLares(void);
 
 //
-void MenuGestor(RegistoMembro *membros);
+void MenuGestor();
 
 //
 void Menugeral(void);
@@ -40,6 +40,7 @@ const char* escolha();
 
 
 // Estrutura com informação de um membro
+/*
 typedef struct registoMembro
 {
 	char Nome[50];
@@ -65,7 +66,7 @@ typedef struct registoLar
 	char email[50];
 	
 }RegistoLar;
-
+*/
 
 
 int main(int argc, char *argv[]) 
@@ -77,7 +78,7 @@ int main(int argc, char *argv[])
 	
 	// Variavéis
 	int i,opcao,opcao2,verificadorpasswordgestor,verificadorpasswordequipa;
-	RegistoMembro membros[1000];
+	//RegistoMembro membros[1000];
 	char verificador;
 	char passwordgestor[50] = "Gestor123456";					// Password GESTOR
 	char passwordequipa[50] = "Equipa123456";					// Password EQUIPA
@@ -99,7 +100,7 @@ int main(int argc, char *argv[])
 		if(verificadorpasswordgestor == 1)
 		{
 			system("CLS");
-			MenuGestor(RegistoMembro *membros);
+			MenuGestor();
 		}
 		else 
 		{
@@ -114,7 +115,7 @@ int main(int argc, char *argv[])
 		if(verificadorpasswordequipa == 1)
 		{
 			system("CLS");
-			MenuGestor(RegistoMembro *membros);
+			MenuGestor();
 		}
 		else 
 		{
@@ -191,11 +192,12 @@ int Verificapasequipa(char *password, char *passwordequipa)
 
 
 //funcao para sub menu da gestão das equipas 
-void MenuSubmenuEquipas(RegistoMembro *membros)
+void MenuSubmenuEquipas()
 {  
 	// variáveis
-    int opcao2;
+    int opcao2, i, id;
     int contador  = 1;
+    char carta, opcao;
     
     while (contador)
     {
@@ -210,8 +212,8 @@ void MenuSubmenuEquipas(RegistoMembro *membros)
         {
         
 			case 1:
-        		int i, id;
-        		char carta, opcao;
+
+
             	puts("-----Inserir uma Nova equipa-----\n");
             	
 				do
@@ -246,8 +248,10 @@ void MenuSubmenuEquipas(RegistoMembro *membros)
         			puts("\tSim---(s)\n \tNão---(n)");
         			scanf(" %c", &opcao);
         		
-				}while(opcao != 'n' || opcao != 'N');
-
+				}while(opcao == 'S' || opcao == 's');
+				
+				
+				break;
             
         	case 2:  
             	
@@ -259,51 +263,75 @@ void MenuSubmenuEquipas(RegistoMembro *membros)
 					puts("Pretende modicar que paramêtro:");
 					puts("1.Nome\n2.Área Professional\n3.Contacto\n4.Cartão de cidadão\n5.Morada\n6.Email\n7.Carta de Condução");
 					switch(id)
-				{
-					case 1:
-						puts("Insira o Novo Nome:")
-						//scanf(" %c", &membro[i].Nome);
-						puts("O nome foi modificado");
-					case 2:
-						puts("Insira a nova Área Professional:");
-						//scanf(" %c", &membro[i].Nome);
-						puts("A área professional foi modificada");
-					case 3:
-						puts("Insira o novo contato");
-						//scanf(" %c", &membro[i].Nome);
-						puts("O contato foi modificado");
-					case 4:
-						puts("Insira o novo cartão de cidadão");
-						//scanf(" %c", &membro[i].Nome);
-						puts("O cartão de cidadão foi modificado");
-					case 5:
-						puts("Insira a nova Morada");
-						//scanf(" %c", &membro[i].Nome);
-						puts("A morada foi modificada");
-					case 6:
-						puts("Insira o novo email");
-						//scanf(" %c", &membro[i].Nome);
-						puts("O email foi modificado");
-					case 7:
-						puts("Quer adicionar / remover a carta de condução?");
-						puts("1---Adicionar\n2---Remover");
-						scanf(" %c", &carta)
-						if(carta == 'S' || carta == 's')
-						{
-							puts("Insira o número da carta");
+					{
+						case 1:
+							puts("Insira o Novo Nome:");
 							//scanf(" %c", &membro[i].Nome);
-						}
-						puts("A carta foi removida");
-						//scanf(" %c", &membro[i].Nome);
-				}           	
+							puts("O nome foi modificado");
+						
+							break;
+						
+						case 2:
+							puts("Insira a nova Área Professional:");
+							//scanf(" %c", &membro[i].Nome);
+							puts("A área professional foi modificada");
+						
+							break;
+						
+						case 3:
+							puts("Insira o novo contato");
+							//scanf(" %c", &membro[i].Nome);
+							puts("O contato foi modificado");
+						
+							break;
+						
+						case 4:
+							puts("Insira o novo cartão de cidadão");
+							//scanf(" %c", &membro[i].Nome);
+							puts("O cartão de cidadão foi modificado");
+						
+							break;
+						
+						case 5:
+							puts("Insira a nova Morada");
+							//scanf(" %c", &membro[i].Nome);
+							puts("A morada foi modificada");
+						
+							break;
+						
+						case 6:
+							puts("Insira o novo email");
+							//scanf(" %c", &membro[i].Nome);
+							puts("O email foi modificado");
+						
+							break;
+						
+						case 7:
+							puts("Quer adicionar / remover a carta de condução?");
+							puts("1---Adicionar\n2---Remover");
+							scanf(" %c", &carta);
+							if(carta == 'S' || carta == 's')
+							{
+								puts("Insira o número da carta");
+								//scanf(" %c", &membro[i].Nome);
+							}
+							puts("A carta foi removida");
+							//scanf(" %c", &membro[i].Nome);
+						
+							break;
+						
+					}           	
             	
         			puts("Pretende modificar mais algum Membro?");
         			puts("\tSim---(s)\n \tNão---(n)");
         			scanf(" %c", &opcao);
         		
-				}while(opcao != 'n' || opcao != 'N');
+				}while(opcao == 'S' || opcao == 's');
+				
+				break;
+				
        		 case 3:
-        		puts("-----Editar membro de uma equipa-----\n");
+        		puts("-----Eliminar Membro da equipa-----\n");
             	do
 				{
 					puts("Insira o ID da equipa:");
@@ -321,7 +349,10 @@ void MenuSubmenuEquipas(RegistoMembro *membros)
         			puts("\tSim---(s)\n \tNão---(n)");
         			scanf(" %c", &opcao);
         		
-				}while(opcao != 'n' || opcao != 'N');
+				}while(opcao == 'S' || opcao == 's');
+				
+				break;
+				
         	case 0:
            		system("CLS");
 		    	contador = 0;  
@@ -340,6 +371,8 @@ int MenuSubmenuLares(void)
 {  
 	// variáveis
     int opcao2;
+    int i, id;
+    char carta, opcao;
     int contador  = 1;
     
     while (contador)
@@ -354,16 +387,119 @@ int MenuSubmenuLares(void)
         switch (opcao2)
         {
         	case 1:
-            	printf(".......	em construçao......\n");
+ 
+            	puts("-----Inserir um novo Lar-----\n");
+            	
+				do
+				{
+					puts("Insira o ID do Lar:");
+					scanf(" %d", &id);
+					puts("Nome do novo Lar:\n");
+            		//scanf(" %c", &membro[i].Nome);
+            		puts("Numeros de Utentes:");
+            		//scanf(" %c", &membro[i].Nome);
+            		puts("Numero de Funcionarios");
+           			//scanf(" %c", &membro[i].Nome);
+           			puts("Contato:");
+           			//scanf(" %c", &membro[i].Nome);
+            		puts("Morada:");
+            		//scanf(" %c", &membro[i].Nome);
+            		puts("Email:");
+            		//scanf(" %c", &membro[i].Nome);
+					
+        			i++;
+        			
+        			puts("Pretende Inserir mais algum Lar?");
+        			puts("\tSim---(s)\n \tNão---(n)");
+        			scanf(" %c", &opcao);
+        		
+				}while(opcao == 'S' || opcao == 's');
             	break;
 
         	case 2:
-           		printf(".......	em construçao......\n");
-           		break;
+           		puts("-----Editar um Lar-----\n");
+            	do
+				{
+					puts("Insira o ID do Lar:");
+					scanf(" %d", &id);
+					puts("Pretende modicar que paramêtro:");
+					puts("1.Nome\n2.Numeros de Utentes\n3.Numero de Funcionarios\n4.Contato\n5.Morada\n6.Email");
+					switch(id)
+					{
+						case 1:
+							puts("Insira o Novo Nome:");
+							//scanf(" %c", &membro[i].Nome);
+							puts("O nome foi modificado");
+						
+							break;
+						
+						case 2:
+							puts("Insira o novo Numero de Utentes:");
+							//scanf(" %c", &membro[i].Nome);
+							puts("O Numero de Utentes foi modificado");
+						
+							break;
+						
+						case 3:
+							puts("Insira o novo Numero de Funcionarios");
+							//scanf(" %c", &membro[i].Nome);
+							puts("O Numero de Funcionario foi modificado");
+						
+							break;
+						
+						case 4:
+							puts("Insira o novo contato");
+							//scanf(" %c", &membro[i].Nome);
+							puts("O contato foi modificado");
+						
+							break;
+			
+						case 5:
+							puts("Insira a nova Morada");
+							//scanf(" %c", &membro[i].Nome);
+							puts("A morada foi modificada");
+						
+							break;
+						
+						case 6:
+							puts("Insira o novo email");
+							//scanf(" %c", &membro[i].Nome);
+							puts("O email foi modificado");
+						
+						break;
+						
+					}           	
+            	
+        			puts("Pretende modificar mais algum lar?");
+        			puts("\tSim---(s)\n \tNão---(n)");
+        			scanf(" %c", &opcao);
+        		
+				}while(opcao == 'S' || opcao == 's');
+				
+				break;
         
         	case 3:
-        		printf(".......	em construçao......\n");
-            	break;
+        		puts("-----Eliminar Lar-----\n");
+            	do
+				{
+					puts("Insira o ID do Lar:");
+					scanf(" %d", &id);
+					puts("Nome Lar:");
+            		printf("Estes são os lares existentes %d:\n", id);
+            		//struct com o nome dos membros
+            	
+            		puts("Insira o Nome do lar prentende remover");
+            		//seguir a estrutura com o nome até encontrar o nome igual ao que foi
+            		//inserido 
+            		//tornar membro inativo
+            	
+        			puts("Pretende remover mais algum lar?");
+        			puts("\tSim---(s)\n \tNão---(n)");
+        			scanf(" %c", &opcao);
+        		
+				}while(opcao == 'S' || opcao == 's');
+				
+				break;
 
         	case 0:
            		system("CLS");
@@ -390,7 +526,7 @@ void Menugeral(void)
 
 
 //funcao 
-void MenuGestor(RegistoMembro *membros)
+void MenuGestor()
 {  	
 	// variáveis
 	int contador = 1;
@@ -411,7 +547,7 @@ void MenuGestor(RegistoMembro *membros)
         {
         	case 1:
         		system("CLS");
-            	MenuSubmenuEquipas(RegistoMembro *membros);
+            	MenuSubmenuEquipas();
             	break;
 
         	case 2:
@@ -528,3 +664,4 @@ void Percentagem(int *casos, int *utentes, int contador)
 		percentagem = calculo / utentes[i];
 		printf("\nA percentagem por este lar é de %d\n", percentagem);
 	}
+}
