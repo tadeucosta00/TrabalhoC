@@ -34,11 +34,11 @@ void MenuSubmenuEquipas(struct registoMembro *membro)
 {  
 	// variáveis case 1
     int opcao2, i = 0, contador  = 1;
-    char carta[2], opcao;
+    char carta, opcao;
     
     
     // variaveis case 2
-    int identificador, k = 0, opcao3, opcao4, opcao5 ,j = 0, contador1 = 1;
+    int identificador, k = 0, opcao3, opcao4, opcao5 ,j = 0, n = 0 ,contador1 = 1;
     
     
     while(contador)
@@ -86,14 +86,14 @@ void MenuSubmenuEquipas(struct registoMembro *membro)
             		
             		puts("Possui Carta de ConduçãO:");
             		puts("\tSim---(s)\n \tNão---(n)");
-            		scanf(" %s", &carta);
+            		scanf(" %c", &carta);
             	
-					if(carta == "s" || carta == "S")
+					if(carta == 's' || carta == 'S')
 					{
 						puts("Insira o Numero da Carta de Condução");
 						scanf(" %s", &membro[i].CartaConducao);
 					}
-					else if(carta == "n" || carta == "N")
+					else if(carta == 'n' || carta == 'N')
 					{
 						membro[i].CartaConducao == "Não possui carta de condução";
 					}
@@ -131,7 +131,7 @@ void MenuSubmenuEquipas(struct registoMembro *membro)
 		        		
 		        			for(k = 0; k < i; k++)
 							{
-								if(membro[k].ID_Equipa = identificador)
+								if(membro[k].ID_Equipa == identificador)
 								{
 									printf("%d --- %s", k + 1 ,&membro[k].Nome);
 								}
@@ -140,23 +140,25 @@ void MenuSubmenuEquipas(struct registoMembro *membro)
 							printf("\n\nPretende ver os dados relativos a que membro?");
 							scanf("%d", &opcao4);
 							
-							for(j = 0; j < i; j ++)
+							for(j = 0; j < k; j ++)
 							{
-								if((membro[j].ID_Equipa = identificador) = opcao4)
+								if(membro[j].ID_Equipa = identificador)
 								{
-									printf("\n\nO elemento %s, pertencente à Equipa com o ID %d, contém os seguintes dados: ", membro[j].Nome, identificador);	
+									n = opcao4 - 1;
+									
+									printf("\n\nO elemento %s, pertencente à Equipa com o ID %d, contém os seguintes dados: ", membro[n].Nome, identificador);	
 				            		
-				            		printf("\nArea Profissional: %s", &membro[j].AreaProfissional);
+				            		printf("\nArea Profissional: %s", &membro[n].AreaProfissional);
 				            		
-				           			printf("\nContacto: %d", &membro[j].contacto);
+				           			printf("\nContacto: %d", &membro[n].contacto);
 				           			
-				           			printf("\nCartão de Cidadão: %d", &membro[j].CC);
+				           			printf("\nCartão de Cidadão: %d", &membro[n].CC);
 				           			
-				            		printf("\nMorada: %s", &membro[j].Morada);
+				            		printf("\nMorada: %s", &membro[n].Morada);
 				            		
-				            		printf("\nEmail: %s", &membro[j].email);
+				            		printf("\nEmail: %s", &membro[n].email);
 				            		
-				            		printf("\nCarta de Condução: %s", &membro[j].CartaConducao);
+				            		printf("\nCarta de Condução: %s", &membro[n].CartaConducao);
 								}
 							}
 							
@@ -204,4 +206,3 @@ void MenuSubmenuEquipas(struct registoMembro *membro)
 	 
 	}
 }
-
