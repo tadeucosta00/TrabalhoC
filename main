@@ -1,184 +1,60 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h>
 #include <conio.h>
 #include <locale.h>
 
-void MaisMenosCasos (int *casos, int contador);
-void MelhorPiorAvaliacao(int *avaliacoes, int contadoravaliacao);
-void Percentagem(int *casos, int *utentes, int contador);
-int Verificapassgestor(char *password, char *passwordgestor);
-int Verificapasequipa(char *password, char *passwordequipa);
-int MenuSubmenu(void);
-void MenuGestor(void);
-void Menugeral(void);
-const char* escolha();
+void Menugeral(char *password,char *passwordgestor,char *passwordequipa);
+void MenuGestor(char *password,char *passwordgestor,char *passwordequipa);
+void MenuSubmenu(char *password,char *passwordgestor,char *passwordequipa);
+void Verificapassequipa(char *password, char *passwordgestor,char *passwordequipa);
+void Verificapassgestor(char *password, char *passwordgestor,char *passwordequipa);
+void MenuSubmenuLares(char *password, char *passwordgestor,char *passwordequipa);
+void MenuSubmenuEquipas(char *password, char *passwordgestor,char *passwordequipa);
+void MenuSubmenuViaturas(char *password, char *passwordgestor,char *passwordequipa);
+
+// Estrutura com informação da equipa
+struct registoMembro
+{
+	int ID_Equipa;
+	char Nome[50];
+    int contacto;
+    int CC;
+    char Morada[50];
+    char CartaConducao[15];
+    char AreaProfissional[50];
+    char email[50];
+	
+};
 
 
-int main(int argc, char *argv[]) {
-	
-	
+
+
+int main(int argc, char *argv[]) 
+{	
 	setlocale(LC_ALL, "Portuguese");
-	
-	int i,opcao,opcao2,verificadorpasswordgestor,verificadorpasswordequipa;
-	char verificador;
 	char passwordgestor[50] = "Gestor123456";	
 	char passwordequipa[50] = "Equipa123456";
-	char password[50];
-	char ch;
-	int casos[250], contador = 0, avaliacoes[250], contadoravaliacao = 0, percentagemCovid, utentes[250], contadorUtente = 0;
-	char opcao1 = 's';
+	char password[50] = "";
+	struct registoMembro membros[1000];
+	Menugeral(password,passwordgestor,passwordequipa);
 	
-
-    Menugeral();
-	verificador = escolha();
-	
-    if(verificador == 'G' || verificador == 'g')
-	{	
-		verificadorpasswordgestor = 0;
-		verificadorpasswordgestor = Verificapassgestor(password,passwordgestor);
-		if(verificadorpasswordgestor == 1){
-		system("CLS");
-		MenuGestor();
-		}
-		else 
-		{
-		printf("Password Invalida!!");
-		}
-    }
-	else if(verificador == 'e' || verificador == 'E')
-	{
-		verificadorpasswordequipa = 0;
-   		verificadorpasswordequipa = Verificapasequipa(password,passwordequipa);
-		if(verificadorpasswordequipa == 1){
-		system("CLS");
-		MenuGestor();
-		}
-		else 
-		{
-		printf("Password Invalida!!");
-		}
-	}
-
-	getchar();
-	return 0;
 }
 
-//funcao verificar e escolher opcao gestor
-
-int Verificapassgestor(char *password, char *passwordgestor)
-{
-	int i,verificador = 0;
-	
-		printf("Password:");
-    	do{ 
-        password[i]=getch(); 
-        if(password[i]!='\r'){ 
-            printf("*");
-        } 
-        i++; 
-    	}while(password[i-1]!='\r');
-    	password[i-1] = '\0';
-	   
-		printf("\n");
-		if(strcmp(password,passwordgestor) == 0)
-		{
-		verificador = 1;
-		}
-		else
-		{
-		verificador = 0;		
-		}
-    	
-    return verificador;	
-
-}
-//funcao verificar e escolher opcao equipa
-int Verificapasequipa(char *password, char *passwordequipa)
-{
-	int i,verificador = 0;
-	
-		printf("Password:");
-    	do{ 
-        password[i]=getch(); 
-        if(password[i]!='\r'){ 
-            printf("*");
-        } 
-        i++; 
-    	}while(password[i-1]!='\r');
-    	password[i-1] = '\0';
-	   
-		printf("\n");
-		if(strcmp(password,passwordequipa) == 0)
-		{
-		verificador = 1;
-		}
-		else
-		{
-		verificador = 0;		
-		}
-    	
-    return verificador;	
-
-}
-//funcao para sub menu
-int MenuSubmenu(void)
-{  
-    int opcao2;
-    int contador  = 1;
-    while (contador)
-    {
-    	printf("1-Inserir dados equipa\n");
-    	printf("2-Inserir dados Lares\n");
-    	printf("0-Voltar ao menu Principal\n");
-    	printf("Opção:");
-        scanf(" %d", &opcao2);
-
-        switch (opcao2)
-        {
-        case 1:
-            printf(".......	em construçao......\n");
-            break;
-
-        case 2:
-           
-            printf(".......	em construçao......\n");
-            break;
-
-        case 0:
-           	system("CLS");
-		    contador = 0;  
-            MenuGestor();
-
-        default:
-            printf("Invalid choice.\n");
-            break;
-        }
-    }
-}
-//funcao para sub menu
-void Menugeral(void)
-{
-		char verificador;
-		puts("---------Sistema de Lares---------");
-		printf("Gestor --- G \n");
-		printf("Equipa --- E \n");
-		printf("Opcao: ");			
-}
-
-//funcao 
-void MenuGestor(void)
+//Menu gestor
+void MenuGestor(char *password,char *passwordgestor,char *passwordequipa)
 {  	
+	struct registoMembro membros[1000];
 	int contador = 1;
+	system("CLS");
     while (contador)
     {
         puts("---------Bem vindo..........\n");
-		printf("1-Inserir dados\n");
-		printf("2-Editar dados existentes\n");
-		printf("3-Eliminar dados existentes\n");
-		printf("4-Imprimir relatorio\n");
-		printf("5-Imprimir Estatiscas\n");			
-		printf("0-Menu de usuarios\n");
+		printf("1- Inserir dados\n");
+		printf("2- Editar dados existentes\n");
+		printf("3- Eliminar dados existentes\n");
+		printf("4- Imprimir relatorio\n");
+		printf("5- Imprimir Estatiscas\n");			
+		printf("0- Menu de usuarios\n");
 		printf("Opçao: ");
         int opcao;
         scanf(" %d", &opcao);
@@ -187,107 +63,659 @@ void MenuGestor(void)
         {
         case 1:
         	system("CLS");
-            MenuSubmenu();
+        	MenuSubmenu(password,passwordgestor,passwordequipa);
             break;
 
         case 2:
+        	system("CLS");
             printf(".......	em construçao......\n");
             break;
 
         case 3:
-            contador = 0;  
+        	system("CLS");
+            printf(".......	em construçao......\n");
             break;
 		case 0:
 			system("CLS");
-            Menugeral();
-            escolha();
-            
+			Menugeral(password,passwordgestor,passwordequipa);
             break;
         default:
             printf("Escolha invalida.\n");
             break;
         }
-    }		
+    }
 }
+//Menu equipa
+void Menuequipa(char *password,char *passwordgestor,char *passwordequipa)
+{  	
+	int contador = 1;
+	int opcao;
+	system("CLS");
+    while (contador)
+    {
+        puts("---------Bem vindo..........\n");
+    	printf("1 - Visualizar Agenda\n");
+   		printf("2 - Requisitar Viatura\n");
+    	printf("3 - Questionário sobre o Lar\n");
+    	printf("4 - Realizar Realatório\n");
+    	printf("5 - Imprimir Relatórios\n");
+    	printf("6 - Imprimir Avaliações\n");
+    	printf("0 - Menu de usuarios\n");
+        scanf(" %d", &opcao);
 
-const char* escolha()
-{
-	char verificador;
-    scanf(" %c",&verificador);
-    return verificador;
+        switch (opcao)
+        {
+        case 1:
+        	system("CLS");
+        	printf(".......	em construçao......\n");
+            break;
+
+        case 2:
+        	system("CLS");
+            printf(".......	em construçao......\n");
+            break;
+
+        case 3:
+        	system("CLS");
+            printf(".......	em construçao......\n");
+            break;
+		case 0:
+			system("CLS");
+			Menugeral(password,passwordgestor,passwordequipa);
+            break;
+        default:
+            printf("Escolha invalida.\n");
+            break;
+        }
+    }
 }
-
-//funcao para ver os lares com mais e menos casos
-void MaisMenosCasos (int *casos, int contador)
+//Menu usuario
+void Menugeral(char *password,char *passwordgestor,char *passwordequipa)
 {
-	int maior = -500, menor = 500, i;
+		int opcao;
 		
-	for( i = 0; i < contador; i++)
-	{
-		if (casos[i] > maior) 	
-		{
-			maior = casos[i]; 
-		}
-	}
+		puts("---------Sistema de Lares---------");
+		printf("Gestor --- 1 \n");
+		printf("Equipa --- 2 \n");
+		printf("Opcao: ");	
+		scanf("%d", &opcao);
+        switch (opcao)
+        {
+        case 1:
+        	Verificapassgestor(password,passwordgestor,passwordequipa);	
+			password = "";
+			opcao = 0;
+            break;
 
-	
-	for( i = 0; i < contador; i++)
-	{
-		if (casos[i] < menor)
-		{
-			menor = casos[i];
-		}
-	}
-	if(menor != 500)
-	{
-		printf("O lar com mais casos têm %d \n", maior);
-		printf("\nO lar com menos casos têm %d \n", menor); 	
-	}
-	else 
-	{
-		puts("\nNos lares inseridos não houve nenhum caso de Covid");	
-	}
+        case 2:
+        	Verificapassequipa(password,passwordequipa,passwordequipa);
+			password = "";
+			opcao = 0;
+            break;
+		default:
+            printf("Escolha invalida.\n");
+            break;
+        }
 }
-//funcao para ver a melhor e a pior avaliçao dos lares
-void MelhorPiorAvaliacao(int *avaliacoes, int contadoravaliacao)
+//Sub Menu
+void MenuSubmenu(char *password,char *passwordgestor,char *passwordequipa)
 {
-		int maior = -500, menor = 500, i;
+	struct registoMembro membros[1000];
+	int opcao;
+    int contador  = 1;
+    while (opcao)
+    {
+    	printf("1-Inserir dados Equipa\n");
+    	printf("2-Inserir dados Lares\n");
+    	printf("3-Inserir Viaturas\n");
+    	printf("0-Voltar ao menu Principal\n");
+    	printf("Opção:");
+        scanf(" %d", &opcao);
+
+        switch (opcao)
+        {
+        case 1:
+        	system("CLS");
+            MenuSubmenuEquipas(password,passwordgestor,passwordequipa);
+            break;
+
+        case 2:
+           	system("CLS");
+            MenuSubmenuLares(password,passwordgestor,passwordequipa);
+            break;
+        case 3:
+           	system("CLS");
+            MenuSubmenuViaturas(password,passwordgestor,passwordequipa);
+            break;
+
+        case 0:
+           	system("CLS");
+            MenuGestor(password,passwordgestor,passwordequipa);
+			
+        default:
+            printf("Escolha invalida!\n");
+            break;
+        }
+    }
+}
+//Verificacao pass gestor
+void Verificapassgestor(char *password, char *passwordgestor,char *passwordequipa)
+{
+	int i,verificador = 0;
+	
+		printf("Password:");
+    	scanf(" %s", password);
+	   
+		printf("\n");
+		if(strcmp(password,passwordgestor) == 0)
+		{
+			MenuGestor(password,passwordgestor,passwordequipa);	
+			password = "";
+		}
+		else
+		{
+	    	printf("Password Invalida!!\n");
+			Verificapassgestor(password,passwordgestor,passwordequipa);
+		}
 		
-	for( i = 0; i < contadoravaliacao; i++)
-	{
-		if (avaliacoes[i] > maior) 	
-		{
-			maior = avaliacoes[i]; 
-		}
-	}
+}
 
-	
-	for( i = 0; i < contadoravaliacao; i++)
-	{
-		if (avaliacoes[i] < menor)
-		{
-			menor = avaliacoes[i];
-		}
-	}
-	if(menor != 500)
-	{
-		printf("\nA melhor avaliação dos lares é %d \n", maior);
-		printf("\nO A pior avaliação dos lares é %d \n", menor); 	
-	}
-	else 
-	{
-		puts("\nNos lares inseridos não houve nenhum caso de Covid");	
-	}	
-}
-//funcao para calcular a percentagem
-void Percentagem(int *casos, int *utentes, int contador)
+//Verificacao pass equipa
+void Verificapassequipa(char *password, char *passwordequipa,char *passwordgestor)
 {
-	int i, calculo, percentagem;
-	for( i = 0; i < contador; i++)
-	{
-		calculo = casos[i] * 100;
-		percentagem = calculo / utentes[i];
-		printf("\nA percentagem por este lar é de %d\n", percentagem);
-	}
+	int i,verificador = 0;
 	
+		printf("Password:");
+    	scanf(" %s", password);
+	   
+		printf("\n");
+		if(strcmp(password,passwordequipa) == 0)
+		{
+			Menuequipa(password,passwordgestor,passwordequipa);	
+			password = "";
+		}
+		else
+		{
+	     	printf("Password Invalida!!\n");
+			Verificapassequipa(password,passwordgestor,passwordequipa);	
+		}
+		
 }
+// Menu acrescentar equipas
+void MenuSubmenuEquipas(char *password, char *passwordgestor,char *passwordequipa)
+{  
+	// variáveis
+    int opcao2, i, id, opcao3;
+    int contador  = 1;
+    char carta, opcao;
+
+    
+    while (contador)
+    {
+    	printf("1-Inserir Equipas\n");
+    	printf("2-Editar Equipas \n");
+    	printf("3-Eliminar Equipas\n");
+    	printf("0-Voltar ao menu Principal\n");
+    	printf("Opção:");
+        scanf(" %d", &opcao2);
+
+        switch (opcao2)
+        {
+        
+			case 1:
+
+
+            	puts("-----Inserir uma Nova equipa-----\n");
+            	
+				do
+				{
+					puts("Insira o ID da equipa:");
+					scanf(" %d", &id);
+					puts("Nome do novo membro:\n");
+            		//scanf(" %c", &membro[i].Nome);
+            		puts("Área Profissional:");
+            		//scanf(" %c", &membro[i].Nome);
+            		puts("Contacto:");
+           			//scanf(" %c", &membro[i].Nome);
+           			puts("Cartão de cidadão");
+           			//scanf(" %c", &membro[i].Nome);
+            		puts("Morada:");
+            		//scanf(" %c", &membro[i].Nome);
+            		puts("Email:");
+            		//scanf(" %c", &membro[i].Nome);
+            		puts("Possui Carta de ConduçãO:");
+            		puts("\tSim---(s)\n \tNão---(n)");
+            		scanf(" %c", &carta);
+            	
+					if(carta == 's' || carta == 'S')
+					{
+						puts("Insira o Numero da Carta de Condução");
+						//scanf(" %c", &membro[i].Nome);
+					}
+					
+        			i++;
+        			
+        			puts("Pretende Inserir mais algum Membro?");
+        			puts("\tSim---(s)\n \tNão---(n)");
+        			scanf(" %c", &opcao);
+        		
+				}while(opcao == 'S' || opcao == 's');
+				
+				
+				break;
+            
+        	case 2:  
+            	
+		   		puts("-----Editar membro de uma equipa-----\n");
+            	do
+				{
+					puts("Insira o ID da equipa:");
+					scanf(" %d", &id);
+					puts("Pretende modicar que paramêtro:");
+					puts("1.Nome\n2.Área Professional\n3.Contacto\n4.Cartão de cidadão\n5.Morada\n6.Email\n7.Carta de Condução");
+					scanf(" %d", &opcao3);
+					switch(opcao3)
+					{
+						case 1:
+							puts("Insira o Novo Nome:");
+							//scanf(" %c", &membro[i].Nome);
+							puts("O nome foi modificado");
+						
+							break;
+						
+						case 2:
+							puts("Insira a nova Área Professional:");
+							//scanf(" %c", &membro[i].Nome);
+							puts("A área professional foi modificada");
+						
+							break;
+						
+						case 3:
+							puts("Insira o novo contato");
+							//scanf(" %c", &membro[i].Nome);
+							puts("O contato foi modificado");
+						
+							break;
+						
+						case 4:
+							puts("Insira o novo cartão de cidadão");
+							//scanf(" %c", &membro[i].Nome);
+							puts("O cartão de cidadão foi modificado");
+						
+							break;
+						
+						case 5:
+							puts("Insira a nova Morada");
+							//scanf(" %c", &membro[i].Nome);
+							puts("A morada foi modificada");
+						
+							break;
+						
+						case 6:
+							puts("Insira o novo email");
+							//scanf(" %c", &membro[i].Nome);
+							puts("O email foi modificado");
+						
+							break;
+						
+						case 7:
+							puts("Quer adicionar / remover a carta de condução?");
+							puts("1---Adicionar\n2---Remover");
+							scanf(" %c", &carta);
+							if(carta == 'S' || carta == 's')
+							{
+								puts("Insira o número da carta");
+								//scanf(" %c", &membro[i].Nome);
+							}
+							puts("A carta foi removida");
+							//scanf(" %c", &membro[i].Nome);
+						
+							break;
+						
+					}           	
+            	
+        			puts("Pretende modificar mais algum Membro?");
+        			puts("\tSim---(s)\n \tNão---(n)");
+        			scanf(" %c", &opcao);
+        		
+				}while(opcao == 'S' || opcao == 's');
+				
+				break;
+				
+       		 case 3:
+        		puts("-----Eliminar Membro da equipa-----\n");
+            	do
+				{
+					puts("Insira o ID da equipa:");
+					scanf(" %d", &id);
+					puts("Nome membro:");
+            		printf("Estes são os membros da equipa %d:\n", id);
+            		//struct com o nome dos membros
+            	
+            		puts("Insira o Nome de quem prentende remover");
+            		//seguir a estrutura com o nome até encontrar o nome igual ao que foi
+            		//inserido 
+            		//tornar membro inativo
+            	
+        			puts("Pretende remover mais algum Membro?");
+        			puts("\tSim---(s)\n \tNão---(n)");
+        			scanf(" %c", &opcao);
+        		
+				}while(opcao == 'S' || opcao == 's');
+				
+				break;
+				
+        	case 0:
+           		system("CLS");
+		    	contador = 0;  
+            	MenuGestor(password,passwordgestor,passwordequipa);
+
+        	default:
+            	printf("Invalid choice.\n");
+            	break;
+        }
+    }
+}
+
+// Menu Lares
+void MenuSubmenuLares(char *password, char *passwordgestor,char *passwordequipa)
+{  
+	// variáveis
+    int opcao2, opcao3;
+    int i, id;
+    char carta, opcao;
+    int contador  = 1;
+    
+    
+    while (contador)
+    {
+    	printf("1-Inserir Lares\n");
+    	printf("2-Editar Lares \n");
+    	printf("3-Eliminar Lares\n");
+    	printf("0-Voltar ao menu Principal\n");
+    	printf("Opção:");
+        scanf(" %d", &opcao2);
+
+        switch (opcao2)
+        {
+        	case 1:
+ 
+            	puts("-----Inserir um novo Lar-----\n");
+            	
+				do
+				{
+					puts("Insira o ID do Lar:");
+					scanf(" %d", &id);
+					puts("Nome do novo Lar:\n");
+            		//scanf(" %c", &membro[l1].Nome);
+            		puts("Numeros de Utentes:");
+            		//scanf(" %c", &membro[i].Nome);
+            		puts("Numero de Funcionarios");
+           			//scanf(" %c", &membro[i].Nome);
+           			puts("Contato:");
+           			//scanf(" %c", &membro[i].Nome);
+            		puts("Morada:");
+            		//scanf(" %c", &membro[i].Nome);
+            		puts("Email:");
+            		//scanf(" %c", &membro[i].Nome);
+					
+        			i++;
+        			
+        			puts("Pretende Inserir mais algum Lar?");
+        			puts("\tSim---(s)\n \tNão---(n)");
+        			scanf(" %c", &opcao);
+        		
+				}while(opcao == 'S' || opcao == 's');
+            	break;
+
+        	case 2:
+           		puts("-----Editar um Lar-----\n");
+            	do
+				{
+					puts("Insira o ID do Lar:");
+					scanf(" %d", &id);
+					puts("Pretende modicar que paramêtro:");
+					puts("1.Nome\n2.Numeros de Utentes\n3.Numero de Funcionarios\n4.Contato\n5.Morada\n6.Email");
+					scanf(" %d", &opcao3);
+					switch(opcao3)
+					{
+						case 1:
+							puts("Insira o Novo Nome:");
+							//scanf(" %c", &membro[i].Nome);
+							puts("O nome foi modificado");
+						
+							break;
+						
+						case 2:
+							puts("Insira o novo Numero de Utentes:");
+							//scanf(" %c", &membro[i].Nome);
+							puts("O Numero de Utentes foi modificado");
+						
+							break;
+						
+						case 3:
+							puts("Insira o novo Numero de Funcionarios");
+							//scanf(" %c", &membro[i].Nome);
+							puts("O Numero de Funcionario foi modificado");
+						
+							break;
+						
+						case 4:
+							puts("Insira o novo contato");
+							//scanf(" %c", &membro[i].Nome);
+							puts("O contato foi modificado");
+						
+							break;
+			
+						case 5:
+							puts("Insira a nova Morada");
+							//scanf(" %c", &membro[i].Nome);
+							puts("A morada foi modificada");
+						
+							break;
+						
+						case 6:
+							puts("Insira o novo email");
+							//scanf(" %c", &membro[i].Nome);
+							puts("O email foi modificado");
+						
+						break;
+						
+					}           	
+            	
+        			puts("Pretende modificar mais algum lar?");
+        			puts("\tSim---(s)\n \tNão---(n)");
+        			scanf(" %c", &opcao);
+        		
+				}while(opcao == 'S' || opcao == 's');
+				
+				break;
+        
+        	case 3:
+        		puts("-----Eliminar Lar-----\n");
+            	do
+				{
+					puts("Insira o ID do Lar:");
+					scanf(" %d", &id);
+					puts("Nome Lar:");
+            		printf("Estes são os lares existentes %d:\n", id);
+            		//struct com o nome dos membros
+            	
+            		puts("Insira o Nome do lar prentende remover");
+            		//seguir a estrutura com o nome até encontrar o nome igual ao que foi
+            		//inserido 
+            		//tornar membro inativo
+            	
+        			puts("Pretende remover mais algum lar?");
+        			puts("\tSim---(s)\n \tNão---(n)");
+        			scanf(" %c", &opcao);
+        		
+				}while(opcao == 'S' || opcao == 's');
+				
+				break;
+
+        	case 0:
+           		system("CLS");
+		    	contador = 0;  
+            	MenuGestor(password,passwordgestor,passwordequipa);
+
+        	default:
+            	printf("Escolha invalida!\n");
+            	break;
+        }
+    }
+}
+//Menu Viaturas
+
+void MenuSubmenuViaturas(char *password, char *passwordgestor,char *passwordequipa)
+{
+		int opcao2, id, opcao3, i, contador;
+		char carta, opcao;
+		printf("1-Inserir Viaturas\n");
+    	printf("2-Editar Viaturas \n");
+    	printf("3-Eliminar Viaturas\n");
+    	printf("0-Voltar ao menu Principal\n");
+    	printf("Opção:");
+        scanf(" %d", &opcao2);
+
+        switch (opcao2)
+        {
+        
+			case 1:
+
+
+            	puts("-----Inserir uma Nova viatura-----\n");
+            	
+				do
+				{
+					puts("Insira o id para a viatura:");
+					scanf(" %d", &id);
+					puts("Matricula:\n");
+            		//scanf(" %c", &membro[i].Nome);
+            		puts("Modelo:");
+            		//scanf(" %c", &membro[i].Nome);
+            		puts("Inspeção:");
+           			//scanf(" %c", &membro[i].Nome);
+           			puts("Lugares:");
+           			//scanf(" %c", &membro[i].Nome);
+            		puts("Têm via verde?");
+            		puts("\tSim---(s)\n \tNão---(n)");
+            		scanf(" %c", &carta);
+            	
+					if(carta == 's' || carta == 'S')
+					{
+						puts("Qaulquer coisa com a via verde");
+						//scanf(" %c", &membro[i].Nome);
+					}
+					
+        			i++;
+        			
+        			puts("Pretende Inserir mais alguma viatura?");
+        			puts("\tSim---(s)\n \tNão---(n)");
+        			scanf(" %c", &opcao);
+        		
+				}while(opcao == 'S' || opcao == 's');
+				
+				
+				break;
+            
+        	case 2:  
+            	
+		   		puts("-----Editar uma viatura-----\n");
+            	do
+				{
+					puts("Insira o ID da viatura:");
+					scanf(" %d", &id);
+					puts("Pretende modicar que paramêtro:");
+					puts("1.matricula\n2.Modelo\n3.Inspeção\n4.Lugares\n5.Via verde");
+					scanf(" %d", &opcao3);
+					switch(opcao3)
+					{
+						case 1:
+							puts("Insira a Nova Matricula:");
+							//scanf(" %c", &membro[i].Nome);
+							puts("A matricula foi modificada");
+						
+							break;
+						
+						case 2:
+							puts("Insira o novo Modelo:");
+							//scanf(" %c", &membro[i].Nome);
+							puts("O modelo foi modificado");
+						
+							break;
+						
+						case 3:
+							puts("Insira a nova Inspeção");
+							//scanf(" %c", &membro[i].Nome);
+							puts("A inspeção foi modificada");
+						
+							break;
+						
+						case 4:
+							puts("Insira o novo numero de lugares");
+							//scanf(" %c", &membro[i].Nome);
+							puts("O numero de lugares foi modificado");
+						
+							break;
+						
+						case 5:
+							puts("Têm via verde?");
+							puts("S---Adicionar\nN---Remover");
+							scanf(" %c", &carta);
+							if(carta == 'S' || carta == 's')
+							{
+								puts("Qualquer coisa com a via verde");
+								//scanf(" %c", &membro[i].Nome);
+							}
+							puts("A via verde foi removida");
+							//scanf(" %c", &membro[i].Nome);
+						
+							break;
+						
+						
+					}           	
+            	
+        			puts("Pretende modificar mais alguma viatura?");
+        			puts("\tSim---(s)\n \tNão---(n)");
+        			scanf(" %c", &opcao);
+        		
+				}while(opcao == 'S' || opcao == 's');
+				
+				break;
+				
+       		 case 3:
+        		puts("-----Eliminar viatura-----\n");
+            	do
+				{
+					puts("Insira o ID da viatura:");
+					scanf(" %d", &id);
+					puts("Viaturas existentes:");
+            		printf("Estes são as viaturas inseridas %d:\n", id);
+            		//struct com o nome dos membros
+            	
+            		puts("Insira o id da viatura que prentende remover");
+            		//seguir a estrutura com o nome até encontrar o nome igual ao que foi
+            		//inserido 
+            		//tornar membro inativo
+            	
+        			puts("Pretende remover mais alguma viatura?");
+        			puts("\tSim---(s)\n \tNão---(n)");
+        			scanf(" %c", &opcao);
+        		
+				}while(opcao == 'S' || opcao == 's');
+				
+				break;
+				
+        		case 0:
+           			system("CLS");
+		    		contador = 0;  
+            		MenuGestor(password,passwordgestor,passwordequipa);
+
+        		default:
+            		printf("Escolha invalida.\n");
+            		break;
+        }
+}
+
+
