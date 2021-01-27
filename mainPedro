@@ -71,6 +71,8 @@ typedef struct registoLar
 	char Nome[50];
 	char Regiao[50];
 	char Morada[50];
+	int n_idosos;
+	int n_idosos_risco;
 	int Ativo;
 }lares;
 
@@ -413,26 +415,14 @@ void criarrequipas(char *password, char *passwordgestor,char *passwordequipa)
 		fflush(stdin);
 		gets(equipa[ID_equipa].Nome);
 
-		puts("===== Distritos =====\n");
+		puts("\n===== Distritos =====\n");
 	
-		printf("1.Viana do Castelo\t");
-		printf("2.Vila Real\t");
-		printf("3.Bragança\n");
-		printf("4.Braga\t\t\t");
-		printf("5.Porto\t\t");
-		printf("6.Aveiro\n");
-		printf("7.Viseu\t\t\t");
-		printf("8.Guarda\t");
-		printf("9.Coimbra\n");
-		printf("10.Castelo Branco\t");
-		printf("11.Leiria\t");
-		printf("12.Santarém\n");
-		printf("13.Portalegre\t\t");
-		printf("14.Lisboa\t");
-		printf("15.Évora\n");
-		printf("16.Setúbal\t\t");
-		printf("17.Beja\t\t");
-		printf("18.Faro\n");
+		printf("1.Viana do Castelo\t 7.Viseu\t\t 13.Portalegre\n");
+    	printf("2.Vila Real\t\t 8.Guarda\t\t 14.Lisboa\n");
+    	printf("3.Bragança\t\t 9.Coimbra\t\t 15.Évora\n");
+    	printf("4.Braga\t\t\t 10.Castelo Branco\t 16.Setúbal\n");
+    	printf("5.Porto\t\t\t 11.Leiria\t\t 17.Beja\n");
+    	printf("6.Aveiro\t\t 12.Santarém\t\t 18.Faro\n");
 		puts("\nEscolha o distrito que pretende atribuir a equipa: ");
 		scanf("%d", &distrito);
 		
@@ -707,123 +697,125 @@ void editarequipas(char *password, char *passwordgestor,char *passwordequipa)
 	int carta1;
 	int x;
 	
-	puts("-----Editar Membro da equipa-----\n");
-            	do
+	
+	do
+	{
+		puts("-----Editar Membro da equipa-----\n");
+		
+		for(x = 0; x < ID_equipa; x++)
+		{
+			printf("\n[%d] --- %s --- %s", equipa[x].id_equipa, equipa[x].Nome, equipa[x].regiao);
+		}
+		
+		printf("\n\nInsira o ID da equipa: ");
+    	scanf("%d", &identificador);
+    	
+    	for(k = 0; k < ID_membro; k++)
+		{
+			if(membro[x].ID_Equipa == identificador)
+			{
+				if(membro[k].AreaProfissional == '1')
 				{
-					for(x = 0; x < ID_equipa; x++)
-					{
-						printf("\n[%d] --- %s --- %s", equipa[x].id_equipa, equipa[x].Nome, equipa[x].regiao);
-					}
-					
-					printf("\n\nInsira o ID da equipa: ");
-		        	scanf("%d", &identificador);
-		        	
-		        	for(k = 0; k < ID_membro; k++)
-					{
-						if(membro[x].ID_Equipa == identificador)
-						{
-							if(membro[k].AreaProfissional == '1')
-							{
-								printf("%d --- %s --- Médico", membro[k].id_membro ,&membro[k].Nome);
-							}
-							else if(membro[k].AreaProfissional == '2')
-							{
-								printf("%d --- %s --- Enfermeiro", membro[k].id_membro ,&membro[k].Nome);
-							}
-							else if(membro[k].AreaProfissional == '3')
-							{
-								printf("%d --- %s --- Assistente social", membro[k].id_membro ,&membro[k].Nome);
-							}
-						}
-					}
-		        	
-		        	printf("Pretende editar algum elemento? (S/N): ");
-		        	scanf(" %c", &editar_membro);
-		        	
-		        	if ((editar_membro == 'S') || (editar_membro == 's'))
-					{
-						printf("\nInsira o ID do membro que pretende editar: ");
-						scanf(" %d", &ID_editar);
+					printf("%d --- %s --- Médico", membro[k].id_membro ,&membro[k].Nome);
+				}
+				else if(membro[k].AreaProfissional == '2')
+				{
+					printf("%d --- %s --- Enfermeiro", membro[k].id_membro ,&membro[k].Nome);
+				}
+				else if(membro[k].AreaProfissional == '3')
+				{
+					printf("%d --- %s --- Assistente social", membro[k].id_membro ,&membro[k].Nome);
+				}
+			}
+		}
+    	
+    	printf("Pretende editar algum elemento? (S/N): ");
+    	scanf(" %c", &editar_membro);
+    	
+    	if ((editar_membro == 'S') || (editar_membro == 's'))
+		{
+			printf("\nInsira o ID do membro que pretende editar: ");
+			scanf(" %d", &ID_editar);
+			
+			do
+			{
+				printf("\n1 --- Nome");
+				printf("\n2 --- Área Profissional");
+				printf("\n3 --- Contacto");
+				printf("\n4 --- Cartão de Cidadão");
+				printf("\n5 --- Morada");
+				printf("\n6 --- Email");
+				printf("\n7 --- Carta");
+				printf("\n0 --- Sair");
+				printf("\nOpcao: ");
+				
+				scanf("%d", &opcao6);
+				
+				switch(opcao6)
+				{
+					case 1:
+						printf("\nNome do membro: ");
+    					fflush(stdin);
+    					gets(membro[ID_editar].Nome);
+						break;
 						
-						do
+					case 2:
+						printf("\nÁrea Profissional: ");
+    					printf("\n\t1 -- Medico\n\t2 -- Enfermeiro\n\t3 -- Assistente social");
+    					printf("\nOpção: ");
+    					scanf(" %c", &membro[ID_editar].AreaProfissional);
+						break;
+						
+					case 3:
+						printf("\nContacto: ");
+   						scanf("%d", &membro[ID_editar].contacto);
+						break;
+						
+					case 4:
+						printf("\nCartão de cidadão: ");
+   						scanf("%d", &membro[ID_editar].CC);
+						break;
+						
+					case 5:
+						printf("\nMorada: ");
+    					fflush(stdin);
+    					gets(membro[ID_editar].Morada);
+						break;
+						
+					case 6:
+						printf("\nEmail: ");
+    					fflush(stdin);
+    					gets(membro[ID_editar].email);
+						break;
+						
+					case 7:
+						printf("\nPossui Carta de Condução: ");
+    					printf("\n\tSim---(s)\n\tNão---(n)");
+    					printf("\nOpção: ");
+    					scanf(" %c", &carta1);
+    	
+						if((carta1 == 's') || (carta1 == 'S'))
 						{
-							printf("\n1 --- Nome");
-							printf("\n2 --- Área Profissional");
-							printf("\n3 --- Contacto");
-							printf("\n4 --- Cartão de Cidadão");
-							printf("\n5 --- Morada");
-							printf("\n6 --- Email");
-							printf("\n7 --- Carta");
-							printf("\n0 --- Sair");
-							printf("\nOpcao: ");
-							
-							scanf("%d", &opcao6);
-							
-							switch(opcao6)
-							{
-								case 1:
-									printf("\nNome do membro: ");
-	            					fflush(stdin);
-	            					gets(membro[ID_editar].Nome);
-									break;
-									
-								case 2:
-									printf("\nÁrea Profissional: ");
-	            					printf("\n\t1 -- Medico\n\t2 -- Enfermeiro\n\t3 -- Assistente social");
-	            					printf("\nOpção: ");
-	            					scanf(" %c", &membro[ID_editar].AreaProfissional);
-									break;
-									
-								case 3:
-									printf("\nContacto: ");
-	           						scanf("%d", &membro[ID_editar].contacto);
-									break;
-									
-								case 4:
-									printf("\nCartão de cidadão: ");
-	           						scanf("%d", &membro[ID_editar].CC);
-									break;
-									
-								case 5:
-									printf("\nMorada: ");
-	            					fflush(stdin);
-	            					gets(membro[ID_editar].Morada);
-									break;
-									
-								case 6:
-									printf("\nEmail: ");
-	            					fflush(stdin);
-	            					gets(membro[ID_editar].email);
-									break;
-									
-								case 7:
-									printf("\nPossui Carta de Condução: ");
-	            					printf("\n\tSim---(s)\n\tNão---(n)");
-	            					printf("\nOpção: ");
-	            					scanf(" %c", &carta1);
-	            	
-									if((carta1 == 's') || (carta1 == 'S'))
-									{
-										printf("\nInsira o Numero da Carta de Condução: ");
-										fflush(stdin);
-	            						gets(membro[ID_editar].CartaConducao);
-									}
-									else if((carta1 == 'n') || (carta1 == 'N'))
-									{
-										membro[ID_editar].CartaConducao == "Não possui carta de condução";
-									}
-									break;
-							}
-						}while(opcao6 != 0);
-							
-					}
-    
-        			printf("\n\nPretende editar mais algum Membro?");
-        			puts("\n\tSim---(s)\n\tNão---(n)");
-        			printf("\nOpção: ");
-        			scanf(" %c", &opcao);
-        		
-				}while(opcao == 'S' || opcao == 's');
+							printf("\nInsira o Numero da Carta de Condução: ");
+							fflush(stdin);
+    						gets(membro[ID_editar].CartaConducao);
+						}
+						else if((carta1 == 'n') || (carta1 == 'N'))
+						{
+							membro[ID_editar].CartaConducao == "Não possui carta de condução";
+						}
+						break;
+				}
+			}while(opcao6 != 0);
+				
+		}
+
+		printf("\n\nPretende editar mais algum Membro?");
+		puts("\n\tSim---(s)\n\tNão---(n)");
+		printf("\nOpção: ");
+		scanf(" %c", &opcao);
+	
+	}while(opcao == 'S' || opcao == 's');
 
 }
 
@@ -910,19 +902,17 @@ void MenuSubmenuLares(char *password,char *passwordequipa,char *passwordgestor)
 			
 			case 2:
 				system("CLS");
-				verificarlares(password,passwordequipa,passwordgestor);
+				editarlares(password,passwordequipa,passwordgestor);
 			break;
 			
 			case 3:
 				system("CLS");
-				editarlares(password,passwordequipa,passwordgestor);
-
+				verificarlares(password,passwordequipa,passwordgestor);
 			break;
 			
 			case 4:
 				system("CLS");
 				apagarlares(password,passwordequipa,passwordgestor);
-
 			break;
 			
 			case 0:
@@ -942,7 +932,8 @@ void MenuSubmenuLares(char *password,char *passwordequipa,char *passwordgestor)
 void adicionarlares(char *password,char *passwordequipa,char *passwordgestor)
 {
 
-		char adicionar_lares;
+	char adicionar_lares;
+	int distrito;
 			
 	do
 	{
@@ -954,13 +945,104 @@ void adicionarlares(char *password,char *passwordequipa,char *passwordgestor)
 		fflush(stdin);
         gets(lar[id_lar].Nome);
         			
-        printf("\nRegião onde se encontra o Lar: ");
-		fflush(stdin);
-        gets(lar[id_lar].Regiao);
+        puts("\n===== Distritos =====\n");
+	
+		printf("1.Viana do Castelo\t 7.Viseu\t\t 13.Portalegre\n");
+    	printf("2.Vila Real\t\t 8.Guarda\t\t 14.Lisboa\n");
+    	printf("3.Bragança\t\t 9.Coimbra\t\t 15.Évora\n");
+    	printf("4.Braga\t\t\t 10.Castelo Branco\t 16.Setúbal\n");
+    	printf("5.Porto\t\t\t 11.Leiria\t\t 17.Beja\n");
+    	printf("6.Aveiro\t\t 12.Santarém\t\t 18.Faro\n");
+		puts("\nEscolha o distrito que pretende atribuir a equipa: ");
+		scanf("%d", &distrito);
+		
+		switch(distrito)
+		{
+			case 1:
+				strcpy(lar[id_lar].Regiao, "Viana do Castelo");
+			break;
+			
+			case 2:
+				strcpy(lar[id_lar].Regiao, "Vila Real");
+			break;
+			
+			case 3:
+				strcpy(lar[id_lar].Regiao, "Bragança");
+			break;
+			
+			case 4:
+				strcpy(lar[id_lar].Regiao,"Braga");
+			break;
+			
+			case 5:
+				strcpy(lar[id_lar].Regiao, "Porto");
+			break;
+			
+			case 6:
+				strcpy(lar[id_lar].Regiao, "Aveiro");
+			break;
+			
+			case 7:
+				strcpy(lar[id_lar].Regiao, "Viseu");
+			break;
+			
+			case 8:
+				strcpy(lar[id_lar].Regiao, "Guarda");
+			break;
+			
+			case 9:
+				strcpy(lar[id_lar].Regiao, "Coimbra");
+			break;
+			
+			case 10:
+				strcpy(lar[id_lar].Regiao, "Castelo");
+			break;
+			
+			case 11:
+				strcpy(lar[id_lar].Regiao, "Leiria");
+			break;
+			
+			case 12:
+				strcpy(lar[id_lar].Regiao, "Santarém");
+			break;
+			
+			case 13:
+				strcpy(lar[id_lar].Regiao, "Portalegre");
+			break;
+			
+			case 14:
+				strcpy(lar[id_lar].Regiao, "Lisboa");
+			break;
+			
+			case 15:
+				strcpy(lar[id_lar].Regiao,"Évora");
+			break;
+			
+			case 16:
+				strcpy(lar[id_lar].Regiao, "Setúbal");
+			break;
+			
+			case 17:
+				strcpy(lar[id_lar].Regiao, "Beja");
+			break;
+			
+			case 18:
+				strcpy(lar[id_lar].Regiao, "Faro");
+			break;
+			
+			default:
+				printf("Não escolheu um distrito válido");
+		}
         			
         printf("\nMorada do Lar: ");
 		fflush(stdin);
         gets(lar[id_lar].Morada);
+        
+        printf("\nInsira o número de idosos do lar: ");
+        scanf("%d", &lar[id_lar].n_idosos);
+        
+        printf("\nInsira o número de idosos de risco do lar (Idosos com mais de 65 anos): ");
+        scanf("%d", &lar[id_lar].n_idosos_risco);
 					
 		lar[id_lar].Ativo = 1;
 		id_lar ++;
@@ -1027,66 +1109,149 @@ void verificarlares(char *password,char *passwordequipa,char *passwordgestor)
 {
 	int k;
 	char editar_lar;
-	int id_editar,opcao_editar;
+	int id_editar,opcao_editar, distrito;
 	char voltar_editar;
 				
-				do
+	do
+	{
+		system("cls");
+		printf("----- Editar Lares -----");
+		printf("\n\nLares Disponiveis: \n");
+		
+		for(k = 0; k < id_lar; k++)
+		{
+			printf("\n[%d] --- %s --- %s", lar[k].ID_Lar, lar[k].Nome, lar[k].Regiao);
+		}
+		
+		printf("\n\nPretende editar a informação de algum lar? (S/N): ");
+		scanf(" %c", &editar_lar);
+		
+		if((editar_lar == 's') || (editar_lar == 'S'))
+		{
+			printf("\nInsira o ID do lar que pretende editar: ");
+			scanf("%d", &id_editar);
+			
+			do
+			{
+				printf("\n\nInsira que campo pretende editar: ");
+				printf("\n1 -- Nome");
+				printf("\n2 -- Região");
+				printf("\n3 -- Morada");
+				printf("\n0 -- Sair");
+				printf("\nOpcão: ");
+				scanf("%d", &opcao_editar);
+				
+				switch(opcao_editar)
 				{
-					system("cls");
-					printf("----- Editar Lares -----");
-					printf("\n\nLares Disponiveis: \n");
-					
-					for(k = 0; k < id_lar; k++)
-					{
-						printf("\n[%d] --- %s --- %s", lar[k].ID_Lar, lar[k].Nome, lar[k].Regiao);
-					}
-					
-					printf("\n\nPretende editar a informação de algum lar? (S/N): ");
-					scanf(" %c", &editar_lar);
-					
-					if((editar_lar == 's') || (editar_lar == 'S'))
-					{
-						printf("\nInsira o ID do lar que pretende editar: ");
-						scanf("%d", &id_editar);
+					case 1:
+						printf("\nNome do lar: ");
+						fflush(stdin);
+						gets(lar[id_editar].Nome);
+						break;
+					case 2:
+						printf("1.Viana do Castelo\t 7.Viseu\t\t 13.Portalegre\n");
+    					printf("2.Vila Real\t\t 8.Guarda\t\t 14.Lisboa\n");
+    					printf("3.Bragança\t\t 9.Coimbra\t\t 15.Évora\n");
+    					printf("4.Braga\t\t\t 10.Castelo Branco\t 16.Setúbal\n");
+    					printf("5.Porto\t\t\t 11.Leiria\t\t 17.Beja\n");
+    					printf("6.Aveiro\t\t 12.Santarém\t\t 18.Faro\n"); 
+						printf("\nRegião onde se encontra o Lar: ");
+						scanf("%d", &distrito);
 						
-						do
+						switch(distrito)
 						{
-							printf("\n\nInsira que campo pretende editar: ");
-							printf("\n1 -- Nome");
-							printf("\n2 -- Região");
-							printf("\n3 -- Morada");
-							printf("\n0 -- Sair");
-							printf("\nOpcão: ");
-							scanf("%d", &opcao_editar);
+							case 1:
+								strcpy(lar[id_editar].Regiao, "Viana do Castelo");
+							break;
 							
-							switch(opcao_editar)
-							{
-								case 1:
-									printf("\nNome do lar: ");
-									fflush(stdin);
-        							gets(lar[id_editar].Nome);
-									break;
-								case 2: 
-									printf("\nRegião onde se encontra o Lar: ");
-									fflush(stdin);
-        							gets(lar[id_editar].Regiao);
-									break;
-								case 3:
-									printf("\nMorada do Lar: ");
-									fflush(stdin);
-        							gets(lar[id_editar].Morada);
-									break;
-									
-							}
+							case 2:
+								strcpy(lar[id_editar].Regiao, "Vila Real");
+							break;
+							
+							case 3:
+								strcpy(lar[id_editar].Regiao, "Bragança");
+							break;
+							
+							case 4:
+								strcpy(lar[id_editar].Regiao,"Braga");
+							break;
+							
+							case 5:
+								strcpy(lar[id_editar].Regiao, "Porto");
+							break;
+							
+							case 6:
+								strcpy(lar[id_editar].Regiao, "Aveiro");
+							break;
+							
+							case 7:
+								strcpy(lar[id_editar].Regiao, "Viseu");
+							break;
+							
+							case 8:
+								strcpy(lar[id_editar].Regiao, "Guarda");
+							break;
+							
+							case 9:
+								strcpy(lar[id_editar].Regiao, "Coimbra");
+							break;
+							
+							case 10:
+								strcpy(lar[id_editar].Regiao, "Castelo");
+							break;
+							
+							case 11:
+								strcpy(lar[id_editar].Regiao, "Leiria");
+							break;
+							
+							case 12:
+								strcpy(lar[id_editar].Regiao, "Santarém");
+							break;
+							
+							case 13:
+								strcpy(lar[id_editar].Regiao, "Portalegre");
+							break;
+							
+							case 14:
+								strcpy(lar[id_editar].Regiao, "Lisboa");
+							break;
+							
+							case 15:
+								strcpy(lar[id_editar].Regiao,"Évora");
+							break;
+							
+							case 16:
+								strcpy(lar[id_editar].Regiao, "Setúbal");
+							break;
+							
+							case 17:
+								strcpy(lar[id_editar].Regiao, "Beja");
+							break;
+							
+							case 18:
+								strcpy(lar[id_editar].Regiao, "Faro");
+							break;
+							
+							default:
+								printf("Não escolheu um distrito válido");
 						}
-						while(opcao_editar != 0);
-					}
-					
-					printf("Prentende voltar a editar algum lar? (S/N): ");
-					scanf("%c", &voltar_editar);
-					
+						break;
+					case 3:
+						printf("\nMorada do Lar: ");
+						fflush(stdin);
+						gets(lar[id_editar].Morada);
+						break;
+						
 				}
-				while((voltar_editar == 's') || (voltar_editar == 'S'));
+			}
+			while(opcao_editar != 0);
+		}
+		
+		printf("Prentende voltar a editar algum lar? (S/N): ");
+		scanf("%c", &voltar_editar);
+		
+	}
+	while((voltar_editar == 's') || (voltar_editar == 'S'));
 }
 
 
@@ -1588,4 +1753,5 @@ void desactivarViaturas(char *password,char *passwordequipa,char *passwordgestor
 	
 	}while(opcao == 'S' || opcao == 's');
 }
+
 
