@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
@@ -289,17 +288,20 @@ void Menuequipa(char *password,char *passwordequipa,char *passwordgestor)
 	int id = 0, i = 0;
 	
 	system("CLS");
+
+	if( ID_equipa == 0)
+	{
+		printf("Nao ha membros disponiveis\n");
+		Menugeral(password,passwordgestor,passwordequipa);
+	}
 	
 	printf("ID:");
 	scanf("%d", &id);
 	
 	for(i = 0; i < ID_equipa; i++)
-	{
+	{	
 		if(id == equipa[i].id_equipa )
 		{
-			
-			
-			
 				while (contador)
     			{
        			puts("---------Bem vindo..........\n");
