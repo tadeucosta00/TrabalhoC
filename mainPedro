@@ -7,6 +7,24 @@
 
 #define TAMAMNHO 50
 
+typedef struct RequisitarViaturas
+{
+	int ID_Visita;
+	int ID_Viatura;
+	
+}reqViatura;
+
+typedef struct RegistoVisita
+{
+	int ID_Visita;
+	int ID_Lar;
+	int ID_Equipa;
+	char Relatorio [500];
+	int N_Covid;
+	int Avalicao;
+	
+}regVisita;
+
 typedef struct RegistoData
 {
 	int dia;
@@ -14,7 +32,7 @@ typedef struct RegistoData
 	int ano;
 }Data;
 
-typedef struct registoVisita
+typedef struct registoAgenda
 {
 	
 	int ID_Visita;
@@ -23,7 +41,7 @@ typedef struct registoVisita
 	Data data;
 	char hora;
 	
-}resVisita;
+}resAgenda;
 
 
 typedef struct Viatura
@@ -80,13 +98,20 @@ typedef struct registoLar
 registo membro[TAMAMNHO];
 equipas equipa[TAMAMNHO];
 lares lar[TAMAMNHO];
-resVisita agenda[TAMAMNHO];
+resAgenda agenda[TAMAMNHO];
 viatura Viaturas[TAMAMNHO];
+reqViatura reViaturas[TAMAMNHO];
+regVisita reVisita[TAMAMNHO];
+
 int ID_equipa = 0;
 int ID_membro = 0;
 int id_lar = 0;
 int id_visita = 0;
-int ID_viatura = 0, nota = 0;
+int ID_viatura = 0; 
+int ID_regVisita = 0;
+int ID_reqViatura = 0;
+int nota;
+int ID_Equipa_Usar;
 	
 //Funcoes
 void Menugeral(char *password,char *passwordgestor,char *passwordequipa);
@@ -129,6 +154,12 @@ void adicionarViaturas(char *password,char *passwordequipa,char *passwordgestor)
 void verificarViaturas(char *password,char *passwordequipa,char *passwordgestor);
 void editarViaturas(char *password,char *passwordequipa,char *passwordgestor);
 void desactivarViaturas(char *password,char *passwordequipa,char *passwordgestor);
+
+
+void MenuVisita(char *password,char *passwordequipa,char *passwordgestor);
+void RegistarVisita(char *password,char *passwordequipa,char *passwordgestor);
+void RequisitarViaturas(char *password,char *passwordequipa,char *passwordgestor);
+void VerificarRelatorio(char *password,char *passwordequipa,char *passwordgestor);
 
 
 int main(int argc, char *argv[]) 
@@ -234,7 +265,7 @@ void MenuGestor(char *password,char *passwordgestor,char *passwordequipa)
 
         case 2:
         	system("CLS");
-            printf(".......	em construçao......\n");
+            VerificarRelatorio(password,passwordgestor,passwordequipa);
             break;
 
         case 3:
@@ -258,14 +289,18 @@ void Menuequipa(char *password,char *passwordequipa,char *passwordgestor)
 	int contador = 1;
 	int opcao;
 	system("CLS");
-    while (contador)
+    do
     {
+    	system("CLS");
+    	
+    	printf("Insira o ID da Equipa que está a mexer no programa: ");
+    	scanf("%d", &ID_Equipa_Usar);
+    	
+    	system("cls");
         puts("---------Bem vindo..........\n");
         printf("1 - Gerir Lares\n");
     	printf("2 - Gerir Agenda\n");
-   		printf("3 - Requisitar Viatura\n");
-    	printf("4 - Questionário sobre o Lar\n");
-    	printf("5 - Realizar Relatório\n");
+   		printf("3 - Registar Visita\n");
     	printf("6 - Imprimir Relatórios\n");
     	printf("7 - Imprimir Avaliações\n");
     	printf("0 - Menu de usuarios\n");
@@ -285,7 +320,7 @@ void Menuequipa(char *password,char *passwordequipa,char *passwordgestor)
 
         case 3:
         	system("CLS");
-            printf(".......	em construçao......\n");
+            MenuVisita(password, passwordequipa, passwordgestor);
             break;
         
          case 4:
@@ -300,7 +335,7 @@ void Menuequipa(char *password,char *passwordequipa,char *passwordgestor)
             
          case 6:
         	system("CLS");
-            printf(".......	em construçao......\n");
+           	VerificarRelatorio(password, passwordequipa, passwordgestor);
             break;   
             
 		case 0:
@@ -311,7 +346,7 @@ void Menuequipa(char *password,char *passwordequipa,char *passwordgestor)
             printf("Escolha invalida.\n");
             break;
         }
-    }
+    }while(opcao != 0);
 }
 
 //Sub Menu
@@ -2033,12 +2068,12 @@ void desactivarViaturas(char *password,char *passwordequipa,char *passwordgestor
 void Questionario(char *password,char *passwordequipa,char *passwordgestor)
 {
 	// Variáveis
-	int i, n, opcaoQ1, opcaoQ2, opcaoQ3, opcaoQ4, opcaoQ5;
+	int i, n, opcaoQ1, opcaoQ2, opcaoQ3, opcaoQ4, opcaoQ5, nota = 0;
 	
 	// Instrução de repetição para os 5 questionários
 	for (i = 0; i < 5; i++)
 	{
-		nota = 0;
+	
 		system("cls");
 		puts("========= QUESTIONÁRIO ===========\n");
 		printf("Quiz %d/5\n", i+1);
@@ -2225,12 +2260,142 @@ void Questionario(char *password,char *passwordequipa,char *passwordgestor)
 }
 
 
+void MenuVisita(char *password,char *passwordequipa,char *passwordgestor)
+{
+	int opcao;
+	
+	do
+	{
+		system("cls");
+		printf("----- Registar Visitas -----");
+		printf("\n1 -- Requisitar Viaturas para Visita");
+		printf("\n2 -- Registar Visita");
+		printf("\nOpção: ");
+		scanf("%d", &opcao);
+		
+		switch(opcao)
+		{
+			case 1:
+				RequisitarViaturas(password,passwordgestor,passwordequipa);
+				break;
+				
+			case 2:
+				RegistarVisita(password,passwordgestor,passwordequipa);
+				break;
+				
+			default:
+				break;
+				
+		}
+			
+	}while(opcao != 0);
+}
 
 
+void RequisitarViaturas(char *password,char *passwordequipa,char *passwordgestor)
+{
+	int k;
+	char requisitar_mais;
+	
+	do
+	{
+		printf("Viaturas Disponiveis: \n");
+		
+		for(k = 0; k < ID_viatura; k++)
+		{
+
+			printf("\nID: %d Nº Lugares %d --- %s --- %s\n", k, Viaturas[k].nLugares , Viaturas[k].matricula, Viaturas[k].marca);
+			
+		}
+		
+		printf("Insira o ID da Viatura que pretende requisitar: ");
+		scanf("%d", &reViaturas[ID_reqViatura].ID_Viatura);
+		
+		printf("\n\nVisitas Disponiveis: \n");
+		
+		for(k = 0; k < id_visita; k++)
+		{
+			if(agenda[k].ID_Equipa == ID_Equipa_Usar)
+			{
+				printf("\n%d --- %d ---> %d", agenda[k].ID_Visita , agenda[k].ID_Equipa, agenda[k].ID_Lar);
+			}
+		}
+		
+		printf("Insira o ID da Visita onde esta viatura vai ser usada: ");
+		scanf("%d", &reVisita[ID_reqViatura].ID_Visita);
+		
+		printf("\n\nPretende requisitar mais viaturas: ");
+		scanf("%c", &requisitar_mais);
+		
+	}while((requisitar_mais == 's') || (requisitar_mais == 'S'));
+}
 
 
+void RegistarVisita(char *password,char *passwordequipa,char *passwordgestor)
+{
 
+	char registarVisita;
+	
+	do
+	{
+		printf("----- Registo Visita -----");	
+		printf("\n\nInsira o ID do Lar que foi visitado: ");
+		scanf("%d", &reVisita[ID_regVisita].ID_Visita);
+		
+		reVisita[ID_regVisita].ID_Equipa = ID_Equipa_Usar;
+		reVisita[ID_regVisita].ID_Visita = ID_regVisita;
+		
+		printf("\nEscreva um Relatório sobre a Visita: ");
+		fflush(stdin);
+		gets(reVisita[ID_regVisita].Relatorio);
+		
+		printf("\nInsira o numero de casos de Covid encontrados no Lar: ");
+		scanf("%d", &reVisita[ID_regVisita].N_Covid);
+		
+		Questionario(password, passwordequipa, passwordgestor);
+		
+		reVisita[ID_regVisita].Avalicao = nota;
+		
+		printf("\nPretende registar mais alguma Visita? ");
+		scanf(" %c", &registarVisita);
+		
+		ID_regVisita++;
+		
+		
+	}while((registarVisita == 's') || (registarVisita == 'S'));
 
+}
+ 
 
+void VerificarRelatorio(char *password,char *passwordequipa,char *passwordgestor)
+{
+	int k, id_visita;
+	char verRelatorio;
+	
+	do
+	{
+		printf("----- Verificar Relatorios ----- ");
+		
+		printf("\n\nVisitas disponiveis para consulta:  \n");
+		
+		for(k = 0; k < ID_regVisita; k++)
+		{
+			printf("\n[%d] --- %d --- %d", reVisita[k].ID_Visita, reVisita[k].ID_Equipa, reVisita[k].ID_Lar);
+		}
+		
+		printf("\n\nInsira de que visita pretende imprimir o relatório: ");
+		scanf("%d", &id_visita);
+		
+		printf("\n\n Relatório: %s", reVisita[id_visita].Relatorio);
+		
+		printf("\n\n Casos de Covid: %d", reVisita[id_visita].N_Covid);
+		
+		printf("\n\n Avaliação: %d", reVisita[id_visita].Avalicao);
+		
+		printf("\n\nPretende ver mais algum relatório: ");
+		scanf(" %c", &verRelatorio);
+		
+	}while((verRelatorio == 's') || (verRelatorio == 'S'));
+}
 
 
