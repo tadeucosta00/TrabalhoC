@@ -86,7 +86,7 @@ int ID_equipa = 0;
 int ID_membro = 0;
 int id_lar = 0;
 int id_visita = 0;
-int ID_viatura = 0;
+int ID_viatura = 0, nota = 0;
 	
 //Funcoes
 void Menugeral(char *password,char *passwordgestor,char *passwordequipa);
@@ -97,6 +97,7 @@ void Menuequipa(char *password,char *passwordgestor,char *passwordequipa);
 void MenuSubmenu(char *password,char *passwordgestor,char *passwordequipa);
 void MenuSubmenuEquipas(char *password, char *passwordequipa,char *passwordgestor);
 void gerirMembros(char *password, char *passwordgestor,char *passwordequipa);
+void Questionario(char *password,char *passwordequipa,char *passwordgestor);
 
 void criarrequipas(char *password, char *passwordgestor,char *passwordequipa);
 void verificarEquipas(char *password, char *passwordgestor,char *passwordequipa);
@@ -264,7 +265,7 @@ void Menuequipa(char *password,char *passwordequipa,char *passwordgestor)
     	printf("2 - Gerir Agenda\n");
    		printf("3 - Requisitar Viatura\n");
     	printf("4 - Questionário sobre o Lar\n");
-    	printf("5 - Realizar Realatório\n");
+    	printf("5 - Realizar Relatório\n");
     	printf("6 - Imprimir Relatórios\n");
     	printf("7 - Imprimir Avaliações\n");
     	printf("0 - Menu de usuarios\n");
@@ -289,7 +290,7 @@ void Menuequipa(char *password,char *passwordequipa,char *passwordgestor)
         
          case 4:
         	system("CLS");
-            printf(".......	em construçao......\n");
+            Questionario(password, passwordequipa, passwordgestor);
             break;
             
          case 5:
@@ -2027,6 +2028,208 @@ void desactivarViaturas(char *password,char *passwordequipa,char *passwordgestor
 	
 	}while(opcao == 'S' || opcao == 's');
 }
+
+
+void Questionario(char *password,char *passwordequipa,char *passwordgestor)
+{
+	// Variáveis
+	int i, n, opcaoQ1, opcaoQ2, opcaoQ3, opcaoQ4, opcaoQ5;
+	
+	// Instrução de repetição para os 5 questionários
+	for (i = 0; i < 5; i++)
+	{
+		nota = 0;
+		system("cls");
+		puts("========= QUESTIONÁRIO ===========\n");
+		printf("Quiz %d/5\n", i+1);
+		puts("Concorda que os Docentes são bem tratados pelos funcionário?\n");
+		puts("1- Discordo Totalmente");
+		puts("2- Discordo Parcialmente");
+		puts("3- Neutro");
+		puts("4- Concordo Parcialmente");
+		puts("5- Concordo Totalmente\n");		
+		printf("Opção:");
+		scanf("%d", &opcaoQ1);
+		
+		switch (opcaoQ1)
+		{
+			case 1:
+				nota += 0;
+				break;
+				
+			case 2:
+				nota += 1;
+				break;
+				
+			case 3:
+				nota += 2;
+				break;
+				
+			case 4:
+				nota += 3;
+				break;
+				
+			case 5:
+				nota += 4;
+				break;
+				
+			default:
+				break;
+		}	
+		
+		
+		puts("\n\nConcorda que o Estabelicimento tem boas condições de segurança e higiene?\n");
+		puts("1- Discordo Totalmente");
+		puts("2- Discordo Parcialmente");
+		puts("3- Neutro");
+		puts("4- Concordo Parcialmente");
+		puts("5- Concordo Totalmente\n");		
+		printf("Opção:");
+		scanf("%d", &opcaoQ2);
+		
+		switch (opcaoQ2)
+		{
+			case 1:
+				nota += 0;
+				break;
+				
+			case 2:
+				nota += 1;
+				break;
+				
+			case 3:
+				nota += 2;
+				break;
+				
+			case 4:
+				nota += 3;
+				break;
+				
+			case 5:
+				nota += 4;
+				break;
+				
+			default:
+				break;
+		}
+		
+		
+		puts("\n\nConcorda que a alimentação é boa e bem servida?\n");
+		puts("1- Discordo Totalmente");
+		puts("2- Discordo Parcialmente");
+		puts("3- Neutro");
+		puts("4- Concordo Parcialmente");
+		puts("5- Concordo Totalmente\n");		
+		printf("Opção:");
+		scanf("%d", &opcaoQ3);
+		
+		switch (opcaoQ3)
+		{
+			case 1:
+				nota += 0;
+				break;
+				
+			case 2:
+				nota += 1;
+				break;
+				
+			case 3:
+				nota += 2;
+				break;
+				
+			case 4:
+				nota += 3;
+				break;
+				
+			case 5:
+				nota += 4;
+				break;
+				
+			default:
+				break;
+		}
+		
+		
+		puts("\n\nConcorda que o ambiente entre os Docentes é agradável?\n");
+		puts("1- Discordo Totalmente");
+		puts("2- Discordo Parcialmente");
+		puts("3- Neutro");
+		puts("4- Concordo Parcialmente");
+		puts("5- Concordo Totalmente\n");		
+		printf("Opção:");
+		scanf("%d", &opcaoQ4);
+		
+		switch (opcaoQ4)
+		{
+			case 1:
+				nota += 0;
+				break;
+				
+			case 2:
+				nota += 1;
+				break;
+				
+			case 3:
+				nota += 2;
+				break;
+				
+			case 4:
+				nota += 3;
+				break;
+				
+			case 5:
+				nota += 4;
+				break;
+				
+			default:
+				break;
+		}
+		
+		
+		puts("\n\nConcorda que os funcionários tem uma boa relação de trabalho?\n");
+		puts("1- Discordo Totalmente");
+		puts("2- Discordo Parcialmente");
+		puts("3- Neutro");
+		puts("4- Concordo Parcialmente");
+		puts("5- Concordo Totalmente\n");		
+		printf("Opção:");
+		scanf("%d", &opcaoQ5);
+		
+		switch (opcaoQ5)
+		{
+			case 1:
+				nota += 0;
+				break;
+				
+			case 2:
+				nota += 1;
+				break;
+				
+			case 3:
+				nota += 2;
+				break;
+				
+			case 4:
+				nota += 3;
+				break;
+				
+			case 5:
+				nota += 4;
+				break;
+				
+			default:
+				break;
+		}	
+	}
+	n++;
+}
+
+
+
+
+
+
+
 
 
 
