@@ -82,6 +82,13 @@ typedef struct RequisitarViaturas
 	
 }reqViatura;
 
+typedef struct ContaAvaliacao
+{
+	int ID_Equipa;
+	int ID_Lar;
+	int Avaliacao;
+}contAva;
+
 typedef struct RegistoVisita
 {
 	int ID_Visita;
@@ -89,7 +96,6 @@ typedef struct RegistoVisita
 	int ID_Equipa;
 	char Relatorio [500];
 	int N_Covid;
-	int Avalicao;
 	
 }regVisita;
 
@@ -100,6 +106,7 @@ resVisita agenda[TAMAMNHO];
 reqViatura reViaturas[TAMAMNHO];
 regVisita reVisita[TAMAMNHO];
 viatura Viaturas[TAMAMNHO];
+contAva Avaliacao[TAMAMNHO];
 int ID_equipa = 0;
 int ID_membro = 0;
 int id_lar = 0;
@@ -108,6 +115,7 @@ int ID_viatura = 0, nota = 0;
 int ID_Equipa_Usar;
 int ID_regVisita = 0;
 int ID_reqViatura = 0;
+
 	
 //Funcoes
 void Menugeral(char *password,char *passwordgestor,char *passwordequipa);
@@ -119,6 +127,7 @@ void MenuSubmenu(char *password,char *passwordgestor,char *passwordequipa);
 void MenuSubmenuEquipas(char *password, char *passwordequipa,char *passwordgestor);
 void gerirMembros(char *password, char *passwordgestor,char *passwordequipa);
 void Questionario(char *password,char *passwordequipa,char *passwordgestor);
+void ContaAvaliacao(char *password, char *passwordequipa, char *passwordgestor);
 
 void criarrequipas(char *password, char *passwordgestor,char *passwordequipa);
 void verificarEquipas(char *password, char *passwordgestor,char *passwordequipa);
@@ -250,7 +259,7 @@ void Verificapassequipa(char *password, char *passwordequipa,char *passwordgesto
 //Menu gestor
 void MenuGestor(char *password,char *passwordgestor,char *passwordequipa)
 {  	
-	int opcao;
+	int opcao, id, continuar;
 	
     do
     {
@@ -278,7 +287,7 @@ void MenuGestor(char *password,char *passwordgestor,char *passwordequipa)
 	
 	        case 3:
 	        	system("CLS");
-	            printf(".......	em construçao......\n");
+	        	ContaAvaliacao(password,passwordgestor,passwordequipa);
 	            break;
 			case 0:
 				system("CLS");
@@ -2130,197 +2139,242 @@ void desactivarViaturas(char *password,char *passwordequipa,char *passwordgestor
 void Questionario(char *password,char *passwordequipa,char *passwordgestor)
 {
 	// Variáveis
-	int i, n, opcaoQ1, opcaoQ2, opcaoQ3, opcaoQ4, opcaoQ5;
+	int i, k, n, opcaoQ1, opcaoQ2, opcaoQ3, opcaoQ4, opcaoQ5, id;
+	char continuar;
 	
-	// Instrução de repetição para os 5 questionários
-	for (i = 0; i < 5; i++)
+	do
 	{
+		for(k = 0; k < id_lar; k++)
+		{
+			printf("\n[%d] --- %s --- %s", lar[k].ID_Lar, lar[k].Nome, lar[k].Regiao);
+		}
+		
+		printf("Insira o ID do Lar que pretende avaliar: ");
+		scanf("%d", &id);
+		
+		Avaliacao[id].ID_Lar = id;
+		Avaliacao[id].ID_Equipa = ID_Equipa_Usar;
 		nota = 0;
-		system("cls");
-		puts("========= QUESTIONÁRIO ===========\n");
-		printf("Quiz %d/5\n", i+1);
-		puts("Concorda que os Docentes são bem tratados pelos funcionário?\n");
-		puts("1- Discordo Totalmente");
-		puts("2- Discordo Parcialmente");
-		puts("3- Neutro");
-		puts("4- Concordo Parcialmente");
-		puts("5- Concordo Totalmente\n");		
-		printf("Opção:");
-		scanf("%d", &opcaoQ1);
 		
-		switch (opcaoQ1)
+		for (i = 0; i < 5; i++)
 		{
-			case 1:
-				nota += 0;
-				break;
-				
-			case 2:
-				nota += 1;
-				break;
-				
-			case 3:
-				nota += 2;
-				break;
-				
-			case 4:
-				nota += 3;
-				break;
-				
-			case 5:
-				nota += 4;
-				break;
-				
-			default:
-				break;
-		}	
-		
-		
-		puts("\n\nConcorda que o Estabelicimento tem boas condições de segurança e higiene?\n");
-		puts("1- Discordo Totalmente");
-		puts("2- Discordo Parcialmente");
-		puts("3- Neutro");
-		puts("4- Concordo Parcialmente");
-		puts("5- Concordo Totalmente\n");		
-		printf("Opção:");
-		scanf("%d", &opcaoQ2);
-		
-		switch (opcaoQ2)
-		{
-			case 1:
-				nota += 0;
-				break;
-				
-			case 2:
-				nota += 1;
-				break;
-				
-			case 3:
-				nota += 2;
-				break;
-				
-			case 4:
-				nota += 3;
-				break;
-				
-			case 5:
-				nota += 4;
-				break;
-				
-			default:
-				break;
+			
+			system("cls");
+			puts("========= QUESTIONÁRIO ===========\n");
+			printf("Quiz %d/5\n", i+1);
+			puts("Concorda que os Docentes são bem tratados pelos funcionário?\n");
+			puts("1- Discordo Totalmente");
+			puts("2- Discordo Parcialmente");
+			puts("3- Neutro");
+			puts("4- Concordo Parcialmente");
+			puts("5- Concordo Totalmente\n");		
+			printf("Opção:");
+			scanf("%d", &opcaoQ1);
+			
+			switch (opcaoQ1)
+			{
+				case 1:
+					nota += 0;
+					break;
+					
+				case 2:
+					nota += 1;
+					break;
+					
+				case 3:
+					nota += 2;
+					break;
+					
+				case 4:
+					nota += 3;
+					break;
+					
+				case 5:
+					nota += 4;
+					break;
+					
+				default:
+					break;
+			}	
+			
+			
+			puts("\n\nConcorda que o Estabelicimento tem boas condições de segurança e higiene?\n");
+			puts("1- Discordo Totalmente");
+			puts("2- Discordo Parcialmente");
+			puts("3- Neutro");
+			puts("4- Concordo Parcialmente");
+			puts("5- Concordo Totalmente\n");		
+			printf("Opção:");
+			scanf("%d", &opcaoQ2);
+			
+			switch (opcaoQ2)
+			{
+				case 1:
+					nota += 0;
+					break;
+					
+				case 2:
+					nota += 1;
+					break;
+					
+				case 3:
+					nota += 2;
+					break;
+					
+				case 4:
+					nota += 3;
+					break;
+					
+				case 5:
+					nota += 4;
+					break;
+					
+				default:
+					break;
+			}
+			
+			
+			puts("\n\nConcorda que a alimentação é boa e bem servida?\n");
+			puts("1- Discordo Totalmente");
+			puts("2- Discordo Parcialmente");
+			puts("3- Neutro");
+			puts("4- Concordo Parcialmente");
+			puts("5- Concordo Totalmente\n");		
+			printf("Opção:");
+			scanf("%d", &opcaoQ3);
+			
+			switch (opcaoQ3)
+			{
+				case 1:
+					nota += 0;
+					break;
+					
+				case 2:
+					nota += 1;
+					break;
+					
+				case 3:
+					nota += 2;
+					break;
+					
+				case 4:
+					nota += 3;
+					break;
+					
+				case 5:
+					nota += 4;
+					break;
+					
+				default:
+					break;
+			}
+			
+			
+			puts("\n\nConcorda que o ambiente entre os Docentes é agradável?\n");
+			puts("1- Discordo Totalmente");
+			puts("2- Discordo Parcialmente");
+			puts("3- Neutro");
+			puts("4- Concordo Parcialmente");
+			puts("5- Concordo Totalmente\n");		
+			printf("Opção:");
+			scanf("%d", &opcaoQ4);
+			
+			switch (opcaoQ4)
+			{
+				case 1:
+					nota += 0;
+					break;
+					
+				case 2:
+					nota += 1;
+					break;
+					
+				case 3:
+					nota += 2;
+					break;
+					
+				case 4:
+					nota += 3;
+					break;
+					
+				case 5:
+					nota += 4;
+					break;
+					
+				default:
+					break;
+			}
+			
+			
+			puts("\n\nConcorda que os funcionários tem uma boa relação de trabalho?\n");
+			puts("1- Discordo Totalmente");
+			puts("2- Discordo Parcialmente");
+			puts("3- Neutro");
+			puts("4- Concordo Parcialmente");
+			puts("5- Concordo Totalmente\n");		
+			printf("Opção:");
+			scanf("%d", &opcaoQ5);
+			
+			switch (opcaoQ5)
+			{
+				case 1:
+					nota += 0;
+					break;
+					
+				case 2:
+					nota += 1;
+					break;
+					
+				case 3:
+					nota += 2;
+					break;
+					
+				case 4:
+					nota += 3;
+					break;
+					
+				case 5:
+					nota += 4;
+					break;
+					
+				default:
+					break;
+			}	
 		}
 		
+		Avaliacao[id].Avaliacao = nota;
 		
-		puts("\n\nConcorda que a alimentação é boa e bem servida?\n");
-		puts("1- Discordo Totalmente");
-		puts("2- Discordo Parcialmente");
-		puts("3- Neutro");
-		puts("4- Concordo Parcialmente");
-		puts("5- Concordo Totalmente\n");		
-		printf("Opção:");
-		scanf("%d", &opcaoQ3);
+		printf("\n\nPretende Realizar o Questionario sobre mais algum Lar? ");
+		scanf(" %c", &continuar);
 		
-		switch (opcaoQ3)
-		{
-			case 1:
-				nota += 0;
-				break;
-				
-			case 2:
-				nota += 1;
-				break;
-				
-			case 3:
-				nota += 2;
-				break;
-				
-			case 4:
-				nota += 3;
-				break;
-				
-			case 5:
-				nota += 4;
-				break;
-				
-			default:
-				break;
-		}
-		
-		
-		puts("\n\nConcorda que o ambiente entre os Docentes é agradável?\n");
-		puts("1- Discordo Totalmente");
-		puts("2- Discordo Parcialmente");
-		puts("3- Neutro");
-		puts("4- Concordo Parcialmente");
-		puts("5- Concordo Totalmente\n");		
-		printf("Opção:");
-		scanf("%d", &opcaoQ4);
-		
-		switch (opcaoQ4)
-		{
-			case 1:
-				nota += 0;
-				break;
-				
-			case 2:
-				nota += 1;
-				break;
-				
-			case 3:
-				nota += 2;
-				break;
-				
-			case 4:
-				nota += 3;
-				break;
-				
-			case 5:
-				nota += 4;
-				break;
-				
-			default:
-				break;
-		}
-		
-		
-		puts("\n\nConcorda que os funcionários tem uma boa relação de trabalho?\n");
-		puts("1- Discordo Totalmente");
-		puts("2- Discordo Parcialmente");
-		puts("3- Neutro");
-		puts("4- Concordo Parcialmente");
-		puts("5- Concordo Totalmente\n");		
-		printf("Opção:");
-		scanf("%d", &opcaoQ5);
-		
-		switch (opcaoQ5)
-		{
-			case 1:
-				nota += 0;
-				break;
-				
-			case 2:
-				nota += 1;
-				break;
-				
-			case 3:
-				nota += 2;
-				break;
-				
-			case 4:
-				nota += 3;
-				break;
-				
-			case 5:
-				nota += 4;
-				break;
-				
-			default:
-				break;
-		}	
-	}
-	n++;
+	}while((continuar == 's') || (continuar == 'S'));
+	
+	 
 }
 
+
+void ContaAvaliacao(char *password,char *passwordequipa,char *passwordgestor)
+{
+	int id, continuar, k;
+	
+	do
+	{
+		printf("Lares Disponiveis: \n");
+		
+		for(k = 0; k < id_lar; k++)
+		{
+			printf("\n[%d] --- %s --- %s", lar[k].ID_Lar, lar[k].Nome, lar[k].Regiao);
+		}
+		
+		printf("\n\nInsira o Lar que pretende ver as estaticticas: ");
+		scanf("%d", &id);
+	
+		printf("\n\nA avaliacao do lar é: %d", Avaliacao[id].Avaliacao);
+		printf("\n\nInsira 0 para voltar atras: ");
+		scanf(" %d", &continuar);
+		
+	}while(continuar != 0);
+}
 
 void painelchefeequipa(char *password,char *passwordequipa,char *passwordgestor)
 {
@@ -2691,10 +2745,6 @@ void RegistarVisita(char *password,char *passwordequipa,char *passwordgestor)
 		printf("\nInsira o numero de casos de Covid encontrados no Lar: ");
 		scanf("%d", &reVisita[ID_regVisita].N_Covid);
 		
-		Questionario(password, passwordequipa, passwordgestor);
-		
-		reVisita[ID_regVisita].Avalicao = nota;
-		
 		printf("\nPretende registar mais alguma Visita? ");
 		scanf(" %c", &registarVisita);
 		
@@ -2729,11 +2779,10 @@ void VerificarRelatorio(char *password,char *passwordequipa,char *passwordgestor
 		
 		printf("\n\n Casos de Covid: %d", reVisita[id_visita].N_Covid);
 		
-		printf("\n\n Avaliação: %d", reVisita[id_visita].Avalicao);
-		
 		printf("\n\nPretende ver mais algum relatório: ");
 		scanf(" %c", &verRelatorio);
 		
 	}while((verRelatorio == 's') || (verRelatorio == 'S'));
 }
+
 
