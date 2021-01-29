@@ -26,20 +26,15 @@ typedef struct registoVisita
 }resVisita;
 
 typedef struct Viatura
-{
-	char matricula [10];
-	int ano;
-	int mes;
-	char marca[20];
-	char Modelo[20];
-	int nLugares;
-	int kms;
+{	
 	int id_viatura;
+	char matricula [10];
+	char marca[20];
+	int nLugares;
 	char ativo;
 	
 }viatura;
 
-//Estrutura com informação da equipa
 typedef struct registoMembro
 {
 	int ID_Equipa;
@@ -49,9 +44,9 @@ typedef struct registoMembro
     int CC;
     char Morada[50];
     char CartaConducao[15];
-    char AreaProfissional;
+    char AreaProfissional[50];
     char email[50];
-    char ativo;
+    int ativo;
     int verificador;
     
 }registo;
@@ -82,6 +77,13 @@ typedef struct RequisitarViaturas
 	
 }reqViatura;
 
+typedef struct ContaAvaliacao
+{
+	int ID_Equipa;
+	int ID_Lar;
+	int Avaliacao;
+}contAva;
+
 typedef struct RegistoVisita
 {
 	int ID_Visita;
@@ -89,7 +91,7 @@ typedef struct RegistoVisita
 	int ID_Equipa;
 	char Relatorio [500];
 	int N_Covid;
-	int Avalicao;
+	int N_Testes;
 	
 }regVisita;
 
@@ -100,6 +102,7 @@ resVisita agenda[TAMAMNHO];
 reqViatura reViaturas[TAMAMNHO];
 regVisita reVisita[TAMAMNHO];
 viatura Viaturas[TAMAMNHO];
+contAva Avaliacao[TAMAMNHO];
 int ID_equipa = 0;
 int ID_membro = 0;
 int id_lar = 0;
@@ -108,6 +111,17 @@ int ID_viatura = 0, nota = 0;
 int ID_Equipa_Usar;
 int ID_regVisita = 0;
 int ID_reqViatura = 0;
+
+int contadormed = 0;
+int contadorenf = 0;
+int contadorass = 0;
+int contadortec = 0;
+
+int contadormed1[TAMAMNHO];
+int contadorenf1[TAMAMNHO];
+int contadorass1[TAMAMNHO];
+int contadortec1[TAMAMNHO];
+
 	
 //Funcoes
 void Menugeral(char *password,char *passwordgestor,char *passwordequipa);
@@ -119,6 +133,7 @@ void MenuSubmenu(char *password,char *passwordgestor,char *passwordequipa);
 void MenuSubmenuEquipas(char *password, char *passwordequipa,char *passwordgestor);
 void gerirMembros(char *password, char *passwordgestor,char *passwordequipa);
 void Questionario(char *password,char *passwordequipa,char *passwordgestor);
+void ContaAvaliacao(char *password, char *passwordequipa, char *passwordgestor);
 
 void criarrequipas(char *password, char *passwordgestor,char *passwordequipa);
 void verificarEquipas(char *password, char *passwordgestor,char *passwordequipa);
@@ -159,6 +174,9 @@ void RegistarVisita(char *password,char *passwordequipa,char *passwordgestor);
 void RequisitarViaturas(char *password,char *passwordequipa,char *passwordgestor);
 void VerificarRelatorio(char *password,char *passwordequipa,char *passwordgestor);
 
+void MediaAvaliacoesVisitas(char *password,char *passwordequipa,char *passwordgestor);
+void ListarVisitas(char *password,char *passwordequipa,char *passwordgestor);
+
 
 int main(int argc, char *argv[]) 
 {	
@@ -182,8 +200,8 @@ void Menugeral(char *password,char *passwordgestor,char *passwordequipa)
 		printf("|Gestor --- 1  \t\t\t|\n");
 		printf("|Equipa --- 2 \t\t\t|\n");
 		puts("=================================");
-		printf("Opcao: ");
-		scanf("%d", &opcao);	
+		printf("Opcao: ");	
+		scanf("%d", &opcao);
 	    if(opcao == 1)
 		{
 			password[0] = '\0';
@@ -251,7 +269,7 @@ void Verificapassequipa(char *password, char *passwordequipa,char *passwordgesto
 //Menu gestor
 void MenuGestor(char *password,char *passwordgestor,char *passwordequipa)
 {  	
-	int opcao;
+	int opcao, id, continuar, esta;
 	
     do
     {
@@ -263,6 +281,7 @@ void MenuGestor(char *password,char *passwordgestor,char *passwordequipa)
 		printf("|0- Menu de usuarios\t|\n");
 		puts("=========================");
 		printf("Opçao: ");
+        int opcao;
         scanf(" %d", &opcao);
 
         switch (opcao)
@@ -279,11 +298,20 @@ void MenuGestor(char *password,char *passwordgestor,char *passwordequipa)
 	
 	        case 3:
 	        	system("CLS");
-	            printf(".......	em construçao......\n");
+	        	do
+				{
+					ListarVisitas(password,passwordgestor,passwordequipa);
+	        		MediaAvaliacoesVisitas(password,passwordgestor,passwordequipa);
+	        		
+	        		printf("\nEstatisticas: ");
+	        		scanf("%d", &esta);
+				}while(esta != 0);
+	        	//ContaAvaliacao(password,passwordgestor,passwordequipa);
+	        	
 	            break;
 			case 0:
 				system("CLS");
-		
+				Menugeral(password,passwordgestor,passwordequipa);
 	            break;
 	        default:
 	            printf("Escolha invalida.\n");
@@ -304,7 +332,6 @@ void VerificarEquipaUtilizador(char *password,char *passwordequipa,char *passwor
 		puts("=====================================");
 		printf("|Pretende entrar no menu da equipa? |\n");
 		puts("=====================================");
-		printf("Opção(S/N):");
 		scanf(" %c", &entrar);
 		
 		if((entrar == 's') || (entrar == 'S'))
@@ -338,7 +365,7 @@ void VerificarEquipaUtilizador(char *password,char *passwordequipa,char *passwor
 				printf("Não há equipas disponiveis\n");
 			}
 		}
-		printf("\n\nPretende voltar ao menu do Login? ");
+		printf("\nPretende voltar ao menu do Login? ");
 		scanf(" %c", &continuar);
 		
 	}while((continuar == 'n') || (continuar == 'N'));
@@ -366,7 +393,6 @@ void Menuequipa(char *password,char *passwordequipa,char *passwordgestor)
 		puts("=================================");
 		printf("Opçao: ");
 		scanf(" %d", &opcao);
-
 
     	switch (opcao)
     	{
@@ -568,7 +594,7 @@ void criarrequipas(char *password, char *passwordgestor,char *passwordequipa)
 	{
 		system("cls");
 
-		puts("----- Criar Equipa -----");
+		puts("========== Criar Equipa ==========");
 			
 		equipa[ID_equipa].id_equipa = ID_equipa;
 		equipa[ID_equipa].equipa_ativa = 1;
@@ -666,7 +692,7 @@ void criarrequipas(char *password, char *passwordgestor,char *passwordequipa)
 				printf("Não escolheu um distrito válido");
 		}
 
-		printf("\nO ID desta Equipa é: %d", equipa[ID_equipa].id_equipa);
+		printf("\n\nO ID desta Equipa é: %d", equipa[ID_equipa].id_equipa);
 			
 		ID_equipa ++;
 
@@ -692,7 +718,11 @@ void verificarEquipas(char *password, char *passwordgestor,char *passwordequipa)
 		
 		for(x = 0; x < ID_equipa; x++)
 		{
-			printf("\n[%d] --- %s --- %s", equipa[x].id_equipa, equipa[x].Nome, equipa[x].regiao);	
+			if(equipa[x].equipa_ativa == 1)
+			{
+				printf("\n[%d] --- %s --- %s", equipa[x].id_equipa, equipa[x].Nome, equipa[x].regiao);
+			}
+				
 		}
 		
 		printf("\n\nPretende continuar a visualizar as equipas?\n(S/N): ");
@@ -720,17 +750,19 @@ void editarEquipas(char *password, char *passwordgestor,char *passwordequipa)
 		
 		if ((editar_equipa == 'S') || (editar_equipa == 's'))
 		{
-			printf("\n\nInsira o ID da equipa que pretende editar: ");
+			printf("\nInsira o ID da equipa que pretende editar: ");
 			scanf(" %d", &ID_editar);
-			
+
 			do
 			{
+				system("cls");
 				puts("= Editar Equipas=");
 				printf("|1 --- Nome\t|");
 				printf("\n|2 --- Região\t|");
 				printf("\n|0 --- Sair\t|\n");
 				puts("=================");
-				printf("\nOpcao: ");				
+				printf("\nOpcao: ");
+				
 				scanf("%d", &opcao);
 				
 				switch(opcao)
@@ -752,7 +784,7 @@ void editarEquipas(char *password, char *passwordgestor,char *passwordequipa)
     					printf("|5.Porto\t\t| 11.Leiria\t\t| 17.Bejat\t|\n");
     					printf("|6.Aveiro\t\t| 12.Santarém\t\t| 18.Faro\t|");
     					puts("\n=================================================================");
-						puts("\nEscolha o novo distrito que pretende atribuir a equipa: ");
+						puts("\nEscolha o distrito que pretende atribuir a equipa: ");
 						scanf("%d", &distrito);
 						
 						switch(distrito)
@@ -846,7 +878,7 @@ void editarEquipas(char *password, char *passwordgestor,char *passwordequipa)
 		printf("\nOpção: ");
 		scanf(" %c", &voltar);
 		
-	}while ((voltar == 'S') || (voltar == 's'));
+	}while ((voltar == 'n') || (voltar == 'N'));
 	
 }
 
@@ -864,7 +896,10 @@ void desactivarEquipas(char *password, char *passwordgestor,char *passwordequipa
 		
 		for(x = 0; x < ID_equipa; x++)
 		{
-			printf("\n[%d] --- %s --- %s", equipa[x].id_equipa, equipa[x].Nome, equipa[x].regiao);	
+			if(equipa[x].id_equipa == 1)
+			{
+				printf("\n[%d] --- %s --- %s", equipa[x].id_equipa, equipa[x].Nome, equipa[x].regiao);
+			}	
 		}
 		
 		printf("\n\nPretende desactivar alguma equipa?\n(S/N): ");
@@ -872,10 +907,10 @@ void desactivarEquipas(char *password, char *passwordgestor,char *passwordequipa
 		
 		if((desactivar_equipa == 's') || (desactivar_equipa == 'S'))
 		{
-			printf("\n\nInsira o ID da Equipa que pretende desativar: ");
+			printf("\n\nInsira o ID da Equipa que pretende desactivar: ");
 			scanf("%d", &id_desactivar);
 			
-			printf("\n\nPretende mesmo desativar esta Equipa?\n(S/N): ");
+			printf("\n\nPretende mesmo desactivar esta Equipa?\n(S/N): ");
 			scanf(" %c", &confirmar_desactivar);
 			
 			if((confirmar_desactivar == 's') || (confirmar_desactivar == 'S'))
@@ -898,11 +933,20 @@ void desactivarEquipas(char *password, char *passwordgestor,char *passwordequipa
 void inserirMembros(char *password, char *passwordgestor,char *passwordequipa)
 {
     char opcao5;
-    int opcao;
+    char opcao;
 	int x = 0;
 	char profissao1[50] = "medico";
+	char profissao2[50] = "enfermeiro";
+	char profissao3[50] = "assistente";
+	char profissao4[50] = "tecnico";
 	char carta;
 	char escolha;
+	int id;
+	int escolha1;
+	contadormed = 0; 
+	contadorenf = 0;
+	contadorass = 0;
+	contadortec = 0;
 		
  	do
 	{
@@ -916,22 +960,50 @@ void inserirMembros(char *password, char *passwordgestor,char *passwordequipa)
 		}
 		
 		membro[ID_membro].id_membro = ID_membro;
-		membro[ID_membro].ativo = '1';
+		membro[ID_membro].ativo = 1;
 		
 		puts("\n\nInsira o ID da equipa a que pretende adicionar o membro: ");
-		scanf("%d", &membro[ID_membro].ID_Equipa);	
+		scanf("%d", &id);
+		
+		membro[ID_membro].ID_Equipa = id;	
 		
 		system("cls");
 		
-		printf("Nome do novo membro: ");
+		printf("\nNome do novo membro: ");
 		fflush(stdin);
 		gets(membro[ID_membro].Nome);
 		
 		printf("\nÁrea Profissional: ");
-		printf("\n\t1 -- Medico\n\t2 -- Enfermeiro\n\t3 -- Assistente social");
+		printf("\n\t1 -- Medico\n\t2 -- Enfermeiro\n\t3 -- Assistente social\n\t4 --  Tecnico");
 		printf("\nOpção: ");
-		scanf(" %c", &membro[ID_membro].AreaProfissional);
+		scanf(" %d", &escolha1);
 		
+		if(escolha1 == 1)
+		{
+			strcpy(membro[ID_membro].AreaProfissional, profissao1);
+			contadormed++;
+		} 
+		else if(escolha1 == 2)
+		{
+			strcpy(membro[ID_membro].AreaProfissional, profissao2);
+			contadorenf++;
+		}
+		else if(escolha1 == 3)
+		{
+			strcpy(membro[ID_membro].AreaProfissional, profissao3);
+			contadorass++;
+		}
+		else if(escolha1 == 4)
+		{
+			strcpy(membro[ID_membro].AreaProfissional, profissao4);
+			contadortec++;
+		}
+		else
+		{
+			printf("Escolha Invalida");	
+		}
+			
+				
 		printf("\nContacto: ");
 		scanf("%d", &membro[ID_membro].contacto);
 			
@@ -975,11 +1047,30 @@ void inserirMembros(char *password, char *passwordgestor,char *passwordequipa)
 		}
 		ID_membro++;
 		
+		contadormed1[id] += contadormed;
+		contadorenf1[id] += contadorenf;
+		contadorass1[id] += contadorass;
+		contadortec1[id] += contadortec;
+
+		
+		
 		printf("\n\nPretende adicionar mais membros a alguma equipa?\n(S/N): ");
 		scanf(" %c", &opcao5);
 	
 	}while((opcao5 == 'S') || (opcao5 == 's'));
-				
+	
+	if((opcao5 == 'n')||(opcao5 == 'N'))
+	{
+		if(contadormed1[id] >= 1 && contadorenf1[id] >= 1 && contadorass1[id] >= 1 && contadortec1[id] >= 1)
+		{
+			gerirMembros(password,passwordgestor,passwordequipa);
+		}
+		else
+		{
+			inserirMembros(password,passwordgestor,passwordequipa);
+			printf("\n\nTem de ter funcionario de cada area!");
+		}
+	}	
 }
 
 
@@ -992,81 +1083,76 @@ void mostrarMembros(char *password, char *passwordgestor,char *passwordequipa)
 	int opcao4;
 	char opcao3;
 	
-				do
+	do
+	{
+		system("cls");
+		
+		//mostrar equipas
+		
+		printf("Insira o ID da equipa\n");
+		scanf("%d", &identificador);
+		
+		for(k = 0; k < ID_membro; k++)
+		{
+			if((membro[k].ID_Equipa == identificador) && (membro[k].ativo == 1))
+			{
+				if(strcmp(membro[k].AreaProfissional, "medico") == 0)
 				{
-					system("cls");
+					printf("\n%d --- %s --- Médico", membro[k].id_membro ,&membro[k].Nome);
+				}
+				else if(strcmp(membro[k].AreaProfissional, "enfermeiro") == 0)
+				{
+					printf("\n%d --- %s --- Enfermeiro", membro[k].id_membro ,&membro[k].Nome);
+				}
+				else if(strcmp(membro[k].AreaProfissional, "assitente") == 0)
+				{
+					printf("\n%d --- %s --- Assistente social", membro[k].id_membro ,&membro[k].Nome);
+				}
+				else if(strcmp(membro[k].AreaProfissional, "tecnico") == 0)
+				{
+					printf("\n%d --- %s --- Tecnico Saude Ambiental", membro[k].id_membro ,&membro[k].Nome);
+				}
+			}
+		}
+		
+		printf("\n\nPretende ver os dados relativos a algum membro?\n(S/N): ");
+		scanf(" %c", &ver_dados);
+		
+		if((ver_dados == 's') || (ver_dados == 'S'))
+		{
+			printf("\n\nInsira o ID do membro que pretende visualizar: ");
+			scanf("%d", &opcao4);
+			
+			system("cls");
 					
-					printf("Insira o ID da equipa:\n");
-	        		scanf("%d", &identificador);
-	        		
-	        		for(k = 0; k < ID_membro; k++)
-					{
-						if(membro[k].ID_Equipa == identificador)
-						{
-							if(membro[k].AreaProfissional == '1')
-							{
-								printf("%d --- %s --- Médico \n", membro[k].id_membro ,&membro[k].Nome);
-							}
-							else if(membro[k].AreaProfissional == '2')
-							{
-								printf("%d --- %s --- Enfermeiro \n", membro[k].id_membro ,&membro[k].Nome);
-							}
-							else if(membro[k].AreaProfissional == '3')
-							{
-								printf("%d --- %s --- Assistente social \n", membro[k].id_membro ,&membro[k].Nome);
-							}
-						}
-					}
-					
-					printf("\n\nPretende ver os dados relativos a algum membro?\n(S/N): ");
-					scanf(" %c", &ver_dados);
-					
-					if((ver_dados == 's') || (ver_dados == 'S'))
-					{
-						printf("\n\nInsira o ID do membro que pretende visualizar: ");
-						scanf("%d", &opcao4);
-						
-						system("cls");
-								
-						printf("O elemento %s, pertencente à Equipa com o ID %d, contém os seguintes dados: ", membro[opcao4].Nome, identificador);	
-	            		
-	            		if(membro[opcao4].AreaProfissional == '1')
-						{
-							printf("\n\nÁrea Profissional: Médico");
-						}
-						else if(membro[opcao4].AreaProfissional == '2')
-						{
-							printf("\n\nÁrea Profissional: Enfermeiro");
-						}
-						else if(membro[opcao4].AreaProfissional == '3')
-						{
-							printf("\n\nÁrea Profissional: Assistente Social");
-						}
-	            		
-	           			printf("\nContacto: %d", membro[opcao4].contacto);
-	           			
-	           			printf("\nCartão de Cidadão: %d", membro[opcao4].CC);
-	           			
-	            		printf("\nMorada: %s", &membro[opcao4].Morada);
-	            		
-	            		printf("\nEmail: %s", &membro[opcao4].email);
-	            		
-	            		printf("\nCarta de Condução: %s", &membro[opcao4].CartaConducao);
-	            	
-	            		if(membro[opcao4].ativo == '1')
-						{
-							printf("\nEste membro encontra-se: Ativo");
-						}
-						if(membro[opcao4].ativo == '0')
-						{
-							printf("\nEste membro encontra-se: Inativo");
-						}
-					}
-	
-					printf("\n\nQuer visualizar os dados de outro membro? (S/N): ");
-					scanf(" %c", &opcao3);
-						
-				}while((opcao3 == 'S') || (opcao3 == 's'));
+			printf("O elemento %s, pertencente à Equipa com o ID %d, contém os seguintes dados: ", membro[opcao4].Nome, identificador);	
+    		
+			printf("\n\nÁrea Profissional: %s", membro[opcao4].AreaProfissional);
+			
+   			printf("\nContacto: %d", membro[opcao4].contacto);
+   			
+   			printf("\nCartão de Cidadão: %d", membro[opcao4].CC);
+   			
+    		printf("\nMorada: %s", &membro[opcao4].Morada);
+    		
+    		printf("\nEmail: %s", &membro[opcao4].email);
+    		
+    		printf("\nCarta de Condução: %s", &membro[opcao4].CartaConducao);
+    	
+    		if(membro[opcao4].ativo == '1')
+			{
+				printf("\nEste membro encontra-se: Ativo");
+			}
+			if(membro[opcao4].ativo == '0')
+			{
+				printf("\nEste membro encontra-se: Inativo");
+			}
+		}
+
+		printf("\n\nQuer visualizar os dados de outro membro?\n(S/N): ");
+		scanf(" %c", &opcao3);
+			
+	}while((opcao3 == 'S') || (opcao3 == 's'));
 
 }
 		
@@ -1086,6 +1172,11 @@ void editarMembros(char *password, char *passwordgestor,char *passwordequipa)
 	int opcao6;
 	int carta1;
 	int x;
+	int escolha1;
+	char profissao1[50] = "medico";
+	char profissao2[50] = "enfermeiro";
+	char profissao3[50] = "assistente";
+	char profissao4[50] = "tecnico";
 	
 	
 	do
@@ -1104,22 +1195,26 @@ void editarMembros(char *password, char *passwordgestor,char *passwordequipa)
 		{
 			if(membro[x].ID_Equipa == identificador)
 			{
-				if(membro[k].AreaProfissional == '1')
+				if(strcmp(membro[k].AreaProfissional, "medico") == 0)
 				{
-					printf("%d --- %s --- Médico", membro[k].id_membro ,&membro[k].Nome);
+					printf("\n%d --- %s --- Médico", membro[k].id_membro ,&membro[k].Nome);
 				}
-				else if(membro[k].AreaProfissional == '2')
+				else if(strcmp(membro[k].AreaProfissional, "enfermeiro") == 0)
 				{
-					printf("%d --- %s --- Enfermeiro", membro[k].id_membro ,&membro[k].Nome);
+					printf("\n%d --- %s --- Enfermeiro", membro[k].id_membro ,&membro[k].Nome);
 				}
-				else if(membro[k].AreaProfissional == '3')
+				else if(strcmp(membro[k].AreaProfissional, "assitente") == 0)
 				{
-					printf("%d --- %s --- Assistente social", membro[k].id_membro ,&membro[k].Nome);
+					printf("\n%d --- %s --- Assistente social", membro[k].id_membro ,&membro[k].Nome);
+				}
+				else if(strcmp(membro[k].AreaProfissional, "tecnico") == 0)
+				{
+					printf("\n%d --- %s --- Tecnico Saude Ambiental", membro[k].id_membro ,&membro[k].Nome);
 				}
 			}
 		}
     	
-    	printf("Pretende editar algum elemento?\n(S/N): ");
+    	printf("\n\nPretende editar algum elemento?\n(S/N): ");
     	scanf(" %c", &editar_membro);
     	
     	if ((editar_membro == 'S') || (editar_membro == 's'))
@@ -1153,9 +1248,31 @@ void editarMembros(char *password, char *passwordgestor,char *passwordequipa)
 						
 					case 2:
 						printf("\nÁrea Profissional: ");
-    					printf("\n\t1 -- Medico\n\t2 -- Enfermeiro\n\t3 -- Assistente social");
+    					printf("\n\t1 -- Medico\n2 -- Enfermeiro\n3 -- Assistente social\n4 --  Tecnico");
     					printf("\nOpção: ");
-    					scanf(" %c", &membro[ID_editar].AreaProfissional);
+    					scanf(" %d", &escolha1);
+    					
+    					if(escolha1 == 1)
+						{
+							strcpy(membro[ID_editar].AreaProfissional, profissao1);
+						}
+						else if(escolha1 == 2)
+						{
+							strcpy(membro[ID_editar].AreaProfissional, profissao2);
+						}
+						else if(escolha1 == 3)
+						{
+							strcpy(membro[ID_editar].AreaProfissional, profissao3);
+						}
+						else if(escolha1 == 4)
+						{
+							strcpy(membro[ID_editar].AreaProfissional, profissao4);
+						}
+						else
+						{
+							printf("Escolha Invalida");	
+						}
+
 						break;
 						
 					case 3:
@@ -1219,52 +1336,62 @@ void desativarMembros(char *password, char *passwordgestor,char *passwordequipa)
 	int opcao4;
 	char opcao;
 	int x = 0;
-	puts("========== Desativar Membro da equipa ==========\n");
-            	do
+	
+	do
+	{
+		puts("========== Desativar Membro da equipa ==========\n");
+		
+		for(x = 0; x < ID_membro; x++)
+		{
+			if(equipa[x].equipa_ativa == 1)
+			{
+				printf("\n[%d] --- %s --- %s", equipa[x].id_equipa, equipa[x].Nome, equipa[x].regiao);
+			}
+			
+		}
+		
+		printf("Insira o ID da equipa\n");
+    	scanf("%d", &identificador);
+    	
+		for(k = 0; k < ID_membro; k++)
+		{
+			if((membro[k].ID_Equipa == identificador) && (membro[k].ativo == 1))
+			{
+				if(strcmp(membro[k].AreaProfissional, "medico") == 0)
 				{
-					for(x = 0; x < ID_membro; x++)
-					{
-						printf("\n[%d] --- %s --- %s", equipa[x].id_equipa, equipa[x].Nome, equipa[x].regiao);
-					}
-					
-					printf("\n\nInsira o ID da equipa\n");
-		        	scanf("%d", &identificador);
-		        	
-					for(k = 0; k < ID_membro; k++)
-					{
-						if(membro[k].ID_Equipa == identificador)
-						{
-							if(membro[k].AreaProfissional == '1')
-							{
-								printf("%d --- %s --- Médico", membro[k].id_membro ,&membro[k].Nome);
-							}
-							else if(membro[k].AreaProfissional == '2')
-							{
-									printf("%d --- %s --- Enfermeiro", membro[k].id_membro ,&membro[k].Nome);
-							}
-							else if(membro[k].AreaProfissional == '3')
-							{
-									printf("%d --- %s --- Assistente social", membro[k].id_membro ,&membro[k].Nome);
-							}
-						}
-					}
-							
-					printf("\n\nPretende desactivar algum membro?\n(S/N)");
-					scanf(" %c", &desactivar_membro);
-					
-					if((desactivar_membro == 's') || (desactivar_membro == 'S'))
-					{
-						printf("\nInsira o ID do membro que pretende desactivar: ");
-						scanf("%d", &opcao4);
-						
-						membro[opcao4].ativo = '0';
-					}
-            		
-        			puts("Pretende remover algum Membro de outra equipa?\n(S/N)");
-        			puts("\tSim---(s)\n \tNão---(n)");
-        			scanf(" %c", &opcao);
-        
-				}while((opcao == 'S') || (opcao == 's'));
+					printf("\n%d --- %s --- Médico", membro[k].id_membro ,&membro[k].Nome);
+				}
+				else if(strcmp(membro[k].AreaProfissional, "enfermeiro") == 0)
+				{
+					printf("\n%d --- %s --- Enfermeiro", membro[k].id_membro ,&membro[k].Nome);
+				}
+				else if(strcmp(membro[k].AreaProfissional, "assitente") == 0)
+				{
+					printf("\n%d --- %s --- Assistente social", membro[k].id_membro ,&membro[k].Nome);
+				}
+				else if(strcmp(membro[k].AreaProfissional, "tecnico") == 0)
+				{
+					printf("\n%d --- %s --- Tecnico Saude Ambiental", membro[k].id_membro ,&membro[k].Nome);
+				}
+			}
+		}
+				
+		printf("\n\nPretende desactivar algum membro?\n(S/N)");
+		scanf(" %c", &desactivar_membro);
+		
+		if((desactivar_membro == 's') || (desactivar_membro == 'S'))
+		{
+			printf("\nInsira o ID do membro que pretende desactivar: ");
+			scanf("%d", &opcao4);
+			
+			membro[opcao4].ativo = 0;
+		}
+		
+		puts("Pretende remover algum Membro de outra equipa?\n(S/N)");
+		puts("\tSim---(s)\n \tNão---(n)");
+		scanf(" %c", &opcao);
+
+	}while((opcao == 'S') || (opcao == 's'));
 }
 
 
@@ -1329,102 +1456,16 @@ void adicionarlares(char *password,char *passwordequipa,char *passwordgestor)
 			
 	do
 	{
-		printf("----- Adicionar Lares -----");
+		system("cls");
+		printf("========== Adicionar Lares ==========");
 					
 		lar[id_lar].ID_Lar = id_lar;
 					
 		printf("\n\nNome do lar: ");
 		fflush(stdin);
         gets(lar[id_lar].Nome);
-        			
-        puts("\n=========================== Distritos ===========================");	
-		printf("|1.Viana do Castelo\t| 7.Viseu\t\t| 13.Portalegre\t|\n");
-    	printf("|2.Vila Real\t\t| 8.Guarda\t\t| 14.Lisboa\t|\n");
-    	printf("|3.Bragança\t\t| 9.Coimbra\t\t| 15.Évora\t|\n");
-    	printf("|4.Braga\t\t| 10.Castelo Branco\t| 16.Setúbal\t|\n");
-    	printf("|5.Porto\t\t| 11.Leiria\t\t| 17.Bejat\t|\n");
-    	printf("|6.Aveiro\t\t| 12.Santarém\t\t| 18.Faro\t|");
-    	puts("\n=================================================================");
-		puts("\nEscolha o distrito que pretende atribuir a equipa: ");
-		scanf("%d", &distrito);
-		
-		switch(distrito)
-		{
-			case 1:
-				strcpy(lar[id_lar].Regiao, "Viana do Castelo");
-			break;
-			
-			case 2:
-				strcpy(lar[id_lar].Regiao, "Vila Real");
-			break;
-			
-			case 3:
-				strcpy(lar[id_lar].Regiao, "Bragança");
-			break;
-			
-			case 4:
-				strcpy(lar[id_lar].Regiao,"Braga");
-			break;
-			
-			case 5:
-				strcpy(lar[id_lar].Regiao, "Porto");
-			break;
-			
-			case 6:
-				strcpy(lar[id_lar].Regiao, "Aveiro");
-			break;
-			
-			case 7:
-				strcpy(lar[id_lar].Regiao, "Viseu");
-			break;
-			
-			case 8:
-				strcpy(lar[id_lar].Regiao, "Guarda");
-			break;
-			
-			case 9:
-				strcpy(lar[id_lar].Regiao, "Coimbra");
-			break;
-			
-			case 10:
-				strcpy(lar[id_lar].Regiao, "Castelo");
-			break;
-			
-			case 11:
-				strcpy(lar[id_lar].Regiao, "Leiria");
-			break;
-			
-			case 12:
-				strcpy(lar[id_lar].Regiao, "Santarém");
-			break;
-			
-			case 13:
-				strcpy(lar[id_lar].Regiao, "Portalegre");
-			break;
-			
-			case 14:
-				strcpy(lar[id_lar].Regiao, "Lisboa");
-			break;
-			
-			case 15:
-				strcpy(lar[id_lar].Regiao,"Évora");
-			break;
-			
-			case 16:
-				strcpy(lar[id_lar].Regiao, "Setúbal");
-			break;
-			
-			case 17:
-				strcpy(lar[id_lar].Regiao, "Beja");
-			break;
-			
-			case 18:
-				strcpy(lar[id_lar].Regiao, "Faro");
-			break;
-			
-			default:
-				printf("Não escolheu um distrito válido");
-		}
+        
+        strcpy(lar[id_lar].Regiao, equipa[ID_Equipa_Usar].regiao);
         			
         printf("\nMorada do Lar: ");
 		fflush(stdin);
@@ -1462,10 +1503,14 @@ void editarlares(char *password,char *passwordequipa,char *passwordgestor)
 					
 		for(k = 0; k < id_lar; k++)
 		{
-			printf("\n[%d] --- %s --- %s", lar[k].ID_Lar, lar[k].Nome, lar[k].Regiao);
+			if(lar[k].Ativo == 1)
+			{
+				printf("\n[%d] --- %s --- %s", lar[k].ID_Lar, lar[k].Nome, lar[k].Regiao);
+			}
+			
 		}
 					
-		printf("\n\nPretende visualizar os dados de algum dos Lares? (S/N): ");
+		printf("\n\nPretende visualizar os dados de algum dos Lares?\n(S/N): ");
 		scanf(" %c", &verificar_lares);
 					
 		if((verificar_lares == 's') || (verificar_lares == 'S'))
@@ -1490,10 +1535,10 @@ void editarlares(char *password,char *passwordequipa,char *passwordgestor)
 							
 			}
 					
-			printf("\n\nPretende voltar a verificar os Lares? (S/N): ");
+			printf("\n\nPretende voltar a verificar os Lares?\n(S/N): ");
 			scanf(" %c", &verificar_mais);
-	}while((verificar_mais == 's') || (verificar_mais == 'S'));
-			
+			}
+			while((verificar_mais == 's') || (verificar_mais == 'S'));
 }
 
 
@@ -1512,7 +1557,11 @@ void verificarlares(char *password,char *passwordequipa,char *passwordgestor)
 		
 		for(k = 0; k < id_lar; k++)
 		{
-			printf("\n[%d] --- %s --- %s", lar[k].ID_Lar, lar[k].Nome, lar[k].Regiao);
+			if(lar[k].Ativo == 1)
+			{
+				printf("\n[%d] --- %s --- %s", lar[k].ID_Lar, lar[k].Nome, lar[k].Regiao);
+			}
+			
 		}
 		
 		printf("\n\nPretende editar a informação de algum lar?\n(S/N): ");
@@ -1526,7 +1575,7 @@ void verificarlares(char *password,char *passwordequipa,char *passwordgestor)
 			do
 			{
 				printf("\n\nInsira que campo pretende editar: ");
-			puts("= Editar Equipas=");
+				puts("= Editar Equipas=");
 				printf("|1 --- Nome\t|");
 				printf("\n|2 --- Região\t|");
 				printf("\n|3 --- Morada\t|")
@@ -1543,7 +1592,7 @@ void verificarlares(char *password,char *passwordequipa,char *passwordgestor)
 						gets(lar[id_editar].Nome);
 						break;
 					case 2:
-							system("CLS");
+						system("CLS");
 						puts("\n=========================== Distritos ===========================");
 						printf("|1.Viana do Castelo\t| 7.Viseu\t\t| 13.Portalegre\t|\n");
     					printf("|2.Vila Real\t\t| 8.Guarda\t\t| 14.Lisboa\t|\n");
@@ -1552,7 +1601,7 @@ void verificarlares(char *password,char *passwordequipa,char *passwordgestor)
     					printf("|5.Porto\t\t| 11.Leiria\t\t| 17.Bejat\t|\n");
     					printf("|6.Aveiro\t\t| 12.Santarém\t\t| 18.Faro\t|");
     					puts("\n=================================================================");
-						puts("\nEscolha o novo distrito que pretende atribuir a equipa: ");
+						printf("\nRegião onde se encontra o Lar: ");
 						scanf("%d", &distrito);
 						
 						switch(distrito)
@@ -1667,7 +1716,11 @@ void apagarlares(char *password,char *passwordequipa,char *passwordgestor)
 					
 					for(k = 0; k < id_lar; k++)
 					{
-						printf("\n[%d] --- %s --- %s", lar[k].ID_Lar, lar[k].Nome, lar[k].Regiao);
+						if(lar[k].Ativo == 1)
+						{
+							printf("\n[%d] --- %s --- %s", lar[k].ID_Lar, lar[k].Nome, lar[k].Regiao);
+						}
+			
 					}
 					
 					printf("\n\nPretende desactivar algum lar?\n(S/N): ");
@@ -1705,7 +1758,6 @@ void gerirAgendas(char *password,char *passwordequipa,char *passwordgestor)
 	{
 		system("cls");
 					
-		system("cls");
 		puts("");			
 		puts("================= Gerir Agendas =================");
 		printf("|\t1-Adicionar dados a Agenda\t\t|\n");
@@ -1792,8 +1844,11 @@ void visualizarAgenda (char *password,char *passwordequipa,char *passwordgestor)
 	puts("========== Visualizar Agenda ==========");
 	do
 	{	
+		
 		printf("\nInsira o ID da equipa a que pretende ver a agenda: ");
 		scanf(" %d", &opcao);
+		
+		puts("\n[ID] --- Equipa ---> Lar");
 		
 		for(j = 0; j < id_visita; j++)
 		{
@@ -1857,8 +1912,8 @@ void editarAgenda (char *password,char *passwordequipa,char *passwordgestor)
 			{
 				//menu para escolher a informação que pretende mudar
 				system("cls");
-				printf("---------- Edição Agenda ----------");
-				printf("\n\n1- ID da Equipa Responsavel");
+				printf("========== Edição Agenda ==========");
+				printf("|n\n1- ID da Equipa Responsavel");
 				printf("\n2- ID do Lar a que vai ser realizada a visita");
 				printf("\n3 - Horas");
 				printf("\n4- Dia");
@@ -1926,7 +1981,8 @@ void gerirViaturas(char *password,char *passwordequipa,char *passwordgestor)
 	do
 	{
 		system("cls");
-		puts("======== Gerir Viaturas =========");
+		
+    	puts("======== Gerir Viaturas =========");
     	printf("|1-Inserir Viaturas\t\t|\n");
     	printf("|2-Verificar Viaturas inseridas|\n");
     	printf("|3-Editar uma viatura\t\t|\n");
@@ -1971,41 +2027,23 @@ void adicionarViaturas(char *password,char *passwordequipa,char *passwordgestor)
 		Viaturas[ID_viatura].id_viatura = ID_viatura;
 		Viaturas[ID_viatura].ativo = '1';
 		
-		printf("Marca do carro:\n");
+		printf("\nMarca do carro:");
 		fflush(stdin);
 		gets(Viaturas[ID_viatura].marca);
 		
-		printf("Modelo:\n");
-		fflush(stdin);
-		gets(Viaturas[ID_viatura].Modelo);
-		
-		printf("Matricula:\n");
+		printf("\nMatricula (AA-AA-AA): ");
 		fflush(stdin);
 		gets(Viaturas[ID_viatura].matricula);
-		
-		puts("Ano da viatura:");
-		scanf("%d", &Viaturas[ID_viatura].ano);
-		
-		puts("Mes da viatura:");
-		scanf("%d", &Viaturas[ID_viatura].mes);
 			
-		printf("Número de lugares\n");
+		printf("\nNúmero de lugares: ");
 		scanf("%d", &Viaturas[ID_viatura].nLugares);
-		
-		puts("Quilometros do carro:");
-		scanf("%d", &Viaturas[ID_viatura].kms);
-		           	
-		       			
-		printf("O id da viatura é %d\n", Viaturas[ID_viatura].id_viatura);        			   			
+		         			   			
 		ID_viatura++;
-		
-
 		
 		puts("Pretende inserir mais alguma viatura?");
 		puts("\tSim---(s)\n \tNão---(n)");
 		scanf(" %c", &opcao);
 		
-		system("cls");
 	
 	}while(opcao == 'S' || opcao == 's');
 	
@@ -2023,8 +2061,11 @@ void verificarViaturas(char *password,char *passwordequipa,char *passwordgestor)
 		
 		for(k = 0; k < ID_viatura; k++)
 		{
-
-			printf("\nID: %d Nº Lugares %d --- %s --- %s", k, Viaturas[k].nLugares , Viaturas[k].matricula, Viaturas[k].marca);
+			if(Viaturas[k].ativo == 1)
+			{
+				printf("\n[%d] --- %d --- %s --- %s", Viaturas[k].id_viatura, Viaturas[k].nLugares ,Viaturas[k].marca, Viaturas[k].matricula);
+			}
+			
 			
 		}
 			
@@ -2036,21 +2077,22 @@ void verificarViaturas(char *password,char *passwordequipa,char *passwordgestor)
 		printf("\n\nA viatura da marca %s, com o ID %d, contém os seguintes dados: ", Viaturas[opcao4].marca, opcao4);        		
 		            		
         printf("\nMatricula: %s", &Viaturas[opcao4].matricula);
-           			
-        printf("\nModelo: %s\n", &Viaturas[opcao4].Modelo);
-           			
-        printf("Ano da viatura: %d \n", Viaturas[opcao4].ano);
-	
-		printf("Mes da viatura: %d \n", Viaturas[opcao4].mes);
 		
 		printf("Número de lugares %d\n", Viaturas[opcao4].nLugares);
 	
-		printf("Quilometros do carro: %d\n", Viaturas[opcao4].kms);
+	
 		if(Viaturas[opcao4].ativo == '0')
-			puts("O veiculo esta desativado");
+		{
+			puts("O veiculo está Inativo");
+		}
+		if(Viaturas[opcao4].ativo == '1')
+		{
+			puts("O veiculo está Ativo");
+		}
+			
 
-		printf("\n\nPretende vizualisar mais alguma viatura?\n");
-		printf("(S)---sim\t(N)---não\n");
+		printf("\n\nPretende vizualisar mais alguma viatura?");
+		printf("(S)---sim\t(N)---não");
 		scanf(" %c", &opcao3);
 			
 	}while(opcao3 == 's' || opcao3 == 'S');	
@@ -2067,14 +2109,17 @@ void editarViaturas(char *password,char *passwordequipa,char *passwordgestor)
 		puts("========== Editar viaturas ==========\n");
 		for(k = 0; k < ID_viatura; k++)
 		{
-
-			printf("\nNº Lugares %d --- %s --- %s", Viaturas[k].nLugares , Viaturas[k].matricula, Viaturas[ID_viatura].marca);
+			if(Viaturas[k].ativo == 1)
+			{
+				printf("\nNº Lugares %d --- %s --- %s", Viaturas[k].nLugares , Viaturas[k].matricula, Viaturas[ID_viatura].marca);
+			}
+			
 				
 		}
 		
-		printf("\n\nInsira o ID da viatura\n");
+		printf("Insira o ID da viatura\n");
     	scanf("%d", &identificador);
-    	puts("1.Marca\n2.Matricula\n3.Modelo\n4.Ano da viatura\n5.Mes da viatura\n6.Número de lugares\n7.Quilometros do carro");
+    	puts("1.Marca\n2.Matricula\n3.Lugares");
     	scanf("%d", &escolha);
     	
     	switch(escolha)
@@ -2085,26 +2130,10 @@ void editarViaturas(char *password,char *passwordequipa,char *passwordgestor)
 				gets(Viaturas[identificador].marca);
 		 		break;					                     		
 		 
-		 	case 2:	
-				printf("Modelo:\n");
-				fflush(stdin);
-				gets(Viaturas[identificador].Modelo);
-				break;
-		 
 		 	case 3:
 		 		printf("Matricula:\n");
 				fflush(stdin);
 				gets(Viaturas[identificador].matricula);
-		 		break;
-		 
-		 	case 4:
-				puts("Ano da viatura:");
-				scanf("%d", &Viaturas[identificador].ano);
-		 		break;
-		 
-		 	case 5:
-		 		puts("Mes da viatura:");
-				scanf("%d", &Viaturas[identificador].mes);
 		 		break;
 		 
 		 	case 6:
@@ -2112,14 +2141,11 @@ void editarViaturas(char *password,char *passwordequipa,char *passwordgestor)
 				scanf("%d", &Viaturas[identificador].nLugares);
 		 		break;
 		 
-		 	case 7:         				
-				puts("Quilometros do carro:");
-				scanf("%d", &Viaturas[identificador].kms);
-		 		break;					
+		 						
 		}
 	
-		puts("Pretende editar mais alguma viatura?\n");
-		puts("\tSim---(s)\n \tNão---(n)\n");
+		puts("Pretende editar mais alguma viatura?");
+		puts("\n\tSim---(s)\n \tNão---(n)");
 		scanf(" %c", &opcao);
 	
 	}while(opcao == 'S' || opcao == 's');
@@ -2138,16 +2164,16 @@ void desactivarViaturas(char *password,char *passwordequipa,char *passwordgestor
 		for(k = 0; k < ID_viatura; k++)
 		{
 
-			printf("\nNº Lugares %d --- %s --- %s", Viaturas[k].nLugares , Viaturas[k].matricula, Viaturas[ID_viatura].marca);
+			printf("Nº Lugares %d --- %s --- %s", Viaturas[k].nLugares , Viaturas[k].matricula, Viaturas[ID_viatura].marca);
 				
 		}
-		printf("\n\nInsira o ID da viatura\n");
+		printf("Insira o ID da viatura\n");
     	scanf("%d", &identificador);
 		
 		Viaturas[identificador].ativo = '0';		        					
 	
-		puts("Pretende remover mais alguma viatura?\n");
-		puts("\tSim---(s)\n \tNão---(n)\n");
+		puts("Pretende remover mais alguma viatura?");
+		puts("\tSim---(s)\n \tNão---(n)");
 		scanf(" %c", &opcao);
 	
 	}while(opcao == 'S' || opcao == 's');
@@ -2157,197 +2183,242 @@ void desactivarViaturas(char *password,char *passwordequipa,char *passwordgestor
 void Questionario(char *password,char *passwordequipa,char *passwordgestor)
 {
 	// Variáveis
-	int i, n, opcaoQ1, opcaoQ2, opcaoQ3, opcaoQ4, opcaoQ5;
+	int i, k, n, opcaoQ1, opcaoQ2, opcaoQ3, opcaoQ4, opcaoQ5, id;
+	char continuar;
 	
-	// Instrução de repetição para os 5 questionários
-	for (i = 0; i < 5; i++)
+	do
 	{
+		for(k = 0; k < id_lar; k++)
+		{
+			printf("\n[%d] --- %s --- %s", lar[k].ID_Lar, lar[k].Nome, lar[k].Regiao);
+		}
+		
+		printf("Insira o ID do Lar que pretende avaliar: ");
+		scanf("%d", &id);
+		
+		Avaliacao[id].ID_Lar = id;
+		Avaliacao[id].ID_Equipa = ID_Equipa_Usar;
 		nota = 0;
-		system("cls");
-		puts("========= QUESTIONÁRIO ===========\n");
-		printf("Quiz %d/5\n", i+1);
-		puts("Concorda que os Docentes são bem tratados pelos funcionário?\n");
-		puts("1- Discordo Totalmente");
-		puts("2- Discordo Parcialmente");
-		puts("3- Neutro");
-		puts("4- Concordo Parcialmente");
-		puts("5- Concordo Totalmente\n");		
-		printf("Opção:");
-		scanf("%d", &opcaoQ1);
 		
-		switch (opcaoQ1)
+		for (i = 0; i < 5; i++)
 		{
-			case 1:
-				nota += 0;
-				break;
-				
-			case 2:
-				nota += 1;
-				break;
-				
-			case 3:
-				nota += 2;
-				break;
-				
-			case 4:
-				nota += 3;
-				break;
-				
-			case 5:
-				nota += 4;
-				break;
-				
-			default:
-				break;
-		}	
-		
-		
-		puts("\n\nConcorda que o Estabelicimento tem boas condições de segurança e higiene?\n");
-		puts("1- Discordo Totalmente");
-		puts("2- Discordo Parcialmente");
-		puts("3- Neutro");
-		puts("4- Concordo Parcialmente");
-		puts("5- Concordo Totalmente\n");		
-		printf("Opção:");
-		scanf("%d", &opcaoQ2);
-		
-		switch (opcaoQ2)
-		{
-			case 1:
-				nota += 0;
-				break;
-				
-			case 2:
-				nota += 1;
-				break;
-				
-			case 3:
-				nota += 2;
-				break;
-				
-			case 4:
-				nota += 3;
-				break;
-				
-			case 5:
-				nota += 4;
-				break;
-				
-			default:
-				break;
+			
+			system("cls");
+			puts("========= QUESTIONÁRIO ===========\n");
+			printf("Quiz %d/5\n", i+1);
+			puts("Concorda que os Docentes são bem tratados pelos funcionário?\n");
+			puts("1- Discordo Totalmente");
+			puts("2- Discordo Parcialmente");
+			puts("3- Neutro");
+			puts("4- Concordo Parcialmente");
+			puts("5- Concordo Totalmente\n");		
+			printf("Opção:");
+			scanf("%d", &opcaoQ1);
+			
+			switch (opcaoQ1)
+			{
+				case 1:
+					nota += 0;
+					break;
+					
+				case 2:
+					nota += 1;
+					break;
+					
+				case 3:
+					nota += 2;
+					break;
+					
+				case 4:
+					nota += 3;
+					break;
+					
+				case 5:
+					nota += 4;
+					break;
+					
+				default:
+					break;
+			}	
+			
+			
+			puts("\n\nConcorda que o Estabelicimento tem boas condições de segurança e higiene?\n");
+			puts("1- Discordo Totalmente");
+			puts("2- Discordo Parcialmente");
+			puts("3- Neutro");
+			puts("4- Concordo Parcialmente");
+			puts("5- Concordo Totalmente\n");		
+			printf("Opção:");
+			scanf("%d", &opcaoQ2);
+			
+			switch (opcaoQ2)
+			{
+				case 1:
+					nota += 0;
+					break;
+					
+				case 2:
+					nota += 1;
+					break;
+					
+				case 3:
+					nota += 2;
+					break;
+					
+				case 4:
+					nota += 3;
+					break;
+					
+				case 5:
+					nota += 4;
+					break;
+					
+				default:
+					break;
+			}
+			
+			
+			puts("\n\nConcorda que a alimentação é boa e bem servida?\n");
+			puts("1- Discordo Totalmente");
+			puts("2- Discordo Parcialmente");
+			puts("3- Neutro");
+			puts("4- Concordo Parcialmente");
+			puts("5- Concordo Totalmente\n");		
+			printf("Opção:");
+			scanf("%d", &opcaoQ3);
+			
+			switch (opcaoQ3)
+			{
+				case 1:
+					nota += 0;
+					break;
+					
+				case 2:
+					nota += 1;
+					break;
+					
+				case 3:
+					nota += 2;
+					break;
+					
+				case 4:
+					nota += 3;
+					break;
+					
+				case 5:
+					nota += 4;
+					break;
+					
+				default:
+					break;
+			}
+			
+			
+			puts("\n\nConcorda que o ambiente entre os Docentes é agradável?\n");
+			puts("1- Discordo Totalmente");
+			puts("2- Discordo Parcialmente");
+			puts("3- Neutro");
+			puts("4- Concordo Parcialmente");
+			puts("5- Concordo Totalmente\n");		
+			printf("Opção:");
+			scanf("%d", &opcaoQ4);
+			
+			switch (opcaoQ4)
+			{
+				case 1:
+					nota += 0;
+					break;
+					
+				case 2:
+					nota += 1;
+					break;
+					
+				case 3:
+					nota += 2;
+					break;
+					
+				case 4:
+					nota += 3;
+					break;
+					
+				case 5:
+					nota += 4;
+					break;
+					
+				default:
+					break;
+			}
+			
+			
+			puts("\n\nConcorda que os funcionários tem uma boa relação de trabalho?\n");
+			puts("1- Discordo Totalmente");
+			puts("2- Discordo Parcialmente");
+			puts("3- Neutro");
+			puts("4- Concordo Parcialmente");
+			puts("5- Concordo Totalmente\n");		
+			printf("Opção:");
+			scanf("%d", &opcaoQ5);
+			
+			switch (opcaoQ5)
+			{
+				case 1:
+					nota += 0;
+					break;
+					
+				case 2:
+					nota += 1;
+					break;
+					
+				case 3:
+					nota += 2;
+					break;
+					
+				case 4:
+					nota += 3;
+					break;
+					
+				case 5:
+					nota += 4;
+					break;
+					
+				default:
+					break;
+			}	
 		}
 		
+		Avaliacao[id].Avaliacao = nota;
 		
-		puts("\n\nConcorda que a alimentação é boa e bem servida?\n");
-		puts("1- Discordo Totalmente");
-		puts("2- Discordo Parcialmente");
-		puts("3- Neutro");
-		puts("4- Concordo Parcialmente");
-		puts("5- Concordo Totalmente\n");		
-		printf("Opção:");
-		scanf("%d", &opcaoQ3);
+		printf("\n\nPretende Realizar o Questionario sobre mais algum Lar? ");
+		scanf(" %c", &continuar);
 		
-		switch (opcaoQ3)
-		{
-			case 1:
-				nota += 0;
-				break;
-				
-			case 2:
-				nota += 1;
-				break;
-				
-			case 3:
-				nota += 2;
-				break;
-				
-			case 4:
-				nota += 3;
-				break;
-				
-			case 5:
-				nota += 4;
-				break;
-				
-			default:
-				break;
-		}
-		
-		
-		puts("\n\nConcorda que o ambiente entre os Docentes é agradável?\n");
-		puts("1- Discordo Totalmente");
-		puts("2- Discordo Parcialmente");
-		puts("3- Neutro");
-		puts("4- Concordo Parcialmente");
-		puts("5- Concordo Totalmente\n");		
-		printf("Opção:");
-		scanf("%d", &opcaoQ4);
-		
-		switch (opcaoQ4)
-		{
-			case 1:
-				nota += 0;
-				break;
-				
-			case 2:
-				nota += 1;
-				break;
-				
-			case 3:
-				nota += 2;
-				break;
-				
-			case 4:
-				nota += 3;
-				break;
-				
-			case 5:
-				nota += 4;
-				break;
-				
-			default:
-				break;
-		}
-		
-		
-		puts("\n\nConcorda que os funcionários tem uma boa relação de trabalho?\n");
-		puts("1- Discordo Totalmente");
-		puts("2- Discordo Parcialmente");
-		puts("3- Neutro");
-		puts("4- Concordo Parcialmente");
-		puts("5- Concordo Totalmente\n");		
-		printf("Opção:");
-		scanf("%d", &opcaoQ5);
-		
-		switch (opcaoQ5)
-		{
-			case 1:
-				nota += 0;
-				break;
-				
-			case 2:
-				nota += 1;
-				break;
-				
-			case 3:
-				nota += 2;
-				break;
-				
-			case 4:
-				nota += 3;
-				break;
-				
-			case 5:
-				nota += 4;
-				break;
-				
-			default:
-				break;
-		}	
-	}
-	n++;
+	}while((continuar == 's') || (continuar == 'S'));
+	
+	 
 }
 
+
+void ContaAvaliacao(char *password,char *passwordequipa,char *passwordgestor)
+{
+	int id, continuar, k;
+	
+	do
+	{
+		printf("===== Lares Disponiveis: =====\n");
+		
+		for(k = 0; k < id_lar; k++)
+		{
+			printf("\n[%d] --- %s --- %s", lar[k].ID_Lar, lar[k].Nome, lar[k].Regiao);
+		}
+		
+		printf("\n\nInsira o Lar que pretende ver as estaticticas: ");
+		scanf("%d", &id);
+	
+		printf("\n\nA avaliacao do lar é: %d", Avaliacao[id].Avaliacao);
+		printf("\n\nInsira 0 para voltar atras: ");
+		scanf(" %d", &continuar);
+		
+	}while(continuar != 0);
+}
 
 void painelchefeequipa(char *password,char *passwordequipa,char *passwordgestor)
 {
@@ -2383,10 +2454,12 @@ void painelchefeequipa(char *password,char *passwordequipa,char *passwordgestor)
 					do
 					{
 						system("cls");
-						printf("\n1-Adicionar novo membro\n");
-						printf("2-Editar membro\n");
-						printf("3-Desativar membro\n");
-						printf("0-Voltar ao menu anterior\n");
+						puts("==========Gerir dados============");
+    					printf("|1-Adicionar novo membro\t|\n");
+    					printf("|2-Editar membro\t\t|\n");
+    					printf("|3-Desativar membro\t\t|\n");
+    					printf("|0 - Voltar ao menu Principal\t|\n");
+    					puts("=================================");
 						printf("Opcao: ");	
 						scanf("%d", &opcao);
 						
@@ -2413,7 +2486,7 @@ void painelchefeequipa(char *password,char *passwordequipa,char *passwordgestor)
 									gets(membro[ID_membro].Nome);
 									
 									printf("\nÁrea Profissional: ");
-									printf("\n\t1 -- Medico\n\t2 -- Enfermeiro\n\t3 -- Assistente social");
+									printf("\n\t1 -- Medico\n\t2 -- Enfermeiro\n\t3 -- Assistente social\n\t4 --Tecnico Ambiental");
 									printf("\nOpção: ");
 									scanf(" %c", &membro[ID_membro].AreaProfissional);
 									
@@ -2444,11 +2517,11 @@ void painelchefeequipa(char *password,char *passwordequipa,char *passwordgestor)
 									}
 									else if((carta == 'n') || (carta == 'N'))
 									{
-										membro[ID_membro].CartaConducao == "Não possui carta de condução";
+										strcpy(membro[ID_membro].CartaConducao, "Não possui carta de condução");
 									}
 									ID_membro++;
 									
-									printf("\n\nPretende adicionar mais membros a alguma equipa? (S/N): ");
+									printf("\n\nPretende adicionar mais membros a alguma equipa?\n(S/N): ");
 									scanf(" %c", &opcao);
 								
 								}while(opcao5 == 'S' || opcao5 == 's');
@@ -2463,17 +2536,17 @@ void painelchefeequipa(char *password,char *passwordequipa,char *passwordgestor)
 									{
 										if(membro[x].ID_Equipa == ID_Equipa_Usar)
 										{
-											if(membro[x].AreaProfissional == '1')
+											if(strcmp(membro[x].AreaProfissional, "medico") == 0)
 											{
-												printf("%d --- %s --- Médico", membro[x].id_membro ,&membro[k].Nome);
+												printf("%d --- %s --- Médico", membro[x].id_membro ,&membro[x].Nome);
 											}
-											else if(membro[x].AreaProfissional == '2')
+											else if(strcmp(membro[x].AreaProfissional, "enfermeiro") == 0)
 											{
-												printf("%d --- %s --- Enfermeiro", membro[x].id_membro ,&membro[k].Nome);
+												printf("%d --- %s --- Enfermeiro", membro[x].id_membro ,&membro[x].Nome);
 											}
-											else if(membro[x].AreaProfissional == '3')
+											else if(strcmp(membro[x].AreaProfissional, "assitente") == 0)
 											{
-												printf("%d --- %s --- Assistente social", membro[x].id_membro ,&membro[k].Nome);
+												printf("%d --- %s --- Assistente social", membro[x].id_membro ,&membro[x].Nome);
 											}
 										}
 										
@@ -2489,7 +2562,6 @@ void painelchefeequipa(char *password,char *passwordequipa,char *passwordgestor)
 										
 										do
 										{
-											system("CLS");
 											puts("===== Editar Membro =====");
 											printf("|1 -- Nome\t\t|");
 											printf("\n|2 -- Área Profissional\t|");
@@ -2554,7 +2626,7 @@ void painelchefeequipa(char *password,char *passwordequipa,char *passwordgestor)
 													}
 													else if((carta1 == 'n') || (carta1 == 'N'))
 													{
-														membro[ID_editar].CartaConducao == "Não possui carta de condução";
+														strcpy(membro[ID_membro].CartaConducao, "Não possui carta de condução");
 													}
 													break;
 											}
@@ -2580,20 +2652,21 @@ void painelchefeequipa(char *password,char *passwordequipa,char *passwordgestor)
 									
 									for(x = 0; x < ID_membro; x++)
 									{
-										if(membro[x].ID_Equipa == ID_Equipa_Usar)
+										if(strcmp(membro[x].AreaProfissional, "medico") == 0)
 										{
-											if(membro[x].AreaProfissional == '1')
-											{
-												printf("%d --- %s --- Médico", membro[x].id_membro ,&membro[x].Nome);
-											}
-											else if(membro[k].AreaProfissional == '2')
-											{
-												printf("%d --- %s --- Enfermeiro", membro[x].id_membro ,&membro[x].Nome);
-											}
-											else if(membro[k].AreaProfissional == '3')
-											{
-												printf("%d --- %s --- Assistente social", membro[x].id_membro ,&membro[x].Nome);
-											}
+											printf("\n%d --- %s --- Médico", membro[x].id_membro ,&membro[x].Nome);
+										}
+										else if(strcmp(membro[x].AreaProfissional, "enfermeiro") == 0)
+										{
+											printf("\n%d --- %s --- Enfermeiro", membro[x].id_membro ,&membro[x].Nome);
+										}
+										else if(strcmp(membro[x].AreaProfissional, "assitente") == 0)
+										{
+											printf("\n%d --- %s --- Assistente social", membro[x].id_membro ,&membro[x].Nome);
+										}
+										else if(strcmp(membro[x].AreaProfissional, "tecnico") == 0)
+										{
+											printf("\n%d --- %s --- Tecnico Saude Ambiental", membro[x].id_membro ,&membro[x].Nome);
 										}
 										
 									}
@@ -2674,8 +2747,11 @@ void RequisitarViaturas(char *password,char *passwordequipa,char *passwordgestor
 		
 		for(k = 0; k < ID_viatura; k++)
 		{
-
-			printf("\nID: %d Nº Lugares %d --- %s --- %s\n", k, Viaturas[k].nLugares , Viaturas[k].matricula, Viaturas[k].marca);
+			if(Viaturas[k].ativo == '1')
+			{
+				printf("\nID: %d Nº Lugares %d --- %s --- %s\n", Viaturas[k].id_viatura, Viaturas[k].nLugares , Viaturas[k].matricula, Viaturas[k].marca);
+			}
+			
 			
 		}
 		
@@ -2696,7 +2772,7 @@ void RequisitarViaturas(char *password,char *passwordequipa,char *passwordgestor
 		scanf("%d", &reVisita[ID_reqViatura].ID_Visita);
 		
 		printf("\n\nPretende requisitar mais viaturas: ");
-		scanf("%c", &requisitar_mais);
+		scanf(" %c", &requisitar_mais);
 		
 	}while((requisitar_mais == 's') || (requisitar_mais == 'S'));
 }
@@ -2706,10 +2782,11 @@ void RegistarVisita(char *password,char *passwordequipa,char *passwordgestor)
 {
 
 	char registarVisita;
+	int n_covid;
 	
 	do
 	{
-		printf("========== Registo Visita ==========");	
+		printf("========== Registo Visita ==========");		
 		printf("\n\nInsira o ID do Lar que foi visitado: ");
 		scanf("%d", &reVisita[ID_regVisita].ID_Visita);
 		
@@ -2720,12 +2797,27 @@ void RegistarVisita(char *password,char *passwordequipa,char *passwordgestor)
 		fflush(stdin);
 		gets(reVisita[ID_regVisita].Relatorio);
 		
-		printf("\nInsira o numero de casos de Covid encontrados no Lar: ");
-		scanf("%d", &reVisita[ID_regVisita].N_Covid);
+		printf("\nInsira o numero de testes ao Covid 19 Realizados no Lar: ");
+		scanf("%d", &reVisita[ID_regVisita].N_Testes);
 		
-		Questionario(password, passwordequipa, passwordgestor);
+		printf("\nInsira o numero de casos de Covid 19 encontrados no Lar: ");
+		scanf("%d", &n_covid);
 		
-		reVisita[ID_regVisita].Avalicao = nota;
+		reVisita[ID_regVisita].N_Covid = n_covid;
+		
+		/*
+		if(n_covid > 0)
+		{
+			do
+			{
+				printf("\nEscreva um Relatório sobre a Visita: ");
+				fflush(stdin);
+				gets(reVisita[ID_regVisita].Relatorio);
+				
+				
+			}while();
+		}
+		*/
 		
 		printf("\nPretende registar mais alguma Visita? ");
 		scanf(" %c", &registarVisita);
@@ -2757,14 +2849,73 @@ void VerificarRelatorio(char *password,char *passwordequipa,char *passwordgestor
 		printf("\n\nInsira de que visita pretende imprimir o relatório: ");
 		scanf("%d", &id_visita);
 		
-		printf("\n Relatório: %s", reVisita[id_visita].Relatorio);
+		printf("\n\n Relatório: %s", reVisita[id_visita].Relatorio);
 		
-		printf("\n Casos de Covid: %d", reVisita[id_visita].N_Covid);
+		printf("\n\n Casos de Covid: %d", reVisita[id_visita].N_Covid);
 		
-		printf("\n Avaliação: %d", reVisita[id_visita].Avalicao);
+		printf("\n\nForam usadas as seguintes viaturas: ");
+		for(k = 0; k < ID_viatura; k++)
+		{
+			if(reVisita[k].ID_Visita == id_visita)
+			{
+				printf("\nID: %d Nº Lugares %d --- %s --- %s\n", Viaturas[k].id_viatura, Viaturas[k].nLugares , Viaturas[k].matricula, Viaturas[k].marca);
+			}
+		}
 		
 		printf("\n\nPretende ver mais algum relatório: ");
 		scanf(" %c", &verRelatorio);
 		
 	}while((verRelatorio == 's') || (verRelatorio == 'S'));
 }
+
+
+void MediaAvaliacoesVisitas(char *password,char *passwordequipa,char *passwordgestor)
+{
+	// Variáveis
+	int i, soma, contadorAvaliacoes;
+	float media;
+	soma = media = contadorAvaliacoes = 0;
+	
+	
+	// Somar as avaliações das visitas
+	for(i = 0; i < id_visita; i++)
+	{
+		// Calcular apenas as avaliações dos lares visitados
+		if(Avaliacao[i].Avaliacao < 1)
+		{
+			soma += Avaliacao[i].Avaliacao;
+			contadorAvaliacoes++;
+		}		
+	}
+	
+	// Calcular a média das avaliações
+	media = soma / (float)contadorAvaliacoes;	
+	printf("A média: %f",media );
+}
+
+
+void ListarVisitas(char *password,char *passwordequipa,char *passwordgestor)
+{
+	// Variáveis
+	int i, j, aux, id;
+	int maior = Avaliacao[0].Avaliacao;
+	
+	
+	for (i = 0; i < id_visita; i++)
+	{
+		for (j = 1; j < id_visita; i++)
+		{
+			// Calcular apenas as avaliações dos lares visitados
+			if(Avaliacao[j].Avaliacao > maior)
+			{
+				maior = Avaliacao[j].Avaliacao;
+				id = Avaliacao[j].ID_Lar;
+			}
+		}
+		
+		// Mostrar por ordem da melhor visita para a pior
+		printf("%dº Lar %d - %d", i+1, id, maior);
+	}
+}
+
+
