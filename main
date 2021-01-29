@@ -7,6 +7,38 @@
 
 #define TAMAMNHO 50
 
+typedef struct RegistoData
+{
+	int dia;
+	int mes;
+	int ano;
+}Data;
+
+typedef struct registoVisita
+{
+	
+	int ID_Visita;
+	int ID_Equipa;
+	int ID_Lar;
+	Data data;
+	char hora;
+	
+}resVisita;
+
+typedef struct Viatura
+{
+	char matricula [10];
+	int ano;
+	int mes;
+	char marca[20];
+	char Modelo[20];
+	int nLugares;
+	int kms;
+	int id_viatura;
+	char ativo;
+	
+}viatura;
+
 //Estrutura com informação da equipa
 typedef struct registoMembro
 {
@@ -17,9 +49,10 @@ typedef struct registoMembro
     int CC;
     char Morada[50];
     char CartaConducao[15];
-    char AreaProfissional;
+    char AreaProfissional[20];
     char email[50];
     char ativo;
+    int verificador;
     
 }registo;
 
@@ -27,10 +60,13 @@ typedef struct registoEquipa
 {
 	int id_equipa;
 	char Nome[50];
-	char regiao[50];	
+	char regiao[50];
+	int equipa_ativa;	
+	int contadormed;
+	int contadorenf;
+	int contadorass;
+	int contadortec;
 }equipas;
-
-
 
 typedef struct registoLar
 {
@@ -38,16 +74,54 @@ typedef struct registoLar
 	char Nome[50];
 	char Regiao[50];
 	char Morada[50];
+	int n_idosos;
+	int n_idosos_risco;
 	int Ativo;
 }lares;
+
+typedef struct RequisitarViaturas
+{
+	int ID_Visita;
+	int ID_Viatura;
+	
+}reqViatura;
+
+typedef struct RegistoVisita
+{
+	int ID_Visita;
+	int ID_Lar;
+	int ID_Equipa;
+	char Relatorio [500];
+	int N_Covid;
+	int Avalicao;
+	
+}regVisita;
 
 registo membro[TAMAMNHO];
 equipas equipa[TAMAMNHO];
 lares lar[TAMAMNHO];
+resVisita agenda[TAMAMNHO];
+reqViatura reViaturas[TAMAMNHO];
+regVisita reVisita[TAMAMNHO];
+viatura Viaturas[TAMAMNHO];
 int ID_equipa = 0;
 int ID_membro = 0;
-int id_lar;
-	
+int id_lar = 0;
+int id_visita = 0;
+int ID_viatura = 0, nota = 0;
+int ID_Equipa_Usar;
+int ID_regVisita = 0;
+int ID_reqViatura = 0;
+int contadormed = 0;
+int contadorenf = 0;
+int contadorass = 0;
+int contadortec = 0;
+
+int contadormed1[TAMAMNHO];
+int contadorenf1[TAMAMNHO];
+int contadorass1[TAMAMNHO];
+int contadortec1[TAMAMNHO];
+
 //Funcoes
 void Menugeral(char *password,char *passwordgestor,char *passwordequipa);
 void Verificapassgestor(char *password, char *passwordgestor,char *passwordequipa);
@@ -56,11 +130,21 @@ void MenuGestor(char *password,char *passwordgestor,char *passwordequipa);
 void Menuequipa(char *password,char *passwordgestor,char *passwordequipa);
 void MenuSubmenu(char *password,char *passwordgestor,char *passwordequipa);
 void MenuSubmenuEquipas(char *password, char *passwordequipa,char *passwordgestor);
+void gerirMembros(char *password, char *passwordgestor,char *passwordequipa);
+void Questionario(char *password,char *passwordequipa,char *passwordgestor);
+
 void criarrequipas(char *password, char *passwordgestor,char *passwordequipa);
-void inserirequipas(char *password, char *passwordgestor,char *passwordequipa);
-void mostrarequipas(char *password, char *passwordgestor,char *passwordequipa);
-void editarequipas(char *password, char *passwordgestor,char *passwordequipa);
-void desativar(char *password, char *passwordgestor,char *passwordequipa);
+void verificarEquipas(char *password, char *passwordgestor,char *passwordequipa);
+void editarEquipas(char *password, char *passwordgestor,char *passwordequipa);
+void desactivarEquipas(char *password, char *passwordgestor,char *passwordequipa);
+
+
+void inserirMembros(char *password, char *passwordgestor,char *passwordequipa);
+void mostrarMembros(char *password, char *passwordgestor,char *passwordequipa);
+void editarMembros(char *password, char *passwordgestor,char *passwordequipa);
+void desativarMembros(char *password, char *passwordgestor,char *passwordequipa);
+
+
 void MenuSubmenuLares(char *password,char *passwordequipa,char *passwordgestor);
 void adicionarlares(char *password,char *passwordequipa,char *passwordgestor);
 void verificarlares(char *password,char *passwordequipa,char *passwordgestor);
@@ -68,11 +152,32 @@ void editarlares(char *password,char *passwordequipa,char *passwordgestor);
 void apagarlares(char *password,char *passwordequipa,char *passwordgestor);
 
 
+void gerirAgendas(char *password,char *passwordequipa,char *passwordgestor);
+void adicionarAgenda(char *password,char *passwordequipa,char *passwordgestor);
+void visualizarAgenda (char *password,char *passwordequipa,char *passwordgestor);
+void editarAgenda (char *password,char *passwordequipa,char *passwordgestor);
+
+
+void gerirViaturas(char *password,char *passwordequipa,char *passwordgestor);
+void adicionarViaturas(char *password,char *passwordequipa,char *passwordgestor);
+void verificarViaturas(char *password,char *passwordequipa,char *passwordgestor);
+void editarViaturas(char *password,char *passwordequipa,char *passwordgestor);
+void desactivarViaturas(char *password,char *passwordequipa,char *passwordgestor);
+
+void painelchefeequipa(char *password,char *passwordequipa,char *passwordgestor);
+void VerificarEquipaUtilizador(char *password,char *passwordequipa,char *passwordgestor);
+
+void MenuVisita(char *password,char *passwordequipa,char *passwordgestor);
+void RegistarVisita(char *password,char *passwordequipa,char *passwordgestor);
+void RequisitarViaturas(char *password,char *passwordequipa,char *passwordgestor);
+void VerificarRelatorio(char *password,char *passwordequipa,char *passwordgestor);
+
+
 int main(int argc, char *argv[]) 
 {	
 	setlocale(LC_ALL, "Portuguese");
-	char passwordgestor[50] = "Gestor123456";	
-	char passwordequipa[50] = "Equipa123456";
+	char passwordgestor[50] = "1";	
+	char passwordequipa[50] = "1";
 	char password[50];
 	Menugeral(password,passwordgestor,passwordequipa);
 }
@@ -80,19 +185,23 @@ int main(int argc, char *argv[])
 //Menu usuario
 void Menugeral(char *password,char *passwordgestor,char *passwordequipa)
 {
-		int opcao = 0;
-		password[0] = '\0';
+	int opcao = 0;
+	password[0] = '\0';
+	
+	do
+	{
+		system("cls");
 		puts("---------Sistema de Lares---------");
 		printf("Gestor --- 1 \n");
 		printf("Equipa --- 2 \n");
 		printf("Opcao: ");	
 		scanf("%d", &opcao);
-        if(opcao == 1)
+	    if(opcao == 1)
 		{
 			password[0] = '\0';
 			Verificapassgestor(password,passwordgestor,passwordequipa);	
 		}
-        else if(opcao == 2)
+	    else if(opcao == 2)
 		{
 			password[0] = '\0';
 			Verificapassequipa(password,passwordequipa,passwordgestor);
@@ -102,6 +211,8 @@ void Menugeral(char *password,char *passwordgestor,char *passwordequipa)
 			password[0] = '\0';
 			printf("Escolha invalida.\n");	
 		}
+	}while(opcao != 0);
+	
 }
 
 //Verificacao pass gestor
@@ -137,7 +248,7 @@ void Verificapassequipa(char *password, char *passwordequipa,char *passwordgesto
 		printf("\n");
 		if(strcmp(password,passwordequipa) == 0)
 		{
-			Menuequipa(password,passwordequipa,passwordgestor);	
+			VerificarEquipaUtilizador(password,passwordequipa,passwordgestor);	
 		}
 		else
 		{
@@ -149,10 +260,11 @@ void Verificapassequipa(char *password, char *passwordequipa,char *passwordgesto
 //Menu gestor
 void MenuGestor(char *password,char *passwordgestor,char *passwordequipa)
 {  	
-	int contador = 1;
-	system("CLS");
-    while (contador)
+	int opcao;
+	
+    do
     {
+    	system("cls");
         puts("---------Bem vindo..........\n");
 		printf("1- Gerir dados\n");
 		printf("2- Imprimir relatorio\n");
@@ -164,90 +276,144 @@ void MenuGestor(char *password,char *passwordgestor,char *passwordequipa)
 
         switch (opcao)
         {
-        case 1:
-        	system("CLS");
-        	MenuSubmenu(password,passwordgestor,passwordequipa);
-            break;
-
-        case 2:
-        	system("CLS");
-            printf(".......	em construçao......\n");
-            break;
-
-        case 3:
-        	system("CLS");
-            printf(".......	em construçao......\n");
-            break;
-		case 0:
-			system("CLS");
-			Menugeral(password,passwordgestor,passwordequipa);
-            break;
-        default:
-            printf("Escolha invalida.\n");
-            break;
+	        case 1:
+	        	system("CLS");
+	        	MenuSubmenu(password,passwordgestor,passwordequipa);
+	            break;
+	
+	        case 2:
+	        	system("CLS");
+	            VerificarRelatorio(password,passwordgestor,passwordequipa);
+	            break;
+	
+	        case 3:
+	        	system("CLS");
+	            printf(".......	em construçao......\n");
+	            break;
+			case 0:
+				system("CLS");
+				Menugeral(password,passwordgestor,passwordequipa);
+	            break;
+	        default:
+	            printf("Escolha invalida.\n");
+	            break;
         }
-    }
+    }while(opcao != 0);
+}
+
+
+void VerificarEquipaUtilizador(char *password,char *passwordequipa,char *passwordgestor)
+{
+	char continuar, entrar;
+	int x;
+	
+	do
+	{
+		printf("Pretende entrar no menu da equipa? ");
+		scanf(" %c", &entrar);
+		
+		if((entrar == 's') || (entrar == 'S'))
+		{
+			system("cls");
+			printf("Equipas Disponiveis:\n\n");
+			
+			if (ID_equipa > 0)
+			{
+				for(x = 0; x < ID_equipa; x++)
+				{
+					printf("\n[%d] --- %s --- %s", equipa[x].id_equipa, equipa[x].Nome, equipa[x].regiao);	
+				}
+			
+				printf("\n\nInsira o ID da Equipa que está a usar o programa: ");
+				scanf("%d", &ID_Equipa_Usar);
+				
+				for(x = 0; x < ID_equipa; x++)
+				{
+					if(ID_Equipa_Usar == equipa[x].id_equipa)
+					{
+						system("cls");
+						Menuequipa(password, passwordequipa, passwordgestor);
+					}
+				}
+					
+			}
+			else if(ID_equipa == 0)
+			{
+				printf("\n\nNao ha equipas disponiveis");
+			}
+		}
+		printf("\n\nEquipa inserida não existe");
+		printf("\nPretende voltar ao menu do Login? ");
+		scanf(" %c", &continuar);
+		
+	}while((continuar == 'n') || (continuar == 'N'));
 }
 
 //Menu equipa
 void Menuequipa(char *password,char *passwordequipa,char *passwordgestor)
 {  	
-	int contador = 1;
+	
 	int opcao;
-	system("CLS");
-    while (contador)
-    {
-        puts("---------Bem vindo..........\n");
-    	printf("1 - Visualizar Agenda\n");
-   		printf("2 - Requisitar Viatura\n");
-    	printf("3 - Questionário sobre o Lar\n");
-    	printf("4 - Realizar Realatório\n");
-    	printf("5 - Imprimir Relatórios\n");
-    	printf("6 - Imprimir Avaliações\n");
-    	printf("0 - Menu de usuarios\n");
-        scanf(" %d", &opcao);
+		
+	do
+	{
+		system("CLS");
+		puts("---------Bem vindo..........\n");
+		printf("ID EQUIPA: %d \n", ID_Equipa_Usar);
+		printf("1-Gerir Lares\n");
+		printf("2-Gerir Agenda\n");
+		printf("3-Registar visita a Lares \n");
+		printf("4-Questionário sobre o Lar\n");
+		printf("5-Imprimir Relatórios\n");
+		printf("6-Imprimir Avaliações\n");
+		printf("7-Painel de chefe equipa\n");
+		printf("0-Menu de usuarios\n");
+		printf("Opçao: ");
+		scanf(" %d", &opcao);
 
-        switch (opcao)
-        {
-        case 1:
-        	system("CLS");
-        	printf(".......	em construçao......\n");
-            break;
+    	switch (opcao)
+    	{
+        	case 1:
+        		system("CLS");
+        		MenuSubmenuLares(password, passwordequipa, passwordgestor);
+            	break;
 
-        case 2:
-        	system("CLS");
-            printf(".......	em construçao......\n");
-            break;
+        	case 2:
+        		system("CLS");
+           		gerirAgendas(password, passwordequipa, passwordgestor);
+            	break;
 
-        case 3:
-        	system("CLS");
-            printf(".......	em construçao......\n");
-            break;
+        	case 3:
+        		system("CLS");
+            	MenuVisita(password, passwordequipa, passwordgestor);
+            	break;
         
-         case 4:
-        	system("CLS");
-            printf(".......	em construçao......\n");
-            break;
+         	case 4:
+        		system("CLS");
+            	Questionario(password, passwordequipa, passwordgestor);
+            	break;
             
-         case 5:
-        	system("CLS");
-            printf(".......	em construçao......\n");
-            break;
+         	case 5:
+        		system("CLS");
+            	VerificarRelatorio(password, passwordequipa, passwordgestor);
+            	break;   
             
-         case 6:
-        	system("CLS");
-            printf(".......	em construçao......\n");
-            break;   
+        	case 6:
+        		system("CLS");
+            	printf(".......	em construçao......\n");
+            	break;
             
-		case 0:
-			system("CLS");
-			Menugeral(password,passwordgestor,passwordequipa);
-            break;
-        default:
-            printf("Escolha invalida.\n");
-            break;
-        }
-    }
+			case 7:
+        		system("CLS");
+            	painelchefeequipa(password,passwordequipa,passwordgestor);
+            	break;      
+            
+        	default:
+            	break;
+    	}
+	}while(opcao != 0);
+	
+	
 }
 
 //Sub Menu
@@ -255,39 +421,42 @@ void MenuSubmenu(char *password,char *passwordgestor,char *passwordequipa)
 {
 	int opcao;
     int contador  = 1;
-    while (opcao)
+    do
     {
-    	printf("1-Gerir dados Equipa\n");
-    	printf("2-Gerir dados Lares\n");
-    	printf("3-Gerir Viaturas\n");
+    	system("cls");
+    	printf("1 - Gerir Equipas\n");
+    	printf("2 - Gerir Membros Equipas\n");
+    	printf("3 - Gerir Viaturas\n");
     	printf("0-Voltar ao menu Principal\n");
     	printf("Opção:");
         scanf(" %d", &opcao);
 
         switch (opcao)
         {
-        case 1:
-        	system("CLS");
-            MenuSubmenuEquipas(password,passwordgestor,passwordequipa);
-            break;
-
-        case 2:
-           	system("CLS");
-           	MenuSubmenuLares(password,passwordequipa,passwordgestor);
-            break;
-        case 3:
-           	system("CLS");
-            break;
-
-        case 0:
-           	system("CLS");
-            MenuGestor(password,passwordgestor,passwordequipa);
-			
-        default:
-            printf("Escolha invalida!\n");
-            break;
+	        case 1:
+	        	system("CLS");
+	            MenuSubmenuEquipas(password,passwordgestor,passwordequipa);
+	            break;
+	
+	        case 2:
+	        	system("CLS");
+	        	gerirMembros(password,passwordgestor,passwordequipa);
+	            break;
+	    
+	        case 3:
+	           	system("CLS");
+	           	gerirViaturas(password,passwordgestor,passwordequipa);
+	            break;
+	
+	        case 0:
+	           	system("CLS");
+	            MenuGestor(password,passwordgestor,passwordequipa);
+				
+	        default:
+	            printf("Escolha invalida!\n");
+	            break;
         }
-    }
+    }while(opcao != 0);
 }
 
 // Menu acrescentar equipas
@@ -295,13 +464,13 @@ void MenuSubmenuEquipas(char *password, char *passwordgestor,char *passwordequip
 {  
     int opcao;
     
-    while(1)
+    do
 	{
 		system("cls");
 		printf("1-Criar Equipas\n");
-    	printf("2-Inserir Elementos a Equipa\n");
-    	printf("3-Verificar Membros de uma Equipa \n");
-    	printf("4-Editar Membro de uma Equipa\n");
+    	printf("2-Verificar Equipas\n");
+    	printf("3-Editar Equipas\n");
+    	printf("4-Desactivar Equipas\n");
     	printf("0-Voltar ao menu Principal\n");
     	printf("Opção:");
         scanf(" %d", &opcao);
@@ -316,23 +485,19 @@ void MenuSubmenuEquipas(char *password, char *passwordgestor,char *passwordequip
     
 			case 2:
             	system("cls");
-				inserirequipas(password,passwordgestor,passwordequipa);
+				verificarEquipas(password,passwordgestor,passwordequipa);
 				break;
 				
         	case 3: 
 				system("cls");
-				mostrarequipas(password,passwordgestor,passwordequipa);
+				editarEquipas(password,passwordgestor,passwordequipa);
 				break;
 				
        		 case 4:
        		 	system("cls");
-        		editarequipas(password,passwordgestor,passwordequipa);
+       		 	desactivarEquipas(password,passwordgestor,passwordequipa);
 				break;
 				
-			case 5:
-       		 	system("cls");
-				desativar(password,passwordgestor,passwordequipa);
-				break;
 					
         	case 0:
            		system("CLS");
@@ -344,118 +509,534 @@ void MenuSubmenuEquipas(char *password, char *passwordgestor,char *passwordequip
             	break;
      	}  
 	 
-	}
+	}while(opcao != 0);
 }
+
+
+void gerirMembros(char *password, char *passwordgestor,char *passwordequipa)
+{
+	int opcao;
+    
+    do
+	{
+		system("cls");
+		printf("1-Adicionar Membros a Equipa\n");
+    	printf("2-Verificar Membros das Equipas\n");
+    	printf("3-Editar Mmebros das Equipas\n");
+    	printf("4-Desactivar Membros das Equipas\n");
+    	printf("0-Voltar ao menu Principal\n");
+    	printf("Opção:");
+        scanf(" %d", &opcao);
+
+        switch (opcao)
+        {
+        
+        	case 1:
+       		 	system("cls");
+        		inserirMembros(password,passwordgestor,passwordequipa);
+				break;
+    
+			case 2:
+            	system("cls");
+				mostrarMembros(password,passwordgestor,passwordequipa);
+				break;
+				
+        	case 3: 
+				system("cls");
+				editarMembros(password,passwordgestor,passwordequipa);
+				break;
+				
+       		 case 4:
+       		 	system("cls");
+       		 	desativarMembros(password,passwordgestor,passwordequipa);
+				break;
+		
+        	default:
+            	break;
+     	}  
+	 
+	}while(opcao != 0);
+}
+
 
 void criarrequipas(char *password, char *passwordgestor,char *passwordequipa)
 {
 
-	int x = 0;
+	int x = 0, distrito;
 	char maisequipa;	
 	
-			do
-			{
-				system("cls");
+	do
+	{
+		system("cls");
+
+		puts("----- Criar Equipa -----");
+			
+		equipa[ID_equipa].id_equipa = ID_equipa;
+		equipa[ID_equipa].equipa_ativa = 1;
+			
+		printf("\nInsira o nome da Equipa: ");
+		fflush(stdin);
+		gets(equipa[ID_equipa].Nome);
+
+		puts("\n===== Distritos =====\n");
+	
+		printf("1.Viana do Castelo\t 7.Viseu\t\t 13.Portalegre\n");
+    	printf("2.Vila Real\t\t 8.Guarda\t\t 14.Lisboa\n");
+    	printf("3.Bragança\t\t 9.Coimbra\t\t 15.Évora\n");
+    	printf("4.Braga\t\t\t 10.Castelo Branco\t 16.Setúbal\n");
+    	printf("5.Porto\t\t\t 11.Leiria\t\t 17.Beja\n");
+    	printf("6.Aveiro\t\t 12.Santarém\t\t 18.Faro\n");
+		puts("\nEscolha o distrito que pretende atribuir a equipa: ");
+		scanf("%d", &distrito);
 		
-				puts("----- Criar Equipa -----");
-					
-				equipa[ID_equipa].id_equipa = ID_equipa;
-					
-				printf("\nInsira o nome da Equipa: ");
-				fflush(stdin);
-        		gets(equipa[ID_equipa].Nome);
-		
-				printf("\nInsira a Região: ");
-				scanf(" %s", equipa[ID_equipa].regiao);
-		
-				printf("\n\nO ID desta Equipa é: %d", equipa[ID_equipa].id_equipa);
-					
-				ID_equipa ++;
-		
-				printf("\n\nPretende criar mais equipas? ");
-				scanf(" %c", &maisequipa);
-		
-				}while(maisequipa != 'n');
+		switch(distrito)
+		{
+			case 1:
+				strcpy(equipa[ID_equipa].regiao, "Viana do Castelo");
+			break;
+			
+			case 2:
+				strcpy(equipa[ID_equipa].regiao, "Vila Real");
+			break;
+			
+			case 3:
+				strcpy(equipa[ID_equipa].regiao, "Bragança");
+			break;
+			
+			case 4:
+				strcpy(equipa[ID_equipa].regiao,"Braga");
+			break;
+			
+			case 5:
+				strcpy(equipa[ID_equipa].regiao, "Porto");
+			break;
+			
+			case 6:
+				strcpy(equipa[ID_equipa].regiao, "Aveiro");
+			break;
+			
+			case 7:
+				strcpy(equipa[ID_equipa].regiao, "Viseu");
+			break;
+			
+			case 8:
+				strcpy(equipa[ID_equipa].regiao, "Guarda");
+			break;
+			
+			case 9:
+				strcpy(equipa[ID_equipa].regiao, "Coimbra");
+			break;
+			
+			case 10:
+				strcpy(equipa[ID_equipa].regiao, "Castelo");
+			break;
+			
+			case 11:
+				strcpy(equipa[ID_equipa].regiao, "Leiria");
+			break;
+			
+			case 12:
+				strcpy(equipa[ID_equipa].regiao, "Santarém");
+			break;
+			
+			case 13:
+				strcpy(equipa[ID_equipa].regiao, "Portalegre");
+			break;
+			
+			case 14:
+				strcpy(equipa[ID_equipa].regiao, "Lisboa");
+			break;
+			
+			case 15:
+				strcpy(equipa[ID_equipa].regiao,"Évora");
+			break;
+			
+			case 16:
+				strcpy(equipa[ID_equipa].regiao, "Setúbal");
+			break;
+			
+			case 17:
+				strcpy(equipa[ID_equipa].regiao, "Beja");
+			break;
+			
+			case 18:
+				strcpy(equipa[ID_equipa].regiao, "Faro");
+			break;
+			
+			default:
+				printf("Não escolheu um distrito válido");
+		}
+
+		printf("\n\nO ID desta Equipa é: %d", equipa[ID_equipa].id_equipa);
+			
+		ID_equipa ++;
+
+		printf("\n\nPretende criar mais equipas? ");
+		scanf(" %c", &maisequipa);
+
+	}while(maisequipa != 'n');
 
 }
 
 
-void inserirequipas(char *password, char *passwordgestor,char *passwordequipa)
+void verificarEquipas(char *password, char *passwordgestor,char *passwordequipa)
 {
 	
-    char opcao5;
-    int opcao;
-	int x = 0;
-	char profissao1[50] = "medico";
-	char carta;
-			 do
-				{
-					system("cls");
-					
-					puts("-----Inserir Elementos a Equipa-----\n");
-					
-					for(x = 0; x < ID_equipa; x++)
-					{
-						printf("\n[%d] --- %s --- %s", equipa[x].id_equipa, equipa[x].Nome, equipa[x].regiao);
-					}
-					
-					membro[ID_membro].id_membro = ID_membro;
-					membro[ID_membro].ativo = '1';
-					
-					puts("\n\nInsira o ID da equipa a que pretende adicionar o membro: ");
-					scanf("%d", &membro[ID_membro].ID_Equipa);	
-					
-					system("cls");
-					
-					printf("\nNome do novo membro: ");
-            		fflush(stdin);
-            		gets(membro[ID_membro].Nome);
-            		
-            		printf("\nÁrea Profissional: ");
-            		printf("\n\t1 -- Medico\n\t2 -- Enfermeiro\n\t3 -- Assistente social");
-            		printf("\nOpção: ");
-            		scanf(" %c", &membro[ID_membro].AreaProfissional);
-            		
-            		printf("\nContacto: ");
-           			scanf("%d", &membro[ID_membro].contacto);
-           				
-           			printf("\nCartão de cidadão: ");
-           			scanf("%d", &membro[ID_membro].CC);
-           			
-            		printf("\nMorada: ");
-            		fflush(stdin);
-            		gets(membro[ID_membro].Morada);
-            		
-            		printf("\nEmail: ");
-            		fflush(stdin);
-            		gets(membro[ID_membro].email);
-            		
-            		printf("\nPossui Carta de Condução: ");
-            		printf("\n\tSim---(s)\n\tNão---(n)");
-            		printf("\nOpção: ");
-            		scanf(" %c", &carta);
-            	
-					if((carta == 's') || (carta == 'S'))
-					{
-						printf("\nInsira o Numero da Carta de Condução: ");
-						fflush(stdin);
-            			gets(membro[ID_membro].CartaConducao);
-					}
-					else if((carta == 'n') || (carta == 'N'))
-					{
-						membro[ID_membro].CartaConducao == "Não possui carta de condução";
-					}
-        			
-        			ID_membro++;
-        			
-        			printf("\n\nPretende adicionar mais membros a alguma equipa? (S/N): ");
-        			scanf(" %c", &opcao);
-        		
-				}while(opcao5 == 'S' || opcao5 == 's');
-				
+	char visualizar_equipas;
+	int x;
+	
+	do
+	{
+		system("cls");
+		
+		printf("----- Verificar Equipas -----");
+		
+		for(x = 0; x < ID_equipa; x++)
+		{
+			printf("\n[%d] --- %s --- %s", equipa[x].id_equipa, equipa[x].Nome, equipa[x].regiao);	
+		}
+		
+		printf("\n\nPretende continuar a visualizar as equipas? ");
+		scanf(" %c", &visualizar_equipas);
+		
+	}while((visualizar_equipas == 's') || (visualizar_equipas == 'S'));
 }
 
-void mostrarequipas(char *password, char *passwordgestor,char *passwordequipa)
+
+void editarEquipas(char *password, char *passwordgestor,char *passwordequipa)
+{
+	char editar_equipa, distrito, voltar;
+	int ID_editar, opcao, x;
+	
+	do
+	{
+	
+		for(x = 0; x < ID_equipa; x++)
+		{
+			printf("\n[%d] --- %s --- %s", equipa[x].id_equipa, equipa[x].Nome, equipa[x].regiao);
+		}
+		
+		printf("Pretende editar alguma Equipa? (S/N): ");
+		scanf(" %c", &editar_equipa);
+		
+		if ((editar_equipa == 'S') || (editar_equipa == 's'))
+		{
+			printf("\nInsira o ID do membro que pretende editar: ");
+			scanf(" %d", &ID_editar);
+			
+			do
+			{
+				printf("\n1 --- Nome");
+				printf("\n2 --- Região");
+				printf("\n0 --- Sair");
+				printf("\nOpcao: ");
+				
+				scanf("%d", &opcao);
+				
+				switch(opcao)
+				{
+					case 1:
+						printf("\nNome da equipa: ");
+						fflush(stdin);
+						gets(equipa[ID_editar].Nome);
+						break;
+						
+					case 2:
+						puts("\n===== Distritos =====\n");
+	
+						printf("1.Viana do Castelo\t 7.Viseu\t\t 13.Portalegre\n");
+				    	printf("2.Vila Real\t\t 8.Guarda\t\t 14.Lisboa\n");
+				    	printf("3.Bragança\t\t 9.Coimbra\t\t 15.Évora\n");
+				    	printf("4.Braga\t\t\t 10.Castelo Branco\t 16.Setúbal\n");
+				    	printf("5.Porto\t\t\t 11.Leiria\t\t 17.Beja\n");
+				    	printf("6.Aveiro\t\t 12.Santarém\t\t 18.Faro\n");
+						puts("\nEscolha o distrito que pretende atribuir a equipa: ");
+						scanf("%d", &distrito);
+						
+						switch(distrito)
+						{
+							case 1:
+								strcpy(equipa[ID_editar].regiao, "Viana do Castelo");
+							break;
+							
+							case 2:
+								strcpy(equipa[ID_editar].regiao, "Vila Real");
+							break;
+							
+							case 3:
+								strcpy(equipa[ID_editar].regiao, "Bragança");
+							break;
+							
+							case 4:
+								strcpy(equipa[ID_editar].regiao,"Braga");
+							break;
+							
+							case 5:
+								strcpy(equipa[ID_editar].regiao, "Porto");
+							break;
+							
+							case 6:
+								strcpy(equipa[ID_editar].regiao, "Aveiro");
+							break;
+							
+							case 7:
+								strcpy(equipa[ID_editar].regiao, "Viseu");
+							break;
+							
+							case 8:
+								strcpy(equipa[ID_editar].regiao, "Guarda");
+							break;
+							
+							case 9:
+								strcpy(equipa[ID_editar].regiao, "Coimbra");
+							break;
+							
+							case 10:
+								strcpy(equipa[ID_editar].regiao, "Castelo");
+							break;
+							
+							case 11:
+								strcpy(equipa[ID_editar].regiao, "Leiria");
+							break;
+							
+							case 12:
+								strcpy(equipa[ID_editar].regiao, "Santarém");
+							break;
+							
+							case 13:
+								strcpy(equipa[ID_editar].regiao, "Portalegre");
+							break;
+							
+							case 14:
+								strcpy(equipa[ID_editar].regiao, "Lisboa");
+							break;
+							
+							case 15:
+								strcpy(equipa[ID_editar].regiao,"Évora");
+							break;
+							
+							case 16:
+								strcpy(equipa[ID_editar].regiao, "Setúbal");
+							break;
+							
+							case 17:
+								strcpy(equipa[ID_editar].regiao, "Beja");
+							break;
+							
+							case 18:
+								strcpy(equipa[ID_editar].regiao, "Faro");
+							break;
+			
+			
+						}
+						break;
+						
+					default:
+						break;
+				}
+				
+			}while(opcao != 0);
+				
+		}
+		
+		printf("\n\nPretende voltar para o menu anterior? ");
+		puts("\n\tSim---(s)\n\tNão---(n)");
+		printf("\nOpção: ");
+		scanf(" %c", &voltar);
+		
+	}while ((voltar == 'S') || (voltar == 's'));
+	
+}
+
+
+void desactivarEquipas(char *password, char *passwordgestor,char *passwordequipa)
+{
+	char desactivar_equipa, confirmar_desactivar, desactivar_mais;
+	int id_desactivar, x = 0;
+	
+	do
+	{
+		system("cls");
+		printf("----- Desactivar Equipas -----");
+		printf("\n\nEquipas Disponiveis: \n");
+		
+		for(x = 0; x < ID_equipa; x++)
+		{
+			printf("\n[%d] --- %s --- %s", equipa[x].id_equipa, equipa[x].Nome, equipa[x].regiao);	
+		}
+		
+		printf("\n\nPretende desactivar alguma equipa? (S/N): ");
+		scanf(" %c", &desactivar_equipa);
+		
+		if((desactivar_equipa == 's') || (desactivar_equipa == 'S'))
+		{
+			printf("\n\nInsira o ID da Equipa que pretende desactivar: ");
+			scanf("%d", &id_desactivar);
+			
+			printf("\n\nPretende mesmo desactivar esta Equipa? (S/N): ");
+			scanf(" %c", &confirmar_desactivar);
+			
+			if((confirmar_desactivar == 's') || (confirmar_desactivar == 'S'))
+			{
+				equipa[id_desactivar].equipa_ativa = 0;
+			}
+			if((confirmar_desactivar == 'n') || (confirmar_desactivar == 'N'))
+			{
+				equipa[id_desactivar].equipa_ativa = 1;
+			}
+		}
+		
+		printf("\n\nPretende desactivar mais alguma equipa? (S/N): ");
+		scanf(" %c", &desactivar_mais);
+		
+	}while((desactivar_mais == 's') || (desactivar_mais == 'S'));
+}
+
+
+void inserirMembros(char *password, char *passwordgestor,char *passwordequipa)
+{
+    char opcao5;
+    char opcao;
+	int x = 0;
+	char profissao1[50] = "medico";
+	char profissao2[50] = "enfermeiro";
+	char profissao3[50] = "assistente";
+	char profissao4[50] = "tecnico";
+	char carta;
+	char escolha;
+	int id;
+	int escolha1;
+	contadormed = 0; 
+	contadorenf = 0;
+	contadorass = 0;
+	contadortec = 0;
+		
+ 	do
+	{
+		system("cls");
+		
+		puts("-----Inserir Elementos a Equipa-----\n");
+		
+		for(x = 0; x < ID_equipa; x++)
+		{
+			printf("\n[%d] --- %s --- %s", equipa[x].id_equipa, equipa[x].Nome, equipa[x].regiao);
+		}
+		
+		membro[ID_membro].id_membro = ID_membro;
+		membro[ID_membro].ativo = '1';
+		
+		puts("\n\nInsira o ID da equipa a que pretende adicionar o membro: ");
+		scanf("%d", &id);
+		membro[ID_membro].ID_Equipa;	
+		
+		system("cls");
+		
+		printf("\nNome do novo membro: ");
+		fflush(stdin);
+		gets(membro[ID_membro].Nome);
+		
+		printf("\nÁrea Profissional: ");
+		printf("\n\t1 -- Medico\n\t2 -- Enfermeiro\n\t3 -- Assistente social\n\t4 --  Tecnico");
+		printf("\nOpção: ");
+		scanf(" %d", &escolha1);
+		
+		if(escolha1 == 1)
+		{
+			strcpy(membro[ID_membro].AreaProfissional, profissao1);
+			contadormed++;
+		} 
+		else if(escolha1 == 2)
+		{
+			strcpy(membro[ID_membro].AreaProfissional, profissao2);
+			contadorenf++;
+		}
+		else if(escolha1 == 3)
+		{
+			strcpy(membro[ID_membro].AreaProfissional, profissao3);
+			contadorass++;
+		}
+		else if(escolha1 == 4)
+		{
+			strcpy(membro[ID_membro].AreaProfissional, profissao4);
+			contadortec++;
+		}
+		else
+		{
+			printf("Escolha Invalida");	
+		}
+			
+				
+		printf("\nContacto: ");
+		scanf("%d", &membro[ID_membro].contacto);
+			
+		printf("\nCartão de cidadão: ");
+		scanf("%d", &membro[ID_membro].CC);
+		
+		printf("\nMorada: ");
+		fflush(stdin);
+		gets(membro[ID_membro].Morada);
+		
+		printf("\nEmail: ");
+		fflush(stdin);
+		gets(membro[ID_membro].email);
+		
+		printf("\nEste membro é chefe de equipa? (s/n): ");
+		fflush(stdin);
+		scanf(" %c", &escolha);
+		if((escolha = 's') || (escolha = 'S'))
+		{
+			membro[ID_membro].verificador = 1;
+		}
+		else if((escolha = 'n') || (escolha = 'N'))
+		{
+			membro[ID_membro].verificador = 0;
+		}
+
+		printf("\nPossui Carta de Condução: ");
+		printf("\n\tSim---(s)\n\tNão---(n)");
+		printf("\nOpção: ");
+		scanf(" %c", &carta);
+	
+		if((carta == 's') || (carta == 'S'))
+		{
+			printf("\nInsira o Numero da Carta de Condução: ");
+			fflush(stdin);
+			gets(membro[ID_membro].CartaConducao);
+		}
+		else if((carta == 'n') || (carta == 'N'))
+		{
+			membro[ID_membro].CartaConducao == "Não possui carta de condução";
+		}
+		ID_membro++;
+		
+		contadormed1[id] += contadormed;
+		contadorenf1[id] += contadorenf;
+		contadorass1[id] += contadorass;
+		contadortec1[id] += contadortec;
+
+		
+		printf("\n\n medico = %d enfermeiro = %d ass = %d tecnico = %d ",contadormed1[id],contadorenf1[id],contadorass1[id],contadortec1[id]);
+		printf("\n\nPretende adicionar mais membros a alguma equipa? (S/N): ");
+		scanf(" %c", &opcao5);
+		
+	}while(opcao5 == 'S' || opcao5 == 's');
+		
+		if((opcao5 == 'n')||(opcao5 == 'N'))
+		{
+			if(contadormed1[id] >= 1 && contadorenf1[id] >= 1 && contadorass1[id] >= 1 && contadortec1[id] >= 1)
+			{
+				MenuSubmenuEquipas(password,passwordgestor,passwordequipa);
+			}
+			else
+			{
+				inserirMembros(password,passwordgestor,passwordequipa);
+				printf("\n\nTem de ter um membro pelo menos um funcionario de cada area!");
+			}
+		}	
+}
+
+
+void mostrarMembros(char *password, char *passwordgestor,char *passwordequipa)
 {
 	int i,k;
 	char opcao5;
@@ -475,18 +1056,7 @@ void mostrarequipas(char *password, char *passwordgestor,char *passwordequipa)
 					{
 						if(membro[k].ID_Equipa == identificador)
 						{
-							if(membro[k].AreaProfissional == '1')
-							{
-								printf("%d --- %s --- Médico", membro[k].id_membro ,&membro[k].Nome);
-							}
-							else if(membro[k].AreaProfissional == '2')
-							{
-								printf("%d --- %s --- Enfermeiro", membro[k].id_membro ,&membro[k].Nome);
-							}
-							else if(membro[k].AreaProfissional == '3')
-							{
-								printf("%d --- %s --- Assistente social", membro[k].id_membro ,&membro[k].Nome);
-							}
+							printf("%d --- %s --- %s \n", membro[k].id_membro ,&membro[k].Nome,&membro[k].AreaProfissional);
 						}
 					}
 					
@@ -502,19 +1072,8 @@ void mostrarequipas(char *password, char *passwordgestor,char *passwordequipa)
 								
 						printf("O elemento %s, pertencente à Equipa com o ID %d, contém os seguintes dados: ", membro[opcao4].Nome, identificador);	
 	            		
-	            		if(membro[opcao4].AreaProfissional == '1')
-						{
-							printf("\n\nÁrea Profissional: Médico");
-						}
-						else if(membro[opcao4].AreaProfissional == '2')
-						{
-							printf("\n\nÁrea Profissional: Enfermeiro");
-						}
-						else if(membro[opcao4].AreaProfissional == '3')
-						{
-							printf("\n\nÁrea Profissional: Assistente Social");
-						}
-	            		
+						printf("\n\nÁrea Profissional: %s", membro[opcao4].AreaProfissional);
+						
 	           			printf("\nContacto: %d", membro[opcao4].contacto);
 	           			
 	           			printf("\nCartão de Cidadão: %d", membro[opcao4].CC);
@@ -541,11 +1100,11 @@ void mostrarequipas(char *password, char *passwordgestor,char *passwordequipa)
 				}while((opcao3 == 'S') || (opcao3 == 's'));
 
 }
+		
 	
-void editarequipas(char *password, char *passwordgestor,char *passwordequipa)
+void editarMembros(char *password, char *passwordgestor,char *passwordequipa)
 {
-	
-	
+		
 	int i;
 	char opcao5;
 	int identificador;
@@ -557,128 +1116,158 @@ void editarequipas(char *password, char *passwordgestor,char *passwordequipa)
 	int opcao6;
 	int carta1;
 	int x;
+	int escolha1;
+	char profissao1[50] = "medico";
+	char profissao2[50] = "enfermeiro";
+	char profissao3[50] = "assistente";
+	char profissao4[50] = "tecnico";
 	
-	puts("-----Editar Membro da equipa-----\n");
-            	do
+	
+	do
+	{
+		puts("-----Editar Membro da equipa-----\n");
+		
+		for(x = 0; x < ID_equipa; x++)
+		{
+			printf("\n[%d] --- %s --- %s", equipa[x].id_equipa, equipa[x].Nome, equipa[x].regiao);
+		}
+		
+		printf("\n\nInsira o ID da equipa: ");
+    	scanf("%d", &identificador);
+    	
+    	for(k = 0; k < ID_membro; k++)
+		{
+			if(membro[x].ID_Equipa == identificador)
+			{
+				if(strcmp(membro[k].AreaProfissional, "medico") == 0)
 				{
-					for(x = 0; x < ID_equipa; x++)
-					{
-						printf("\n[%d] --- %s --- %s", equipa[x].id_equipa, equipa[x].Nome, equipa[x].regiao);
-					}
-					
-					printf("\n\nInsira o ID da equipa: ");
-		        	scanf("%d", &identificador);
-		        	
-		        	for(k = 0; k < ID_membro; k++)
-					{
-						if(membro[x].ID_Equipa == identificador)
-						{
-							if(membro[k].AreaProfissional == '1')
-							{
-								printf("%d --- %s --- Médico", membro[k].id_membro ,&membro[k].Nome);
-							}
-							else if(membro[k].AreaProfissional == '2')
-							{
-								printf("%d --- %s --- Enfermeiro", membro[k].id_membro ,&membro[k].Nome);
-							}
-							else if(membro[k].AreaProfissional == '3')
-							{
-								printf("%d --- %s --- Assistente social", membro[k].id_membro ,&membro[k].Nome);
-							}
-						}
-					}
-		        	
-		        	printf("Pretende editar algum elemento? (S/N): ");
-		        	scanf(" %c", &editar_membro);
-		        	
-		        	if ((editar_membro == 'S') || (editar_membro == 's'))
-					{
-						printf("\nInsira o ID do membro que pretende editar: ");
-						scanf(" %d", &ID_editar);
+					printf("%d --- %s --- Médico", membro[k].id_membro ,&membro[k].Nome);
+				}
+				else if(strcmp(membro[k].AreaProfissional, "enfermeiro") == 0)
+				{
+					printf("%d --- %s --- Enfermeiro", membro[k].id_membro ,&membro[k].Nome);
+				}
+				else if(strcmp(membro[k].AreaProfissional, "assitente") == 0)
+				{
+					printf("%d --- %s --- Assistente social", membro[k].id_membro ,&membro[k].Nome);
+				}
+			}
+		}
+    	
+    	printf("Pretende editar algum elemento? (S/N): ");
+    	scanf(" %c", &editar_membro);
+    	
+    	if ((editar_membro == 'S') || (editar_membro == 's'))
+		{
+			printf("\nInsira o ID do membro que pretende editar: ");
+			scanf(" %d", &ID_editar);
+			
+			do
+			{
+				printf("\n1 --- Nome");
+				printf("\n2 --- Área Profissional");
+				printf("\n3 --- Contacto");
+				printf("\n4 --- Cartão de Cidadão");
+				printf("\n5 --- Morada");
+				printf("\n6 --- Email");
+				printf("\n7 --- Carta");
+				printf("\n0 --- Sair");
+				printf("\nOpcao: ");
+				
+				scanf("%d", &opcao6);
+				
+				switch(opcao6)
+				{
+					case 1:
+						printf("\nNome do membro: ");
+    					fflush(stdin);
+    					gets(membro[ID_editar].Nome);
+						break;
 						
-						do
+					case 2:
+						printf("\nÁrea Profissional: ");
+    					printf("\n\t1 -- Medico\n\t2 -- Enfermeiro\n\t3 -- Assistente social");
+    					printf("\nOpção: ");
+    					scanf(" %d", &escolha1);
+    					
+    					if(escolha1 == 1)
 						{
-							printf("\n1 --- Nome");
-							printf("\n2 --- Área Profissional");
-							printf("\n3 --- Contacto");
-							printf("\n4 --- Cartão de Cidadão");
-							printf("\n5 --- Morada");
-							printf("\n6 --- Email");
-							printf("\n7 --- Carta");
-							printf("\n0 --- Sair");
-							printf("\nOpcao: ");
-							
-							scanf("%d", &opcao6);
-							
-							switch(opcao6)
-							{
-								case 1:
-									printf("\nNome do membro: ");
-	            					fflush(stdin);
-	            					gets(membro[ID_editar].Nome);
-									break;
-									
-								case 2:
-									printf("\nÁrea Profissional: ");
-	            					printf("\n\t1 -- Medico\n\t2 -- Enfermeiro\n\t3 -- Assistente social");
-	            					printf("\nOpção: ");
-	            					scanf(" %c", &membro[ID_editar].AreaProfissional);
-									break;
-									
-								case 3:
-									printf("\nContacto: ");
-	           						scanf("%d", &membro[ID_editar].contacto);
-									break;
-									
-								case 4:
-									printf("\nCartão de cidadão: ");
-	           						scanf("%d", &membro[ID_editar].CC);
-									break;
-									
-								case 5:
-									printf("\nMorada: ");
-	            					fflush(stdin);
-	            					gets(membro[ID_editar].Morada);
-									break;
-									
-								case 6:
-									printf("\nEmail: ");
-	            					fflush(stdin);
-	            					gets(membro[ID_editar].email);
-									break;
-									
-								case 7:
-									printf("\nPossui Carta de Condução: ");
-	            					printf("\n\tSim---(s)\n\tNão---(n)");
-	            					printf("\nOpção: ");
-	            					scanf(" %c", &carta1);
-	            	
-									if((carta1 == 's') || (carta1 == 'S'))
-									{
-										printf("\nInsira o Numero da Carta de Condução: ");
-										fflush(stdin);
-	            						gets(membro[ID_editar].CartaConducao);
-									}
-									else if((carta1 == 'n') || (carta1 == 'N'))
-									{
-										membro[ID_editar].CartaConducao == "Não possui carta de condução";
-									}
-									break;
-							}
-						}while(opcao6 != 0);
-							
-					}
-    
-        			printf("\n\nPretende editar mais algum Membro?");
-        			puts("\n\tSim---(s)\n\tNão---(n)");
-        			printf("\nOpção: ");
-        			scanf(" %c", &opcao);
-        		
-				}while(opcao == 'S' || opcao == 's');
+							strcpy(membro[ID_editar].AreaProfissional, profissao1);
+						}
+						else if(escolha1 == 2)
+						{
+							strcpy(membro[ID_editar].AreaProfissional, profissao2);
+						}
+						else if(escolha1 == 3)
+						{
+							strcpy(membro[ID_editar].AreaProfissional, profissao3);
+						}
+						else if(escolha1 == 4)
+						{
+							strcpy(membro[ID_editar].AreaProfissional, profissao4);
+						}
+						else
+						{
+							printf("Escolha Invalida");	
+						}
+
+						break;
+						
+					case 3:
+						printf("\nContacto: ");
+   						scanf("%d", &membro[ID_editar].contacto);
+						break;
+						
+					case 4:
+						printf("\nCartão de cidadão: ");
+   						scanf("%d", &membro[ID_editar].CC);
+						break;
+						
+					case 5:
+						printf("\nMorada: ");
+    					fflush(stdin);
+    					gets(membro[ID_editar].Morada);
+						break;
+						
+					case 6:
+						printf("\nEmail: ");
+    					fflush(stdin);
+    					gets(membro[ID_editar].email);
+						break;
+						
+					case 7:
+						printf("\nPossui Carta de Condução: ");
+    					printf("\n\tSim---(s)\n\tNão---(n)");
+    					printf("\nOpção: ");
+    					scanf(" %c", &carta1);
+    	
+						if((carta1 == 's') || (carta1 == 'S'))
+						{
+							printf("\nInsira o Numero da Carta de Condução: ");
+							fflush(stdin);
+    						gets(membro[ID_editar].CartaConducao);
+						}
+						else if((carta1 == 'n') || (carta1 == 'N'))
+						{
+							membro[ID_editar].CartaConducao == "Não possui carta de condução";
+						}
+						break;
+				}
+			}while(opcao6 != 0);
+				
+		}
+
+		printf("\n\nPretende editar mais algum Membro?");
+		puts("\n\tSim---(s)\n\tNão---(n)");
+		printf("\nOpção: ");
+		scanf(" %c", &opcao);
+	
+	}while(opcao == 'S' || opcao == 's');
 
 }
 
-void desativar(char *password, char *passwordgestor,char *passwordequipa)
+
+void desativarMembros(char *password, char *passwordgestor,char *passwordequipa)
 {
 	int identificador, k;
 	char desactivar_membro;
@@ -700,15 +1289,15 @@ void desativar(char *password, char *passwordgestor,char *passwordequipa)
 					{
 						if(membro[k].ID_Equipa == identificador)
 						{
-							if(membro[k].AreaProfissional == '1')
+							if(strcmp(membro[k].AreaProfissional, "medico") == 0)
 							{
 								printf("%d --- %s --- Médico", membro[k].id_membro ,&membro[k].Nome);
 							}
-							else if(membro[k].AreaProfissional == '2')
+							else if(strcmp(membro[k].AreaProfissional, "enfermeiro") == 0)
 							{
 									printf("%d --- %s --- Enfermeiro", membro[k].id_membro ,&membro[k].Nome);
 							}
-							else if(membro[k].AreaProfissional == '3')
+							else if(strcmp(membro[k].AreaProfissional, "assistente") == 0)
 							{
 									printf("%d --- %s --- Assistente social", membro[k].id_membro ,&membro[k].Nome);
 							}
@@ -733,12 +1322,12 @@ void desativar(char *password, char *passwordgestor,char *passwordequipa)
 				}while((opcao == 'S') || (opcao == 's'));
 }
 
+
 void MenuSubmenuLares(char *password,char *passwordequipa,char *passwordgestor)
 {
 	int opcao;
-	int contador = 1;
 	
-  	while (contador)
+  	do
     {
 		system("cls");
 		printf("----- Gerir Lares -----\n");
@@ -759,24 +1348,22 @@ void MenuSubmenuLares(char *password,char *passwordequipa,char *passwordgestor)
 			
 			case 2:
 				system("CLS");
-				verificarlares(password,passwordequipa,passwordgestor);
+				editarlares(password,passwordequipa,passwordgestor);
 			break;
 			
 			case 3:
 				system("CLS");
-				editarlares(password,passwordequipa,passwordgestor);
-
+				verificarlares(password,passwordequipa,passwordgestor);
 			break;
 			
 			case 4:
 				system("CLS");
 				apagarlares(password,passwordequipa,passwordgestor);
-
 			break;
 			
 			case 0:
 				system("CLS");
-				MenuGestor(password,passwordgestor,passwordequipa);
+				Menuequipa(password,passwordequipa,passwordgestor);	
 			break;
 			
 		 default:
@@ -784,13 +1371,15 @@ void MenuSubmenuLares(char *password,char *passwordequipa,char *passwordgestor)
             break;
         }	
 
-	}
+	}while(opcao != 0);
 }
+
 
 void adicionarlares(char *password,char *passwordequipa,char *passwordgestor)
 {
 
-		char adicionar_lares;
+	char adicionar_lares;
+	int distrito;
 			
 	do
 	{
@@ -802,13 +1391,104 @@ void adicionarlares(char *password,char *passwordequipa,char *passwordgestor)
 		fflush(stdin);
         gets(lar[id_lar].Nome);
         			
-        printf("\nRegião onde se encontra o Lar: ");
-		fflush(stdin);
-        gets(lar[id_lar].Regiao);
+        puts("\n===== Distritos =====\n");
+	
+		printf("1.Viana do Castelo\t 7.Viseu\t\t 13.Portalegre\n");
+    	printf("2.Vila Real\t\t 8.Guarda\t\t 14.Lisboa\n");
+    	printf("3.Bragança\t\t 9.Coimbra\t\t 15.Évora\n");
+    	printf("4.Braga\t\t\t 10.Castelo Branco\t 16.Setúbal\n");
+    	printf("5.Porto\t\t\t 11.Leiria\t\t 17.Beja\n");
+    	printf("6.Aveiro\t\t 12.Santarém\t\t 18.Faro\n");
+		puts("\nEscolha o distrito que pretende atribuir a equipa: ");
+		scanf("%d", &distrito);
+		
+		switch(distrito)
+		{
+			case 1:
+				strcpy(lar[id_lar].Regiao, "Viana do Castelo");
+			break;
+			
+			case 2:
+				strcpy(lar[id_lar].Regiao, "Vila Real");
+			break;
+			
+			case 3:
+				strcpy(lar[id_lar].Regiao, "Bragança");
+			break;
+			
+			case 4:
+				strcpy(lar[id_lar].Regiao,"Braga");
+			break;
+			
+			case 5:
+				strcpy(lar[id_lar].Regiao, "Porto");
+			break;
+			
+			case 6:
+				strcpy(lar[id_lar].Regiao, "Aveiro");
+			break;
+			
+			case 7:
+				strcpy(lar[id_lar].Regiao, "Viseu");
+			break;
+			
+			case 8:
+				strcpy(lar[id_lar].Regiao, "Guarda");
+			break;
+			
+			case 9:
+				strcpy(lar[id_lar].Regiao, "Coimbra");
+			break;
+			
+			case 10:
+				strcpy(lar[id_lar].Regiao, "Castelo");
+			break;
+			
+			case 11:
+				strcpy(lar[id_lar].Regiao, "Leiria");
+			break;
+			
+			case 12:
+				strcpy(lar[id_lar].Regiao, "Santarém");
+			break;
+			
+			case 13:
+				strcpy(lar[id_lar].Regiao, "Portalegre");
+			break;
+			
+			case 14:
+				strcpy(lar[id_lar].Regiao, "Lisboa");
+			break;
+			
+			case 15:
+				strcpy(lar[id_lar].Regiao,"Évora");
+			break;
+			
+			case 16:
+				strcpy(lar[id_lar].Regiao, "Setúbal");
+			break;
+			
+			case 17:
+				strcpy(lar[id_lar].Regiao, "Beja");
+			break;
+			
+			case 18:
+				strcpy(lar[id_lar].Regiao, "Faro");
+			break;
+			
+			default:
+				printf("Não escolheu um distrito válido");
+		}
         			
         printf("\nMorada do Lar: ");
 		fflush(stdin);
         gets(lar[id_lar].Morada);
+        
+        printf("\nInsira o número de idosos do lar: ");
+        scanf("%d", &lar[id_lar].n_idosos);
+        
+        printf("\nInsira o número de idosos de risco do lar (Idosos com mais de 65 anos): ");
+        scanf("%d", &lar[id_lar].n_idosos_risco);
 					
 		lar[id_lar].Ativo = 1;
 		id_lar ++;
@@ -818,6 +1498,7 @@ void adicionarlares(char *password,char *passwordequipa,char *passwordgestor)
 		
 	}while((adicionar_lares == 's') || (adicionar_lares == 'S'));
 }
+
 
 void editarlares(char *password,char *passwordequipa,char *passwordgestor)
 {
@@ -869,71 +1550,156 @@ void editarlares(char *password,char *passwordequipa,char *passwordgestor)
 			while((verificar_mais == 's') || (verificar_mais == 'S'));
 }
 
+
 void verificarlares(char *password,char *passwordequipa,char *passwordgestor)
 {
 	int k;
 	char editar_lar;
-	int id_editar,opcao_editar;
+	int id_editar,opcao_editar, distrito;
 	char voltar_editar;
 				
-				do
+	do
+	{
+		system("cls");
+		printf("----- Editar Lares -----");
+		printf("\n\nLares Disponiveis: \n");
+		
+		for(k = 0; k < id_lar; k++)
+		{
+			printf("\n[%d] --- %s --- %s", lar[k].ID_Lar, lar[k].Nome, lar[k].Regiao);
+		}
+		
+		printf("\n\nPretende editar a informação de algum lar? (S/N): ");
+		scanf(" %c", &editar_lar);
+		
+		if((editar_lar == 's') || (editar_lar == 'S'))
+		{
+			printf("\nInsira o ID do lar que pretende editar: ");
+			scanf("%d", &id_editar);
+			
+			do
+			{
+				printf("\n\nInsira que campo pretende editar: ");
+				printf("\n1 -- Nome");
+				printf("\n2 -- Região");
+				printf("\n3 -- Morada");
+				printf("\n0 -- Sair");
+				printf("\nOpcão: ");
+				scanf("%d", &opcao_editar);
+				
+				switch(opcao_editar)
 				{
-					system("cls");
-					printf("----- Editar Lares -----");
-					printf("\n\nLares Disponiveis: \n");
-					
-					for(k = 0; k < id_lar; k++)
-					{
-						printf("\n[%d] --- %s --- %s", lar[k].ID_Lar, lar[k].Nome, lar[k].Regiao);
-					}
-					
-					printf("\n\nPretende editar a informação de algum lar? (S/N): ");
-					scanf(" %c", &editar_lar);
-					
-					if((editar_lar == 's') || (editar_lar == 'S'))
-					{
-						printf("\nInsira o ID do lar que pretende editar: ");
-						scanf("%d", &id_editar);
+					case 1:
+						printf("\nNome do lar: ");
+						fflush(stdin);
+						gets(lar[id_editar].Nome);
+						break;
+					case 2:
+						printf("1.Viana do Castelo\t 7.Viseu\t\t 13.Portalegre\n");
+    					printf("2.Vila Real\t\t 8.Guarda\t\t 14.Lisboa\n");
+    					printf("3.Bragança\t\t 9.Coimbra\t\t 15.Évora\n");
+    					printf("4.Braga\t\t\t 10.Castelo Branco\t 16.Setúbal\n");
+    					printf("5.Porto\t\t\t 11.Leiria\t\t 17.Beja\n");
+    					printf("6.Aveiro\t\t 12.Santarém\t\t 18.Faro\n"); 
+						printf("\nRegião onde se encontra o Lar: ");
+						scanf("%d", &distrito);
 						
-						do
+						switch(distrito)
 						{
-							printf("\n\nInsira que campo pretende editar: ");
-							printf("\n1 -- Nome");
-							printf("\n2 -- Região");
-							printf("\n3 -- Morada");
-							printf("\n0 -- Sair");
-							printf("\nOpcão: ");
-							scanf("%d", &opcao_editar);
+							case 1:
+								strcpy(lar[id_editar].Regiao, "Viana do Castelo");
+							break;
 							
-							switch(opcao_editar)
-							{
-								case 1:
-									printf("\nNome do lar: ");
-									fflush(stdin);
-        							gets(lar[id_editar].Nome);
-									break;
-								case 2: 
-									printf("\nRegião onde se encontra o Lar: ");
-									fflush(stdin);
-        							gets(lar[id_editar].Regiao);
-									break;
-								case 3:
-									printf("\nMorada do Lar: ");
-									fflush(stdin);
-        							gets(lar[id_editar].Morada);
-									break;
-									
-							}
+							case 2:
+								strcpy(lar[id_editar].Regiao, "Vila Real");
+							break;
+							
+							case 3:
+								strcpy(lar[id_editar].Regiao, "Bragança");
+							break;
+							
+							case 4:
+								strcpy(lar[id_editar].Regiao,"Braga");
+							break;
+							
+							case 5:
+								strcpy(lar[id_editar].Regiao, "Porto");
+							break;
+							
+							case 6:
+								strcpy(lar[id_editar].Regiao, "Aveiro");
+							break;
+							
+							case 7:
+								strcpy(lar[id_editar].Regiao, "Viseu");
+							break;
+							
+							case 8:
+								strcpy(lar[id_editar].Regiao, "Guarda");
+							break;
+							
+							case 9:
+								strcpy(lar[id_editar].Regiao, "Coimbra");
+							break;
+							
+							case 10:
+								strcpy(lar[id_editar].Regiao, "Castelo");
+							break;
+							
+							case 11:
+								strcpy(lar[id_editar].Regiao, "Leiria");
+							break;
+							
+							case 12:
+								strcpy(lar[id_editar].Regiao, "Santarém");
+							break;
+							
+							case 13:
+								strcpy(lar[id_editar].Regiao, "Portalegre");
+							break;
+							
+							case 14:
+								strcpy(lar[id_editar].Regiao, "Lisboa");
+							break;
+							
+							case 15:
+								strcpy(lar[id_editar].Regiao,"Évora");
+							break;
+							
+							case 16:
+								strcpy(lar[id_editar].Regiao, "Setúbal");
+							break;
+							
+							case 17:
+								strcpy(lar[id_editar].Regiao, "Beja");
+							break;
+							
+							case 18:
+								strcpy(lar[id_editar].Regiao, "Faro");
+							break;
+							
+							default:
+								printf("Não escolheu um distrito válido");
 						}
-						while(opcao_editar != 0);
-					}
-					
-					printf("Prentende voltar a editar algum lar? (S/N): ");
-					scanf("%c", &voltar_editar);
-					
+						break;
+					case 3:
+						printf("\nMorada do Lar: ");
+						fflush(stdin);
+						gets(lar[id_editar].Morada);
+						break;
+						
 				}
-				while((voltar_editar == 's') || (voltar_editar == 'S'));
+			}
+			while(opcao_editar != 0);
+		}
+		
+		printf("Prentende voltar a editar algum lar? (S/N): ");
+		scanf("%c", &voltar_editar);
+		
+	}
+	while((voltar_editar == 's') || (voltar_editar == 'S'));
 }
+
 
 void apagarlares(char *password,char *passwordequipa,char *passwordgestor)
 {
@@ -980,5 +1746,1054 @@ void apagarlares(char *password,char *passwordequipa,char *passwordgestor)
 }
 
 
+void gerirAgendas(char *password,char *passwordequipa,char *passwordgestor)
+{
+	int opcao;
+	
+	do
+	{
+		system("cls");
+					
+		printf("--------------- Gerir Agendas ---------------\n");
+		printf("\n\t1-Adicionar dados a Agenda\n");
+    	printf("\t2-Visualizar Agenda de uma equipa\n");
+    	printf("\t3-Editar Agenda de uma equipa\n");
+    	printf("\t0-Voltar ao Menu Principal\n");
+    	printf("\nOpção:");
+    	scanf(" %d", &opcao);
+    	
+    	switch(opcao)
+		{
+			case 1:
+				adicionarAgenda(password, passwordequipa, passwordgestor);
+				break;
+			case 2:
+				visualizarAgenda(password, passwordequipa, passwordgestor);
+				break;
+			case 3:
+				editarAgenda(password, passwordequipa, passwordgestor);
+				break;
+			default:
+				break;
+		}
+		
+	}while(opcao != 0);
+}
 
 
+void adicionarAgenda(char *password,char *passwordequipa,char *passwordgestor)
+{
+	char dados_agenda;
+	int x;
+	
+	do
+	{
+		system ("cls");
+		printf("---------- Adicionar dados a agenda ----------");
+					
+		agenda[id_visita].ID_Visita = id_visita;
+					
+		for(x = 0; x < ID_equipa; x ++)
+		{
+			printf("\n[%d] --- %s --- %s", equipa[x].id_equipa, equipa[x].Nome, equipa[x].regiao);
+		}
+							
+		printf("\n\nInsira a que equipa pretende adicionar dados a agenda: ");
+		scanf("%d", &agenda[id_visita].ID_Equipa);
+					
+		for(x = 0; x < id_lar; x ++)
+		{
+			printf("\n[%d] --- %s --- %s", lar[x].ID_Lar, lar[x].Nome, lar[x].Regiao);
+		}			
+					
+		printf("\n\nInsira o Lar que a equipa terá de visitar: ");
+		scanf("%d", &agenda[id_visita].ID_Lar);
+					
+		printf("\nInsira a hora da visita: ");
+		scanf("%s", &agenda[id_visita].hora);
+					
+		printf("\nInsira o dia da visita: ");
+		scanf("%s", &agenda[id_visita].data.dia);
+					
+		printf("\nInsira o mês da visita: ");
+		scanf("%s", &agenda[id_visita].data.mes);
+					
+		printf("\nInsira o ano da visita: ");
+		scanf("%s", &agenda[id_visita].data.ano);
+					
+		id_visita++;
+					
+		printf("\n\nPretende adicionar mais alguma visita? ");
+		scanf(" %c", &dados_agenda);
+	
+	}
+	while((dados_agenda == 's')||(dados_agenda == 'S'));
+}
+
+
+void visualizarAgenda (char *password,char *passwordequipa,char *passwordgestor)
+{
+	int opcao, opcao1;
+	int j;
+	
+	do
+	{	
+		printf("\nInsira o ID da equipa a que pretende ver a agenda: ");
+		scanf(" %d", &opcao);
+		
+		for(j = 0; j < id_visita; j++)
+		{
+			if(agenda[j].ID_Equipa == opcao)
+			{
+				printf("\n%d --- %d ---> %d", agenda[j].ID_Visita , agenda[j].ID_Equipa, agenda[j].ID_Lar);
+			}
+		}
+		
+		printf("\n\nInsira 0 para voltar atras: ");
+		scanf("%d", &opcao1);
+	}
+	while(opcao1 != 0);
+}
+
+
+void editarAgenda (char *password,char *passwordequipa,char *passwordgestor)
+{
+	int x = 0, n;
+	int opcao3, opcao4, opcao5;
+	char alterar_agenda;
+	
+	do
+	{	
+		for(x = 0; x < ID_equipa; x ++)
+		{
+			printf("\n[%d] --- %s --- %s", equipa[x].id_equipa, equipa[x].Nome, equipa[x].regiao);
+		}
+		
+		printf("\n\nInsira o ID da equipa a que pretende ver a agenda: ");
+		scanf(" %d", &opcao3);
+		
+		//mostrar todas as visitas marcadas
+		for(x = 0; x < id_visita; x++)
+		{
+			if(agenda[x].ID_Equipa == opcao3)
+			{
+				printf("\n%d --- %d ---> %d", agenda[x].ID_Visita , agenda[x].ID_Equipa, agenda[x].ID_Lar);
+			}
+		}
+		
+		printf("\n\nPretende alterar alguma marcação apresentada? ");
+		scanf(" %c", &alterar_agenda);
+		
+		if((alterar_agenda == 's') || (alterar_agenda == 'S'))
+		{
+			//pedir qual marcação pretende mudar
+			printf("\nInsira o ID da marcação que pretende alterar: ");
+			scanf("%d", &opcao4);
+			
+			//encontrar a marcação
+			for(x = 0; x < id_visita; x++)
+			{
+				if(agenda[x].ID_Visita == opcao4)
+				{
+					n = x;
+				}
+			}
+			
+			do
+			{
+				//menu para escolher a informação que pretende mudar
+				system("cls");
+				printf("---------- Edição Agenda ----------");
+				printf("\n\n1- ID da Equipa Responsavel");
+				printf("\n2- ID do Lar a que vai ser realizada a visita");
+				printf("\n3 - Horas");
+				printf("\n4- Dia");
+				printf("\n5- Mes");
+				printf("\n6- Ano");
+				printf("\n0-Sair");
+				printf("\n\nOpcao: ");
+				
+				scanf("%d", &opcao5);
+				
+				//switch para recolher a escolha 	
+				switch(opcao5)
+				{
+					case 1: 
+						//mostrar todas as equipas
+						printf("Insira o ID da Equipa responsavel: ");
+						scanf("%d", &agenda[n].ID_Equipa);
+						break;
+						
+					case 2:
+						//mostrar todos os lares
+						printf("ID do Lar a que vai ser realizada a visita: ");
+						scanf("%d", &agenda[n].ID_Lar);
+						break;
+						
+					case 3:
+						printf("Insira as horas da consulta: ");
+						scanf("%s", &agenda[n].hora);
+						break;
+						
+					case 4:
+						printf("Insira o dia da consulta: ");
+						scanf("%d", &agenda[n].data.dia);
+						break;
+						
+					case 5:
+						printf("Insira o mês da consulta: ");
+						scanf("%d", &agenda[n].data.mes);
+						break;
+						
+					case 6:
+						printf("Insira o ano da visita: ");
+						scanf("%d", &agenda[n].data.ano);
+						break;
+						
+					default:
+						break;	
+						
+				}
+			} 
+			while(opcao5 != 0);
+		}
+		
+		printf("\n\nInsira 0 para voltar atras: ");
+		scanf("%d", &opcao3);
+		
+	}while(opcao3 != 0);
+}
+
+
+void gerirViaturas(char *password,char *passwordequipa,char *passwordgestor)
+{
+	int opcao;
+	
+	do
+	{
+		system("cls");
+		
+    	printf("1-Inserir Viaturas\n");
+    	printf("2-Verificar Viaturas inseridas\n");
+    	printf("3-Editar uma viatura\n");
+    	printf("4-Desativar viatura\n");
+    	printf("0-Voltar ao menu Principal\n");
+    	printf("Opção:");
+        scanf(" %d", &opcao);
+        
+        switch(opcao)
+		{
+			case 1:
+				adicionarViaturas(password, passwordequipa, passwordgestor);
+				break;
+				
+			case 2:
+				verificarViaturas(password, passwordequipa, passwordgestor);
+				break;
+				
+			case 3:
+				editarViaturas(password, passwordequipa, passwordgestor);
+				break;
+				
+			case 4:
+				desactivarViaturas(password, passwordequipa, passwordgestor);
+				break;
+		}
+	}
+	while(opcao != 0 );
+}
+
+
+void adicionarViaturas(char *password,char *passwordequipa,char *passwordgestor)
+{
+	char opcao;
+	
+	do
+	{
+		system("cls");
+		
+		puts("-----Inserir viaturas-----\n");
+		Viaturas[ID_viatura].id_viatura = ID_viatura;
+		Viaturas[ID_viatura].ativo = '1';
+		
+		printf("Marca do carro:\n");
+		fflush(stdin);
+		gets(Viaturas[ID_viatura].marca);
+		
+		printf("Modelo:\n");
+		fflush(stdin);
+		gets(Viaturas[ID_viatura].Modelo);
+		
+		printf("Matricula:\n");
+		fflush(stdin);
+		gets(Viaturas[ID_viatura].matricula);
+		
+		puts("Ano da viatura:");
+		scanf("%d", &Viaturas[ID_viatura].ano);
+		
+		puts("Mes da viatura:");
+		scanf("%d", &Viaturas[ID_viatura].mes);
+			
+		printf("Número de lugares\n");
+		scanf("%d", &Viaturas[ID_viatura].nLugares);
+		
+		puts("Quilometros do carro:");
+		scanf("%d", &Viaturas[ID_viatura].kms);
+		           	
+		       			
+		printf("O id da viatura é %d\n", Viaturas[ID_viatura].id_viatura);        			   			
+		ID_viatura++;
+		
+
+		
+		puts("Pretende inserir mais alguma viatura?");
+		puts("\tSim---(s)\n \tNão---(n)");
+		scanf(" %c", &opcao);
+		
+		system("cls");
+	
+	}while(opcao == 'S' || opcao == 's');
+	
+}
+
+
+void verificarViaturas(char *password,char *passwordequipa,char *passwordgestor)
+{
+	int opcao3, k;
+	int opcao4;
+	do
+	{
+		system("cls");
+		
+		
+		for(k = 0; k < ID_viatura; k++)
+		{
+
+			printf("ID: %d Nº Lugares %d --- %s --- %s\n", k, Viaturas[k].nLugares , Viaturas[k].matricula, Viaturas[k].marca);
+			
+		}
+			
+		printf("\n\nPretende ver os dados relativos a que viatura?");
+		scanf("%d", &opcao4);
+			
+			
+					
+		printf("\n\nA viatura da marca %s, com o ID %d, contém os seguintes dados: ", Viaturas[opcao4].marca, opcao4);        		
+		            		
+        printf("\nMatricula: %s", &Viaturas[opcao4].matricula);
+           			
+        printf("\nModelo: %s\n", &Viaturas[opcao4].Modelo);
+           			
+        printf("Ano da viatura: %d \n", Viaturas[opcao4].ano);
+	
+		printf("Mes da viatura: %d \n", Viaturas[opcao4].mes);
+		
+		printf("Número de lugares %d\n", Viaturas[opcao4].nLugares);
+	
+		printf("Quilometros do carro: %d\n", Viaturas[opcao4].kms);
+		if(Viaturas[opcao4].ativo == '0')
+			puts("O veiculo esta desativado");
+
+		printf("\n\nPretende vizualisar mais alguma viatura?");
+		printf("(S)---sim\t(N)---não");
+		scanf(" %c", &opcao3);
+			
+	}while(opcao3 == 's' || opcao3 == 'S');	
+}
+
+
+void editarViaturas(char *password,char *passwordequipa,char *passwordgestor)
+{
+	int k, identificador, escolha;
+	char opcao;
+	
+	do
+	{	
+		puts("-----Editar viaturas-----\n");
+		for(k = 0; k < ID_viatura; k++)
+		{
+
+			printf("Nº Lugares %d --- %s --- %s", Viaturas[k].nLugares , Viaturas[k].matricula, Viaturas[ID_viatura].marca);
+				
+		}
+		
+		printf("Insira o ID da viatura\n");
+    	scanf("%d", &identificador);
+    	puts("1.Marca\n2.Matricula\n3.Modelo\n4.Ano da viatura\n5.Mes da viatura\n6.Número de lugares\n7.Quilometros do carro");
+    	scanf("%d", &escolha);
+    	
+    	switch(escolha)
+		{
+		 	case 1:
+		 		printf("Marca do carro:\n");
+				fflush(stdin);
+				gets(Viaturas[identificador].marca);
+		 		break;					                     		
+		 
+		 	case 2:	
+				printf("Modelo:\n");
+				fflush(stdin);
+				gets(Viaturas[identificador].Modelo);
+				break;
+		 
+		 	case 3:
+		 		printf("Matricula:\n");
+				fflush(stdin);
+				gets(Viaturas[identificador].matricula);
+		 		break;
+		 
+		 	case 4:
+				puts("Ano da viatura:");
+				scanf("%d", &Viaturas[identificador].ano);
+		 		break;
+		 
+		 	case 5:
+		 		puts("Mes da viatura:");
+				scanf("%d", &Viaturas[identificador].mes);
+		 		break;
+		 
+		 	case 6:
+		    	printf("Número de lugares\n");
+				scanf("%d", &Viaturas[identificador].nLugares);
+		 		break;
+		 
+		 	case 7:         				
+				puts("Quilometros do carro:");
+				scanf("%d", &Viaturas[identificador].kms);
+		 		break;					
+		}
+	
+		puts("Pretende editar mais alguma viatura?");
+		puts("\tSim---(s)\n \tNão---(n)");
+		scanf(" %c", &opcao);
+	
+	}while(opcao == 'S' || opcao == 's');
+}
+
+
+void desactivarViaturas(char *password,char *passwordequipa,char *passwordgestor)
+{
+	int identificador, k;
+	char opcao;
+	
+	do
+	{	
+		system ("cls");
+		puts("-----Desativar Viatura-----\n");
+		for(k = 0; k < ID_viatura; k++)
+		{
+
+			printf("Nº Lugares %d --- %s --- %s", Viaturas[k].nLugares , Viaturas[k].matricula, Viaturas[ID_viatura].marca);
+				
+		}
+		printf("Insira o ID da viatura\n");
+    	scanf("%d", &identificador);
+		
+		Viaturas[identificador].ativo = '0';		        					
+	
+		puts("Pretende remover mais alguma viatura?");
+		puts("\tSim---(s)\n \tNão---(n)");
+		scanf(" %c", &opcao);
+	
+	}while(opcao == 'S' || opcao == 's');
+}
+
+void Questionario(char *password,char *passwordequipa,char *passwordgestor)
+{
+	// Variáveis
+	int i, n, opcaoQ1, opcaoQ2, opcaoQ3, opcaoQ4, opcaoQ5;
+	
+	// Instrução de repetição para os 5 questionários
+	for (i = 0; i < 5; i++)
+	{
+		nota = 0;
+		system("cls");
+		puts("========= QUESTIONÁRIO ===========\n");
+		printf("Quiz %d/5\n", i+1);
+		puts("Concorda que os Docentes são bem tratados pelos funcionário?\n");
+		puts("1- Discordo Totalmente");
+		puts("2- Discordo Parcialmente");
+		puts("3- Neutro");
+		puts("4- Concordo Parcialmente");
+		puts("5- Concordo Totalmente\n");		
+		printf("Opção:");
+		scanf("%d", &opcaoQ1);
+		
+		switch (opcaoQ1)
+		{
+			case 1:
+				nota += 0;
+				break;
+				
+			case 2:
+				nota += 1;
+				break;
+				
+			case 3:
+				nota += 2;
+				break;
+				
+			case 4:
+				nota += 3;
+				break;
+				
+			case 5:
+				nota += 4;
+				break;
+				
+			default:
+				break;
+		}	
+		
+		
+		puts("\n\nConcorda que o Estabelicimento tem boas condições de segurança e higiene?\n");
+		puts("1- Discordo Totalmente");
+		puts("2- Discordo Parcialmente");
+		puts("3- Neutro");
+		puts("4- Concordo Parcialmente");
+		puts("5- Concordo Totalmente\n");		
+		printf("Opção:");
+		scanf("%d", &opcaoQ2);
+		
+		switch (opcaoQ2)
+		{
+			case 1:
+				nota += 0;
+				break;
+				
+			case 2:
+				nota += 1;
+				break;
+				
+			case 3:
+				nota += 2;
+				break;
+				
+			case 4:
+				nota += 3;
+				break;
+				
+			case 5:
+				nota += 4;
+				break;
+				
+			default:
+				break;
+		}
+		
+		
+		puts("\n\nConcorda que a alimentação é boa e bem servida?\n");
+		puts("1- Discordo Totalmente");
+		puts("2- Discordo Parcialmente");
+		puts("3- Neutro");
+		puts("4- Concordo Parcialmente");
+		puts("5- Concordo Totalmente\n");		
+		printf("Opção:");
+		scanf("%d", &opcaoQ3);
+		
+		switch (opcaoQ3)
+		{
+			case 1:
+				nota += 0;
+				break;
+				
+			case 2:
+				nota += 1;
+				break;
+				
+			case 3:
+				nota += 2;
+				break;
+				
+			case 4:
+				nota += 3;
+				break;
+				
+			case 5:
+				nota += 4;
+				break;
+				
+			default:
+				break;
+		}
+		
+		
+		puts("\n\nConcorda que o ambiente entre os Docentes é agradável?\n");
+		puts("1- Discordo Totalmente");
+		puts("2- Discordo Parcialmente");
+		puts("3- Neutro");
+		puts("4- Concordo Parcialmente");
+		puts("5- Concordo Totalmente\n");		
+		printf("Opção:");
+		scanf("%d", &opcaoQ4);
+		
+		switch (opcaoQ4)
+		{
+			case 1:
+				nota += 0;
+				break;
+				
+			case 2:
+				nota += 1;
+				break;
+				
+			case 3:
+				nota += 2;
+				break;
+				
+			case 4:
+				nota += 3;
+				break;
+				
+			case 5:
+				nota += 4;
+				break;
+				
+			default:
+				break;
+		}
+		
+		
+		puts("\n\nConcorda que os funcionários tem uma boa relação de trabalho?\n");
+		puts("1- Discordo Totalmente");
+		puts("2- Discordo Parcialmente");
+		puts("3- Neutro");
+		puts("4- Concordo Parcialmente");
+		puts("5- Concordo Totalmente\n");		
+		printf("Opção:");
+		scanf("%d", &opcaoQ5);
+		
+		switch (opcaoQ5)
+		{
+			case 1:
+				nota += 0;
+				break;
+				
+			case 2:
+				nota += 1;
+				break;
+				
+			case 3:
+				nota += 2;
+				break;
+				
+			case 4:
+				nota += 3;
+				break;
+				
+			case 5:
+				nota += 4;
+				break;
+				
+			default:
+				break;
+		}	
+	}
+	n++;
+}
+
+void painelchefeequipa(char *password,char *passwordequipa,char *passwordgestor)
+{
+	system ("cls");
+	int x = 0;
+	int id = 0;
+	int opcao,identificador;
+	char opcao5,escolha,carta;
+	int idequipa,k,ID_editar,opcao6;
+	char editar_membro,carta1;
+	char nome[50];
+	int escolha1;
+	char profissao1[50] = "medico";
+	char profissao2[50] = "enfermeiro";
+	char profissao3[50] = "assistente";
+	char profissao4[50] = "tecnico";
+	
+	int i,g;	
+	
+		printf("\n----- ID------Nome \n");
+	for(g = 0; g < ID_membro; g++)
+	{
+		printf("\n----- %d ---- %s \n", membro[g].id_membro, membro[g].Nome);
+	}
+	
+	printf("Digite o seu ID: ");
+	scanf("%d", &id);
+	
+	for(x = 0; x < ID_membro; x++)
+	{ 
+		if(id == membro[x].id_membro && membro[x].verificador == 1)
+		{
+			printf("\n1-Adicionar novo membro\n");
+			printf("2-Editar membro\n");
+			printf("3-Desativar membro\n");
+			printf("0-Voltar ao menu anterior\n");
+			
+			printf("Opcao: ");	
+			scanf("%d", &opcao);
+			
+			switch (opcao)
+			{
+				case 1:
+					do{
+						
+						membro[ID_membro].id_membro = ID_membro;
+						membro[ID_membro].ativo = '1';
+						membro[ID_membro].ID_Equipa = idequipa;
+						membro[ID_membro].verificador = 0;
+						idequipa = membro[ID_membro].ID_Equipa;	
+					
+						system("cls");
+		
+						printf("\nNome do novo membro: ");
+						fflush(stdin);
+						gets(membro[ID_membro].Nome);
+		
+						printf("\nÁrea Profissional: ");
+						printf("\n\t1 -- Medico\n\t2 -- Enfermeiro\n\t3 -- Assistente social");
+						printf("\nOpção: ");
+						scanf(" %c", &membro[ID_membro].AreaProfissional);
+		
+						printf("\nContacto: ");
+						scanf("%d", &membro[ID_membro].contacto);
+			
+						printf("\nCartão de cidadão: ");
+						scanf("%d", &membro[ID_membro].CC);
+		
+						printf("\nMorada: ");
+						fflush(stdin);
+						gets(membro[ID_membro].Morada);
+		
+						printf("\nEmail: ");
+						fflush(stdin);
+						gets(membro[ID_membro].email);
+		
+						printf("\nEste membro é chefe de equipa? (s/n): ");
+						fflush(stdin);
+						scanf(" %c", &escolha);
+						
+						if((escolha == 's') || (escolha == 'S'))
+						{
+							membro[ID_membro].verificador = 1;
+						}
+						else if((escolha == 'n') || (escolha == 'N'))
+						{
+							membro[ID_membro].verificador = 0;
+						}
+
+						printf("\nPossui Carta de Condução: ");
+						printf("\n\tSim---(s)\n\tNão---(n)");
+						printf("\nOpção: ");
+						scanf(" %c", &carta);
+	
+						if((carta == 's') || (carta == 'S'))
+						{		
+							printf("\nInsira o Numero da Carta de Condução: ");
+							fflush(stdin);
+							gets(membro[ID_membro].CartaConducao);
+						}
+						else if((carta == 'n') || (carta == 'N'))
+						{
+							membro[ID_membro].CartaConducao == "Não possui carta de condução";
+						}
+						ID_membro++;
+		
+						printf("\n\nPretende adicionar mais membros a alguma equipa? (S/N): ");
+						scanf(" %c", &opcao);
+	
+					}while(opcao5 == 'S' || opcao5 == 's');
+					
+					break;
+		
+				case 2:
+						
+				do{
+		
+						puts("-----Editar Membro da equipa-----\n");
+		
+						for(x = 0; x < ID_equipa; x++)
+						{
+							printf("\n --- %s --- %d", membro[x].Nome, membro[x].id_membro);
+						}
+		
+						printf("\n\nInsira o ID do membro que deseja editar: ");
+    					scanf("%d", &identificador);
+    	
+    			for(k = 0; k < ID_membro; k++)
+				{
+					if(membro[k].ID_Equipa == identificador)
+					{
+						if(strcmp(membro[k].AreaProfissional, "medico") == 0)
+						{
+							printf("%d --- %s --- Médico", membro[k].id_membro ,&membro[k].Nome);
+						}
+						else if(strcmp(membro[k].AreaProfissional, "enfermeiro") == 0)
+						{
+							printf("%d --- %s --- Enfermeiro", membro[k].id_membro ,&membro[k].Nome);
+						}
+						else if(strcmp(membro[k].AreaProfissional, "assistente") == 0)
+						{
+							printf("%d --- %s --- Assistente social", membro[k].id_membro ,&membro[k].Nome);
+						}
+					}		
+			    }
+    	
+    			printf("Pretende editar algum elemento? (S/N): ");
+    			scanf(" %c", &editar_membro);
+    	
+    			if ((editar_membro == 'S') || (editar_membro == 's'))
+				{
+					printf("\nInsira o ID do membro que pretende editar: ");
+					scanf(" %d", &ID_editar);
+				do
+				{
+					printf("\n1 --- Nome");
+					printf("\n2 --- Área Profissional");
+					printf("\n3 --- Contacto");
+					printf("\n4 --- Cartão de Cidadão");
+					printf("\n5 --- Morada");
+					printf("\n6 --- Email");
+					printf("\n7 --- Carta");
+					printf("\n0 --- Sair");
+					printf("\nOpcao: ");
+					scanf("%d", &opcao6);
+
+				switch(opcao6)
+				{
+					case 1:
+						printf("\nNome do membro: ");
+    					fflush(stdin);
+    					gets(membro[ID_editar].Nome);
+						break;
+						
+					case 2:
+						printf("\nÁrea Profissional: ");
+    					printf("\n\t1 -- Medico\n\t2 -- Enfermeiro\n\t3 -- Assistente social");
+    					printf("\nOpção: ");
+    					scanf(" %d", &escolha1);
+    					
+    					if(escolha1 == 1)
+						{
+							strcpy(membro[ID_editar].AreaProfissional, profissao1);
+						}
+						else if(escolha1 == 2)
+						{
+							strcpy(membro[ID_editar].AreaProfissional, profissao2);
+						}
+						else if(escolha1 == 3)
+						{
+							strcpy(membro[ID_editar].AreaProfissional, profissao3);
+						}
+						else if(escolha1 == 4)
+						{
+							strcpy(membro[ID_editar].AreaProfissional, profissao4);
+						}
+						else
+						{
+							printf("Escolha Invalida");	
+						}
+						
+					case 3:
+						printf("\nContacto: ");
+   						scanf("%d", &membro[ID_editar].contacto);
+						break;
+						
+					case 4:
+						printf("\nCartão de cidadão: ");
+   						scanf("%d", &membro[ID_editar].CC);
+						break;
+						
+					case 5:
+						printf("\nMorada: ");
+    					fflush(stdin);
+    					gets(membro[ID_editar].Morada);
+						break;
+						
+					case 6:
+						printf("\nEmail: ");
+    					fflush(stdin);
+    					gets(membro[ID_editar].email);
+						break;
+						
+					case 7:
+						printf("\nPossui Carta de Condução: ");
+    					printf("\n\tSim---(s)\n\tNão---(n)");
+    					printf("\nOpção: ");
+    					scanf(" %c", &carta1);
+    	
+						if((carta1 == 's') || (carta1 == 'S'))
+						{
+							printf("\nInsira o Numero da Carta de Condução: ");
+							fflush(stdin);
+    						gets(membro[ID_editar].CartaConducao);
+						}
+						else if((carta1 == 'n') || (carta1 == 'N'))
+						{
+							membro[ID_editar].CartaConducao == "Não possui carta de condução";
+						}
+						break;
+					}
+					}while(opcao6 != 0);
+				
+					}
+
+						printf("\n\nPretende editar mais algum Membro?");
+						puts("\n\tSim---(s)\n\tNão---(n)");
+						printf("\nOpção: ");
+						scanf(" %c", &opcao);
+	
+					}while(opcao == 'S' || opcao == 's');	
+					
+					break;
+				
+				case 3:
+					nota += 2;
+					break;
+				
+				case 0:
+					Menuequipa(password,passwordequipa,passwordgestor);
+					break;
+				default:
+					printf("Escolha invalida!!\n");
+					break;
+		}
+		}
+	}
+}
+
+void MenuVisita(char *password,char *passwordequipa,char *passwordgestor)
+{
+	int opcao;
+	
+	do
+	{
+		system("cls");
+		printf("----- Registar Visitas -----");
+		printf("\n1 -- Requisitar Viaturas para Visita");
+		printf("\n2 -- Registar Visita");
+		printf("\nOpção: ");
+		scanf("%d", &opcao);
+		
+		switch(opcao)
+		{
+			case 1:
+				RequisitarViaturas(password,passwordgestor,passwordequipa);
+				break;
+				
+			case 2:
+				RegistarVisita(password,passwordgestor,passwordequipa);
+				break;
+				
+			default:
+				break;
+				
+		}
+			
+	}while(opcao != 0);
+}
+
+
+void RequisitarViaturas(char *password,char *passwordequipa,char *passwordgestor)
+{
+	int k;
+	char requisitar_mais;
+	
+	do
+	{
+		printf("Viaturas Disponiveis: \n");
+		
+		for(k = 0; k < ID_viatura; k++)
+		{
+
+			printf("\nID: %d Nº Lugares %d --- %s --- %s\n", k, Viaturas[k].nLugares , Viaturas[k].matricula, Viaturas[k].marca);
+			
+		}
+		
+		printf("Insira o ID da Viatura que pretende requisitar: ");
+		scanf("%d", &reViaturas[ID_reqViatura].ID_Viatura);
+		
+		printf("\n\nVisitas Disponiveis: \n");
+		
+		for(k = 0; k < id_visita; k++)
+		{
+			if(agenda[k].ID_Equipa == ID_Equipa_Usar)
+			{
+				printf("\n%d --- %d ---> %d", agenda[k].ID_Visita , agenda[k].ID_Equipa, agenda[k].ID_Lar);
+			}
+		}
+		
+		printf("Insira o ID da Visita onde esta viatura vai ser usada: ");
+		scanf("%d", &reVisita[ID_reqViatura].ID_Visita);
+		
+		printf("\n\nPretende requisitar mais viaturas: ");
+		scanf("%c", &requisitar_mais);
+		
+	}while((requisitar_mais == 's') || (requisitar_mais == 'S'));
+}
+
+
+void RegistarVisita(char *password,char *passwordequipa,char *passwordgestor)
+{
+
+	char registarVisita;
+	
+	do
+	{
+		printf("----- Registo Visita -----");	
+		printf("\n\nInsira o ID do Lar que foi visitado: ");
+		scanf("%d", &reVisita[ID_regVisita].ID_Visita);
+		
+		reVisita[ID_regVisita].ID_Equipa = ID_Equipa_Usar;
+		reVisita[ID_regVisita].ID_Visita = ID_regVisita;
+		
+		printf("\nEscreva um Relatório sobre a Visita: ");
+		fflush(stdin);
+		gets(reVisita[ID_regVisita].Relatorio);
+		
+		printf("\nInsira o numero de casos de Covid encontrados no Lar: ");
+		scanf("%d", &reVisita[ID_regVisita].N_Covid);
+		
+		Questionario(password, passwordequipa, passwordgestor);
+		
+		reVisita[ID_regVisita].Avalicao = nota;
+		
+		printf("\nPretende registar mais alguma Visita? ");
+		scanf(" %c", &registarVisita);
+		
+		ID_regVisita++;
+		
+		
+	}while((registarVisita == 's') || (registarVisita == 'S'));
+
+}
+ 
+
+void VerificarRelatorio(char *password,char *passwordequipa,char *passwordgestor)
+{
+	int k, id_visita;
+	char verRelatorio;
+	
+	do
+	{
+		printf("----- Verificar Relatorios ----- ");
+		
+		printf("\n\nVisitas disponiveis para consulta:  \n");
+		
+		for(k = 0; k < ID_regVisita; k++)
+		{
+			printf("\n[%d] --- %d --- %d", reVisita[k].ID_Visita, reVisita[k].ID_Equipa, reVisita[k].ID_Lar);
+		}
+		
+		printf("\n\nInsira de que visita pretende imprimir o relatório: ");
+		scanf("%d", &id_visita);
+		
+		printf("\n\n Relatório: %s", reVisita[id_visita].Relatorio);
+		
+		printf("\n\n Casos de Covid: %d", reVisita[id_visita].N_Covid);
+		
+		printf("\n\n Avaliação: %d", reVisita[id_visita].Avalicao);
+		
+		printf("\n\nPretende ver mais algum relatório: ");
+		scanf(" %c", &verRelatorio);
+		
+	}while((verRelatorio == 's') || (verRelatorio == 'S'));
+}
