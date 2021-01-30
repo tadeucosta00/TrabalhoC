@@ -1380,9 +1380,9 @@ void mostrarMembros(char *password, char *passwordgestor,char *passwordequipa)
 		system("cls");
 		
 		// Listar todas as equipas
-		for(x = 0; x < ID_equipa; x++)
+		for(i = 0; i < ID_equipa; i++)
 		{
-			printf("\n[%d] --- %s --- %s", equipa[x].id_equipa, equipa[x].Nome, equipa[x].regiao);
+			printf("\n[%d] --- %s --- %s", equipa[i].id_equipa, equipa[i].Nome, equipa[i].regiao);
 		}
 		
 		
@@ -1901,9 +1901,9 @@ void editarlares(char *password,char *passwordequipa,char *passwordgestor)
 		
 		// Instrução de Repetição			
 		printf("\n\nPretende voltar a verificar os Lares?\n(S/N): ");
-		scanf(" %c", &verificar_mais);
+		scanf(" %c", &verifica_mais);
 
-	} while((verificar_mais == 's') || (verificar_mais == 'S'));
+	} while((verifica_mais == 's') || (verifica_mais == 'S'));
 }
 
 
