@@ -1865,7 +1865,8 @@ void editarlares(char *password,char *passwordequipa,char *passwordgestor)
 			}
 			
 		}
-					
+		
+		// Instrução de Repetição			
 		printf("\n\nPretende visualizar os dados de algum dos Lares?\n(S/N): ");
 		scanf(" %c", &verificar_lares);
 		
@@ -1963,6 +1964,7 @@ void verificarlares(char *password,char *passwordequipa,char *passwordgestor)
 						fflush(stdin);
 						gets(lar[id_editar].Nome);
 						break;
+						
 					case 2:
 						// menu do distritos
 						system("CLS");
@@ -2055,25 +2057,27 @@ void verificarlares(char *password,char *passwordequipa,char *passwordgestor)
 							default:
 								printf("Não escolheu um distrito válido");
 						}
+						
 						break;
+						
 					case 3:
 						// inserir morada do lar
 						printf("\nMorada do Lar: ");
 						fflush(stdin);
 						gets(lar[id_editar].Morada);
+						
 						break;
 						
 				}
-			}
-			while(opcao_editar != 0);
+			
+			}while(opcao_editar != 0);
 		}
 		
 		// Instrução de Repetição
 		printf("Prentende voltar a editar algum lar?\n(S/N): ");
 		scanf("%c", &voltar_editar);
 		
-	}
-	while((voltar_editar == 's') || (voltar_editar == 'S'));
+	}while((voltar_editar == 's') || (voltar_editar == 'S'));
 }
 
 // Sub Menu Equipa / Apagar Lares
@@ -2189,7 +2193,8 @@ void adicionarAgenda(char *password,char *passwordequipa,char *passwordgestor)
 		{
 			printf("\n[%d] --- %s --- %s", equipa[x].id_equipa, equipa[x].Nome, equipa[x].regiao);
 		}
-							
+		
+		// Inserir Numero da Equipa					
 		printf("\n\nInsira a que equipa pretende adicionar dados a agenda: ");
 		scanf("%d", &agenda[id_visita].ID_Equipa);
 		
@@ -2198,24 +2203,30 @@ void adicionarAgenda(char *password,char *passwordequipa,char *passwordgestor)
 		{
 			printf("\n[%d] --- %s --- %s", lar[x].ID_Lar, lar[x].Nome, lar[x].Regiao);
 		}			
-					
+		
+		// Inserir Numero do Lar			
 		printf("\n\nInsira o Lar que a equipa terá de visitar: ");
 		scanf("%d", &agenda[id_visita].ID_Lar);
-					
+		
+		// Inserir Hora da Visita			
 		printf("\nInsira a hora da visita: ");
 		scanf("%s", &agenda[id_visita].hora);
-					
+		
+		// Inserir Dia da Visita			
 		printf("\nInsira o dia da visita: ");
 		scanf("%s", &agenda[id_visita].data.dia);
-					
+		
+		// Inserir Mês da Visita			
 		printf("\nInsira o mês da visita: ");
 		scanf("%s", &agenda[id_visita].data.mes);
-					
+		
+		// Inserir Ano da Visita
 		printf("\nInsira o ano da visita: ");
 		scanf("%s", &agenda[id_visita].data.ano);
 					
 		id_visita++;
-					
+		
+		// Instrução de Repetição			
 		printf("\n\nPretende adicionar mais alguma visita? ");
 		scanf(" %c", &dados_agenda);
 	
@@ -3347,6 +3358,7 @@ void VerificarRelatorio(char *password,char *passwordequipa,char *passwordgestor
 			}
 		}
 		
+		// Insstrução de Repetição
 		printf("\n\nPretende ver mais algum relatório: ");
 		scanf(" %c", &verRelatorio);
 		
