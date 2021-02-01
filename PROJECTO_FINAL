@@ -2715,7 +2715,7 @@ void desactivarViaturas(char *password,char *passwordequipa,char *passwordgestor
     	scanf("%d", &identificador);
 
 		// Desativar Viatura
-		Viaturas[identificador].ativo = '0';		        					
+		Viaturas[identificador].ativo = 0;		        					
 
 		puts("Pretende remover mais alguma viatura?");
 		puts("\tSim---(s)\n \tNão---(n)");
